@@ -1,5 +1,5 @@
 <routes>
-	<route url="/agentdesktop/login" default="true">
+	<route url="/agentdesktop/login">
 		<node name="Hybris-AD">
 			<step seq="1">
 				<http url="http://localhost:8282/commercial-cpm/agent-login-request">
@@ -8,6 +8,15 @@
 			</step>
 		</node>
 	</route>
-	<route url="/" type="default">
+	<route url="/commercial-cpm/agent-login-request" >
+		<node name="Hybris-AD">
+			<step seq="1">
+				<http url="http://localhost:8282/commercial-cpm/agent-login-request">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/" default="true">
 	</route>
 </routes>
