@@ -54,9 +54,11 @@ public class Application extends HttpServlet {
 	}
 
 	public void log(Object... objects) {
+		System.out.print(APP_NAME);
 		Arrays.stream(objects).forEach(obj -> {
-			System.out.println(System.getProperty("app") + " : " + obj);
+			System.out.print(" "+obj);
 		});
+		System.out.println();
 	}
 
 	@Override
@@ -105,7 +107,7 @@ public class Application extends HttpServlet {
 
 	protected void route(HttpServletRequest req, HttpServletResponse resp) throws ClientProtocolException, IOException {
 		Routes.Route matchingRoute = ROUTES.routes.stream().filter(route -> {
-			return req.getRequestURI().contains(route.url) && route.nodes.stream().anyMatch(node -> {
+			return req.getRequestURI().endsWith(route.url) && route.nodes.stream().anyMatch(node -> {
 				return node.name.equals(APP_NAME);
 			});
 		}).findFirst().orElse(DEF_ROUTE);
@@ -117,7 +119,7 @@ public class Application extends HttpServlet {
 			Node matchingNode= matchingRoute.nodes.stream().filter(node -> {
 				return node.name.equals(APP_NAME);
 			} ).findFirst().get();
-			log("Found matching route "+matchingRoute.url+" for node "+APP_NAME);
+			log("Found matching route "+matchingRoute.url+" for node "+matchingNode.name);
 			matchingNode.steps.forEach(step -> {
 				step.http.forEach(http -> {
 					try {
@@ -149,21 +151,23 @@ public class Application extends HttpServlet {
 	}
 
 	private void proxy(HttpServletRequest req, HttpServletResponse resp, Http http) throws ClientProtocolException, IOException {
-		log("Proxy");
+		
 		String url = http.url;
+		log("Proxy",url);
 
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpGet request = new HttpGet(url);
 
 		// add request header
 		request.addHeader("User-Agent", "Test");
-		for(;req.getHeaderNames().hasMoreElements();){
-			String headerName = req.getHeaderNames().nextElement();
+		for(Enumeration<String> headers =req.getHeaderNames() ;headers.hasMoreElements();){
+			String headerName = headers.nextElement();
+			log(">", headerName,req.getHeader(headerName));
 			request.addHeader(headerName, req.getHeader(headerName));
 		}
 		HttpResponse response = client.execute(request);
 
-		log("Response Code : " + response.getStatusLine().getStatusCode());
+		//log("Response Code : " + response.getStatusLine().getStatusCode());
 
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
@@ -174,16 +178,24 @@ public class Application extends HttpServlet {
 		}
 
 		PrintWriter wrtr = resp.getWriter();
-		Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {resp.addHeader(downHeader.getName(), downHeader.getValue());});
+		Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {
+			log("<",downHeader.getName(), downHeader.getValue());
+			resp.addHeader(downHeader.getName(), downHeader.getValue());
+			});
 		
 		wrtr.print(result.toString());
 		wrtr.flush();
+		resp.flushBuffer();
 
 	}
 
 	private void serve(HttpServletRequest req, HttpServletResponse resp, Serve serve) {
 		log("Serve");
 		try {
+			for(Enumeration<String> headers =req.getHeaderNames() ;headers.hasMoreElements();){
+				String headerName = headers.nextElement();
+				log(">", headerName,req.getHeader(headerName));
+			}
 			resp.getWriter().print(serve.payload);
 			resp.flushBuffer();
 		} catch (IOException e) {

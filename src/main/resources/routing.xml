@@ -50,7 +50,7 @@
 	
 	<!--  Flight Search END -->
 	<!--  Add Flight to Basket -->
-	<route url="/agentdesktop/addflight">
+	<route url="/agentdesktop/basket/addflight">
 		<node name="Hybris-AD">
 			<step seq="1">
 				<http url="http://localhost:8282/commercial-cpm/v1/basket/flight">
@@ -140,8 +140,17 @@
 	<route url="/commercial-mnp/v3/payment-methods" >
 		<node name="EI-ESB">
 			<step seq="1">
+				<http url="http://localhost:8686/easyJet.CustomerPayments.Gateway/PaymentGateway.svc">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/easyJet.CustomerPayments.Gateway/PaymentGateway.svc" >
+		<node name="CustomerPayments.Gateway">
+			<step seq="1">
 				<serve>
-					<payload>Get payment methods success</payload>
+					<payload>Payment methods</payload>
 				</serve>
 			</step>
 		</node>
@@ -169,8 +178,17 @@
 	<route url="/commercial-mnp/v3/basket/basket-id/make-payment-request" >
 		<node name="EI-ESB">
 			<step seq="1">
+				<http url="http://localhost:8686/easyJet.CustomerPayments.Gateway/PaymentGateway.svc/makepayment">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/easyJet.CustomerPayments.Gateway/PaymentGateway.svc/makepayment" >
+		<node name="CustomerPayments.Gateway">
+			<step seq="1">
 				<serve>
-					<payload>Make payment success</payload>
+					<payload>Payment accepted</payload>
 				</serve>
 			</step>
 		</node>
@@ -210,13 +228,13 @@
 	<route url="/agentdesktop/booking-confirmation">
 		<node name="Hybris-AD">
 			<step seq="1">
-				<http url="http://localhost:8282/commercial-cpm/v1/booking/booking-id">
+				<http url="http://localhost:8282/commercial-cpm/v1/bookings/booking-id">
 					<payload>Empty</payload>
 				</http>
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-cpm/v1/booking/booking-id" >
+	<route url="/commercial-cpm/v1/bookings/booking-id" >
 		<node name="Hybris-ACP">
 			<step seq="1">
 				<serve>
@@ -226,7 +244,56 @@
 		</node>
 	</route>
 	<!--  View Booking Confirmation END-->
+	<!--  Checkin  -->
+	<route url="/agentdesktop/checkin">
+		<node name="Hybris-AD">
+			<step seq="1">
+				<http url="http://localhost:8282/commercial-cpm/v1/bookings/booking-id/checkin-request">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-cpm/v1/bookings/booking-id/checkin-request" >
+		<node name="Hybris-ACP">
+			<step seq="1">
+				<http url="http://localhost:8383/commercial-mnp/v3/bookings/booking-id/checkin-request">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/bookings/booking-id/checkin-request" >
+		<node name="EI-ESB">
+			<step seq="1">
+				<serve>
+					<payload>Checkin request processed success</payload>
+				</serve>
+			</step>
+		</node>
+	</route>
+	<!--  Checkin  END-->
 	
+	<!--  Print Boarding pass  -->
+	<route url="/agentdesktop/printBoardingPass">
+		<node name="Hybris-AD">
+			<step seq="1">
+				<http url="http://localhost:8282/commercial-cpm/v1/bookings/booking-id/generate-boarding-pass-request">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-cpm/v1/bookings/booking-id/generate-boarding-pass-request" >
+		<node name="Hybris-ACP">
+			<step seq="1">
+				<serve >
+					<payload>Boarding pass gen'd successfully</payload>
+				</serve>
+			</step>
+		</node>
+	</route>
+	<!--  Print Boarding pass  END-->
 	
 	<route url="/" default="true" >
 		<node name="">
