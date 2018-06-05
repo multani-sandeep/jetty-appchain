@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Enumeration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -156,6 +157,10 @@ public class Application extends HttpServlet {
 
 		// add request header
 		request.addHeader("User-Agent", "Test");
+		for(;req.getHeaderNames().hasMoreElements();){
+			String headerName = req.getHeaderNames().nextElement();
+			request.addHeader(headerName, req.getHeader(headerName));
+		}
 		HttpResponse response = client.execute(request);
 
 		log("Response Code : " + response.getStatusLine().getStatusCode());
@@ -169,6 +174,8 @@ public class Application extends HttpServlet {
 		}
 
 		PrintWriter wrtr = resp.getWriter();
+		Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {resp.addHeader(downHeader.getName(), downHeader.getValue());});
+		
 		wrtr.print(result.toString());
 		wrtr.flush();
 
