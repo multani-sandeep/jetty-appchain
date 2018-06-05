@@ -1,14 +1,15 @@
 <routes>
+	<!--  Login -->
 	<route url="/agentdesktop/login">
 		<node name="Hybris-AD">
 			<step seq="1">
-				<http url="http://localhost:8282/commercial-cpm/agent-login-request">
+				<http url="http://localhost:8282/commercial-cpm/v1/agent-login-request">
 					<payload>Empty</payload>
 				</http>
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-cpm/agent-login-request" >
+	<route url="/commercial-cpm/v1/agent-login-request" >
 		<node name="Hybris-ACP">
 			<step seq="1">
 				<serve>
@@ -17,12 +18,143 @@
 			</step>
 		</node>
 	</route>
-	<route url="/" default="true" >
-		<node >
+	<!--  Login END -->
+	<!--  Flight Search -->
+	<route url="/agentdesktop/flight-search">
+		<node name="Hybris-AD">
 			<step seq="1">
-				<http url="http://localhost:8282/commercial-cpm/agent-login-request">
+				<http url="http://localhost:8282/commercial-cpm/v1/search/flights">
 					<payload>Empty</payload>
 				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-cpm/v1/search/flights" >
+		<node name="Hybris-ACP">
+			<step seq="1">
+				<http url="http://localhost:8383/commercial-mnp/v3/search/flights">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/search/flights" >
+		<node name="EI-ESB">
+			<step seq="1">
+				<serve>
+					<payload>Found flights</payload>
+				</serve>
+			</step>
+		</node>
+	</route>
+	
+	<!--  Flight Search END -->
+	<!--  Add Flight to Basket -->
+	<route url="/agentdesktop/addflight">
+		<node name="Hybris-AD">
+			<step seq="1">
+				<http url="http://localhost:8282/commercial-cpm/v1/basket/flight">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-cpm/v1/basket/flight" >
+		<node name="Hybris-ACP">
+			<step seq="1">
+				<http url="http://localhost:8383/commercial-mnp/v3/basket/flight">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/basket/flight" >
+		<node name="EI-ESB">
+			<step seq="1">
+				<serve>
+					<payload>Added flight to Basket</payload>
+				</serve>
+			</step>
+		</node>
+	</route>
+	<!--  Add Flight to Basket END-->
+	<!--  View Basket -->
+	<route url="/agentdesktop/basket">
+		<node name="Hybris-AD">
+			<step seq="1">
+				<http url="http://localhost:8282/commercial-cpm/v1/basket">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-cpm/v1/basket/flight" >
+		<node name="Hybris-ACP">
+			<step seq="1">
+				<serve>
+					<payload>View Basket</payload>
+				</serve>
+			</step>
+		</node>
+	</route>
+	<!--  View Basket END-->
+	<!--  Update Traveller -->
+	<route url="/agentdesktop/updateTraveller">
+		<node name="Hybris-AD">
+			<step seq="1">
+				<http url="http://localhost:8282/commercial-cpm/v1/baskets/basket-id/passengers">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-cpm/v1/baskets/basket-id/passengers" >
+		<node name="Hybris-ACP">
+			<step seq="1">
+				<serve>
+					<payload>Passenger Added to Basket</payload>
+				</serve>
+			</step>
+		</node>
+	</route>
+	<!--  Update Traveller END-->
+	<!--  Get Payment Methods -->
+	<route url="/agentdesktop/retrieve-payment-methods">
+		<node name="Hybris-AD">
+			<step seq="1">
+				<http url="http://localhost:8282/commercial-cpm/v1/payment-methods">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-cpm/v1/payment-methods" >
+		<node name="Hybris-ACP">
+			<step seq="1">
+				<http url="http://localhost:8383/commercial-mnp/v3/payment-methods">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/payment-methods" >
+		<node name="EI-ESB">
+			<step seq="1">
+				<serve>
+					<payload>Get payment methods success</payload>
+				</serve>
+			</step>
+		</node>
+	</route>
+	<!--  Get Payment Methods END-->
+	
+	
+	<route url="/" default="true" >
+		<node name="">
+			<step seq="1">
+				<serve>
+					<payload>Default Response</payload>
+				</serve>
 			</step>
 		</node>
 	</route>

@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
 
 @XmlRootElement (name="routes")
 @XmlAccessorType (XmlAccessType.FIELD)
@@ -50,13 +51,13 @@ public class Routes {
 	public static class Http{
 		@XmlAttribute
 		public String url;
-		@XmlAttribute
+		@XmlElement
 		public String payload;
 	}
 	
 	@XmlAccessorType (XmlAccessType.FIELD)
 	public static class Serve{
-		@XmlAttribute
+		@XmlElement
 		public String payload;
 	}
 }

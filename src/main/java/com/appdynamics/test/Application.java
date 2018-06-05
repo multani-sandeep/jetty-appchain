@@ -111,6 +111,7 @@ public class Application extends HttpServlet {
 
 		if (matchingRoute.isDefaultRoute) {
 			log("Switching to default route");
+			serve(req, resp, matchingRoute.nodes.get(0).steps.get(0).serve.get(0));
 		} else {
 			Node matchingNode= matchingRoute.nodes.stream().filter(node -> {
 				return node.name.equals(APP_NAME);
@@ -157,7 +158,7 @@ public class Application extends HttpServlet {
 		request.addHeader("User-Agent", "Test");
 		HttpResponse response = client.execute(request);
 
-		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+		log("Response Code : " + response.getStatusLine().getStatusCode());
 
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
