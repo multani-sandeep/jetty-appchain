@@ -39,7 +39,7 @@ public class Application extends HttpServlet {
 	public static Routes ROUTES;
 	public static Route DEF_ROUTE;
 	public static String APP_NAME = System.getProperty("appdynamics.agent.tierName");
-	
+
 	static final Logger LOG = Logger.getLogger(Application.class.getName());
 
 	@Override
@@ -62,7 +62,8 @@ public class Application extends HttpServlet {
 	}
 
 	public void log(Object... objects) {
-		LOG.log(Level.INFO, APP_NAME+": "+Arrays.stream(objects).map(Object::toString).collect(Collectors.joining(" ")));
+		LOG.log(Level.INFO,
+				APP_NAME + ": " + Arrays.stream(objects).map(Object::toString).collect(Collectors.joining(" ")));
 	}
 
 	@Override
@@ -154,21 +155,21 @@ public class Application extends HttpServlet {
 	}
 
 	private void error(HttpServletRequest req, HttpServletResponse resp, Error error) throws ForcedException {
-		if(new Random().nextInt(100)<=error.errsPerHundred){
+		if (new Random().nextInt(100) <= error.errsPerHundred) {
 			String message = "Generic Error";
+			log("Send 500 error");
+
+			if (error.errorType != null && error.errorType.type.equals("exception")) {
+				message = error.errorType.message == null ? message : error.errorType.message;
+				throw new ForcedException(error.errorType.message);
+			}
 			try {
-				log("Send 500 error");
-				resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
 			} catch (IOException e) {
 				throw new UnForcedException(e);
 			}
-			if(error.errorType!=null && error.errorType.type.equals("exception")){
-				message = error.errorType.message==null?message:error.errorType.message;
-				throw new ForcedException(error.errorType.message);
-			}
-				
 		}
-		
+
 	}
 
 	private void delay(HttpServletRequest req, HttpServletResponse resp, Delay delay) {
@@ -206,7 +207,7 @@ public class Application extends HttpServlet {
 		}
 		HttpResponse response = client.execute(request);
 
-		// log("Response Code : " + response.getStatusLine().getStatusCode());
+		log("Response Code : " + response.getStatusLine().getStatusCode());
 
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
@@ -223,7 +224,7 @@ public class Application extends HttpServlet {
 		});
 
 		wrtr.print(result.toString());
-		wrtr.flush();
+		// wrtr.flush();
 		resp.flushBuffer();
 
 	}
