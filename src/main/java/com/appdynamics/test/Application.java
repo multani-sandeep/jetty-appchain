@@ -164,7 +164,11 @@ public class Application extends HttpServlet {
 				throw new ForcedException(error.errorType.message);
 			}
 			try {
-				resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message);
+				resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				PrintWriter wrtr = resp.getWriter();
+				wrtr.write(message);
+				wrtr.flush();
+				
 			} catch (IOException e) {
 				throw new UnForcedException(e);
 			}
@@ -207,26 +211,44 @@ public class Application extends HttpServlet {
 		}
 		HttpResponse response = client.execute(request);
 
-		log("Response Code : " + response.getStatusLine().getStatusCode());
+		log("Response Code : ", response.getStatusLine().getStatusCode());
+		resp.setStatus(response.getStatusLine().getStatusCode());
+		try {
+			BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+			StringBuffer result = new StringBuffer();
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				result.append(line);
+			}
 
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
+			PrintWriter wrtr = resp.getWriter();
+			Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {
+				if(!downHeader.getName().toLowerCase().equals("content-length") || 
+						!downHeader.getName().toLowerCase().equals("transfer-encoding")){
+					log("<", downHeader.getName(), downHeader.getValue());
+					resp.addHeader(downHeader.getName(), downHeader.getValue());
+				}
+			});
+
+			wrtr.print(result.toString());
+			wrtr.flush();
+//			resp.flushBuffer();
+		} catch (Exception e) {
+			log(e);
+			throw e;
 		}
 
-		PrintWriter wrtr = resp.getWriter();
-		Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {
-			log("<", downHeader.getName(), downHeader.getValue());
-			resp.addHeader(downHeader.getName(), downHeader.getValue());
-		});
+	}
 
-		wrtr.print(result.toString());
-		// wrtr.flush();
-		resp.flushBuffer();
+	@Override
+	public void log(String msg) {
+		log((Object)msg);
+	}
 
+	@Override
+	public void log(String message, Throwable t) {
+		log((Object)message, t);
 	}
 
 	private void serve(HttpServletRequest req, HttpServletResponse resp, Serve serve) {
@@ -236,8 +258,10 @@ public class Application extends HttpServlet {
 				String headerName = headers.nextElement();
 				log(">", headerName, req.getHeader(headerName));
 			}
-			resp.getWriter().print(serve.payload);
-			resp.flushBuffer();
+			PrintWriter wrtr = resp.getWriter();
+			wrtr.print(serve.payload);
+			wrtr.flush();
+//			resp.flushBuffer();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
