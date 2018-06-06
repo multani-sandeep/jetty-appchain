@@ -1,5 +1,5 @@
 <routes>
-	<!--  Login -->
+	<!-- Login -->
 	<route url="/agentdesktop/login">
 		<node name="Hybris-AD">
 			<step seq="1">
@@ -9,298 +9,351 @@
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-cpm/v1/agent-login-request" >
+	<route url="/commercial-cpm/v1/agent-login-request">
 		<node name="Hybris-ACP">
 			<step seq="1">
 				<serve>
 					<payload>Agent Login Successful</payload>
 				</serve>
+				<delay msec="50" random="3" />
 			</step>
 		</node>
 	</route>
-	<!--  Login END -->
-	<!--  Flight Search -->
+	<!-- Login END -->
+	<!-- Flight Search -->
 	<route url="/agentdesktop/flight-search">
 		<node name="Hybris-AD">
 			<step seq="1">
 				<http url="http://localhost:8282/commercial-cpm/v1/search/flights">
-					<payload>Empty</payload>
+					<payload>
+						<!-- <get> <param name="requestData.departureAirportCode"></param> 
+							</get> -->
+					</payload>
 				</http>
+				<delay msec="50" random="1" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-cpm/v1/search/flights" >
+	<route url="/commercial-cpm/v1/search/flights">
 		<node name="Hybris-ACP">
 			<step seq="1">
 				<http url="http://localhost:8383/commercial-mnp/v3/search/flights">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="5" />
+				<error errsperhundred="10" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-mnp/v3/search/flights" >
+	<route url="/commercial-mnp/v3/search/flights">
 		<node name="EI-ESB">
 			<step seq="1">
 				<serve>
 					<payload>Found flights</payload>
 				</serve>
+				<delay msec="50" random="5" />
+				<error errsperhundred="10" />
 			</step>
 		</node>
 	</route>
-	
-	<!--  Flight Search END -->
-	<!--  Add Flight to Basket -->
+
+	<!-- Flight Search END -->
+	<!-- Add Flight to Basket -->
 	<route url="/agentdesktop/basket/addflight">
 		<node name="Hybris-AD">
 			<step seq="1">
 				<http url="http://localhost:8282/commercial-cpm/v1/basket/flight">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="1" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-cpm/v1/basket/flight" >
+	<route url="/commercial-cpm/v1/basket/flight">
 		<node name="Hybris-ACP">
 			<step seq="1">
 				<http url="http://localhost:8383/commercial-mnp/v3/basket/flight">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="5" />
+				<error errsperhundred="10" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-mnp/v3/basket/flight" >
+	<route url="/commercial-mnp/v3/basket/flight">
 		<node name="EI-ESB">
 			<step seq="1">
 				<serve>
 					<payload>Added flight to Basket</payload>
 				</serve>
+				<delay msec="50" random="5" />
+				<error errsperhundred="5" />
 			</step>
 		</node>
 	</route>
-	<!--  Add Flight to Basket END-->
-	<!--  View Basket -->
+	<!-- Add Flight to Basket END -->
+	<!-- View Basket -->
 	<route url="/agentdesktop/basket">
 		<node name="Hybris-AD">
 			<step seq="1">
 				<http url="http://localhost:8282/commercial-cpm/v1/basket">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="1" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-cpm/v1/basket" >
+	<route url="/commercial-cpm/v1/basket">
 		<node name="Hybris-ACP">
 			<step seq="1">
 				<serve>
 					<payload>View Basket</payload>
 				</serve>
+				<delay msec="50" random="5" />
 			</step>
 		</node>
 	</route>
-	<!--  View Basket END-->
-	<!--  Update Traveller -->
+	<!-- View Basket END -->
+	<!-- Update Traveller -->
 	<route url="/agentdesktop/updateTraveller">
 		<node name="Hybris-AD">
 			<step seq="1">
-				<http url="http://localhost:8282/commercial-cpm/v1/baskets/basket-id/passengers">
+				<http
+					url="http://localhost:8282/commercial-cpm/v1/baskets/basket-id/passengers">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="1" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-cpm/v1/baskets/basket-id/passengers" >
+	<route url="/commercial-cpm/v1/baskets/basket-id/passengers">
 		<node name="Hybris-ACP">
 			<step seq="1">
 				<serve>
 					<payload>Passenger Added to Basket</payload>
 				</serve>
+				<delay msec="50" random="5" />
 			</step>
 		</node>
 	</route>
-	<!--  Update Traveller END-->
-	<!--  Get Payment Methods -->
+	<!-- Update Traveller END -->
+	<!-- Get Payment Methods -->
 	<route url="/agentdesktop/retrieve-payment-methods">
 		<node name="Hybris-AD">
 			<step seq="1">
 				<http url="http://localhost:8282/commercial-cpm/v1/payment-methods">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="1" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-cpm/v1/payment-methods" >
+	<route url="/commercial-cpm/v1/payment-methods">
 		<node name="Hybris-ACP">
 			<step seq="1">
 				<http url="http://localhost:8383/commercial-mnp/v3/payment-methods">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="5" />
+				<error errsperhundred="1" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-mnp/v3/payment-methods" >
+	<route url="/commercial-mnp/v3/payment-methods">
 		<node name="EI-ESB">
 			<step seq="1">
-				<http url="http://localhost:8686/easyJet.CustomerPayments.Gateway/PaymentGateway.svc">
+				<http
+					url="http://localhost:8686/easyJet.CustomerPayments.Gateway/PaymentGateway.svc">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="1" />
 			</step>
 		</node>
 	</route>
-	<route url="/easyJet.CustomerPayments.Gateway/PaymentGateway.svc" >
+	<route url="/easyJet.CustomerPayments.Gateway/PaymentGateway.svc">
 		<node name="CustomerPayments.Gateway">
 			<step seq="1">
 				<serve>
 					<payload>Payment methods</payload>
 				</serve>
+				<delay msec="50" random="2" />
 			</step>
 		</node>
 	</route>
-	<!--  Get Payment Methods END-->
-	<!--  Make Payment  -->
+	<!-- Get Payment Methods END -->
+	<!-- Make Payment -->
 	<route url="/agentdesktop/make-payment-request">
 		<node name="Hybris-AD">
 			<step seq="1">
-				<http url="http://localhost:8282/commercial-cpm/v1/basket/basket-id/make-payment-request">
+				<http
+					url="http://localhost:8282/commercial-cpm/v1/basket/basket-id/make-payment-request">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="1" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-cpm/v1/basket/basket-id/make-payment-request" >
+	<route url="/commercial-cpm/v1/basket/basket-id/make-payment-request">
 		<node name="Hybris-ACP">
 			<step seq="1">
-				<http url="http://localhost:8383/commercial-mnp/v3/basket/basket-id/make-payment-request">
+				<http
+					url="http://localhost:8383/commercial-mnp/v3/basket/basket-id/make-payment-request">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="5" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-mnp/v3/basket/basket-id/make-payment-request" >
+	<route url="/commercial-mnp/v3/basket/basket-id/make-payment-request">
 		<node name="EI-ESB">
 			<step seq="1">
-				<http url="http://localhost:8686/easyJet.CustomerPayments.Gateway/PaymentGateway.svc/makepayment">
+				<http
+					url="http://localhost:8686/easyJet.CustomerPayments.Gateway/PaymentGateway.svc/makepayment">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="2" />
 			</step>
 		</node>
 	</route>
-	<route url="/easyJet.CustomerPayments.Gateway/PaymentGateway.svc/makepayment" >
+	<route
+		url="/easyJet.CustomerPayments.Gateway/PaymentGateway.svc/makepayment">
 		<node name="CustomerPayments.Gateway">
 			<step seq="1">
 				<serve>
 					<payload>Payment accepted</payload>
 				</serve>
+				<delay msec="50" random="2" />
 			</step>
 		</node>
 	</route>
-	<!--  Make Payment END-->
-	
-	<!--  Commit Booking  -->
+	<!-- Make Payment END -->
+
+	<!-- Commit Booking -->
 	<route url="/agentdesktop/commitAmendBooking">
 		<node name="Hybris-AD">
 			<step seq="1">
 				<http url="http://localhost:8282/commercial-cpm/v1/bookings">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="1" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-cpm/v1/bookings" >
+	<route url="/commercial-cpm/v1/bookings">
 		<node name="Hybris-ACP">
 			<step seq="1">
 				<http url="http://localhost:8484/commercial-mnp/v3/bookings">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="5" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-mnp/v3/bookings" >
+	<route url="/commercial-mnp/v3/bookings">
 		<node name="EI-AMQ">
 			<step seq="1">
 				<serve>
 					<payload>Commit booking accepted</payload>
 				</serve>
+				<delay msec="50" random="2" />
+				<error errsperhundred="1">
+					<errortype type="exception">
+						<message>Commit booking failed</message>
+					</errortype>
+				</error>
 			</step>
 		</node>
 	</route>
-	<!--  Commit Booking END-->
-	<!--  View Booking Confirmation -->
+	<!-- Commit Booking END -->
+	<!-- View Booking Confirmation -->
 	<route url="/agentdesktop/booking-confirmation">
 		<node name="Hybris-AD">
 			<step seq="1">
 				<http url="http://localhost:8282/commercial-cpm/v1/bookings/booking-id">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="1" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-cpm/v1/bookings/booking-id" >
+	<route url="/commercial-cpm/v1/bookings/booking-id">
 		<node name="Hybris-ACP">
 			<step seq="1">
 				<serve>
 					<payload>View booking success</payload>
 				</serve>
+				<delay msec="50" random="5" />
 			</step>
 		</node>
 	</route>
-	<!--  View Booking Confirmation END-->
-	<!--  Checkin  -->
+	<!-- View Booking Confirmation END -->
+	<!-- Checkin -->
 	<route url="/agentdesktop/checkin">
 		<node name="Hybris-AD">
 			<step seq="1">
-				<http url="http://localhost:8282/commercial-cpm/v1/bookings/booking-id/checkin-request">
+				<http
+					url="http://localhost:8282/commercial-cpm/v1/bookings/booking-id/checkin-request">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="1" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-cpm/v1/bookings/booking-id/checkin-request" >
+	<route url="/commercial-cpm/v1/bookings/booking-id/checkin-request">
 		<node name="Hybris-ACP">
 			<step seq="1">
-				<http url="http://localhost:8383/commercial-mnp/v3/bookings/booking-id/checkin-request">
+				<http
+					url="http://localhost:8383/commercial-mnp/v3/bookings/booking-id/checkin-request">
 					<payload>Empty</payload>
 				</http>
+				<delay msec="50" random="5" />
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-mnp/v3/bookings/booking-id/checkin-request" >
+	<route url="/commercial-mnp/v3/bookings/booking-id/checkin-request">
 		<node name="EI-ESB">
 			<step seq="1">
 				<serve>
 					<payload>Checkin request processed success</payload>
 				</serve>
+				<delay msec="50" random="2" />
 			</step>
 		</node>
 	</route>
-	<!--  Checkin  END-->
-	
-	<!--  Print Boarding pass  -->
+	<!-- Checkin END -->
+
+	<!-- Print Boarding pass -->
 	<route url="/agentdesktop/printBoardingPass">
 		<node name="Hybris-AD">
 			<step seq="1">
-				<http url="http://localhost:8282/commercial-cpm/v1/bookings/booking-id/generate-boarding-pass-request">
+				<http
+					url="http://localhost:8282/commercial-cpm/v1/bookings/booking-id/generate-boarding-pass-request">
 					<payload>Empty</payload>
 				</http>
 			</step>
+			<delay msec="50" random="1" />
 		</node>
 	</route>
-	<route url="/commercial-cpm/v1/bookings/booking-id/generate-boarding-pass-request" >
+	<route
+		url="/commercial-cpm/v1/bookings/booking-id/generate-boarding-pass-request">
 		<node name="Hybris-ACP">
 			<step seq="1">
-				<serve >
+				<serve>
 					<payload>Boarding pass gen'd successfully</payload>
 				</serve>
 			</step>
+			<delay msec="50" random="3" />
 		</node>
 	</route>
-	<!--  Print Boarding pass  END-->
-	
-	<route url="/" default="true" >
+	<!-- Print Boarding pass END -->
+
+	<route url="/" default="true">
 		<node name="">
 			<step seq="1">
 				<serve>
 					<payload>Default Response</payload>
 				</serve>
+				<delay msec="50" random="1" />
 			</step>
 		</node>
 	</route>

@@ -45,6 +45,37 @@ public class Routes {
 		public List<Http> http = new ArrayList<Http>();
 		@XmlElement (name= "serve")
 		public List<Serve> serve = new ArrayList<Serve>();
+		@XmlElement (name= "delay")
+		public List<Delay> delay = new ArrayList<Delay>();
+		@XmlElement (name= "error")
+		public List<Error> error = new ArrayList<Error>();
+	}
+	
+	@XmlAccessorType (XmlAccessType.FIELD)
+	public static class Error{
+		@XmlAttribute
+		public String type;
+		@XmlAttribute (name="errsperhundred")
+		public Integer errsPerHundred;
+		@XmlElement (name="errortype")
+		public ErrorType errorType;
+	}
+	
+	@XmlAccessorType (XmlAccessType.FIELD)
+	public static class ErrorType{
+		@XmlAttribute
+		public String type;
+		@XmlElement
+		public String message;
+	}
+	
+	
+	@XmlAccessorType (XmlAccessType.FIELD)
+	public static class Delay{
+		@XmlAttribute
+		public Integer msec;
+		@XmlAttribute
+		public Integer random;
 	}
 	
 	@XmlAccessorType (XmlAccessType.FIELD)
