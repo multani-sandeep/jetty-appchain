@@ -1,10 +1,11 @@
 package com.appdynamics.test;
 
-import java.util.logging.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ForcedException extends RuntimeException {
 
-	final static java.util.logging.Logger LOG = java.util.logging.Logger.getLogger(ForcedException.class.getName());
+	final static Logger LOG = LogManager.getLogger(ForcedException.class.getName());
 	public ForcedException() {
 		super();
 		
@@ -22,7 +23,7 @@ public class ForcedException extends RuntimeException {
 
 	public ForcedException(String message) {
 		super(message);
-		LOG.log(Level.SEVERE,Application.APP_NAME+": "+message);
+		LOG.error(Application.APP_NAME+": "+message);
 	}
 
 	public ForcedException(Throwable cause) {

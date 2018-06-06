@@ -7,8 +7,6 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletConfig;
@@ -26,6 +24,8 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.appdynamics.test.Routes.Delay;
 import com.appdynamics.test.Routes.Error;
@@ -40,7 +40,7 @@ public class Application extends HttpServlet {
 	public static Route DEF_ROUTE;
 	public static String APP_NAME = System.getProperty("appdynamics.agent.tierName");
 
-	static final Logger LOG = Logger.getLogger(Application.class.getName());
+	static final Logger LOG = LogManager.getLogger(Application.class.getName());
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -62,8 +62,7 @@ public class Application extends HttpServlet {
 	}
 
 	public void log(Object... objects) {
-		LOG.log(Level.INFO,
-				APP_NAME + ": " + Arrays.stream(objects).map(Object::toString).collect(Collectors.joining(" ")));
+		LOG.info(APP_NAME + ": " + Arrays.stream(objects).map(Object::toString).collect(Collectors.joining(" ")));
 	}
 
 	@Override
@@ -127,7 +126,7 @@ public class Application extends HttpServlet {
 			log("Found matching route " + matchingRoute.url + " for node " + matchingNode.name);
 			try {
 				matchingNode.steps.forEach(step -> {
-
+					int rnd = new Random().nextInt(100);
 					step.error.forEach(error -> {
 						error(req, resp, error);
 					});
@@ -139,7 +138,7 @@ public class Application extends HttpServlet {
 							e.printStackTrace();
 						}
 					});
-					step.serve.forEach(serve -> {
+					step.serve.stream().filter(serve->{ return serve.random ==0 ||rnd<serve.random;}).forEach(serve -> {
 						serve(req, resp, serve);
 					});
 					step.delay.forEach(delay -> {
@@ -149,6 +148,7 @@ public class Application extends HttpServlet {
 				});
 			} catch (ForcedException exc) {
 				log("Exception occured:", exc);
+				throw exc;
 			}
 
 		}
@@ -168,7 +168,7 @@ public class Application extends HttpServlet {
 				PrintWriter wrtr = resp.getWriter();
 				wrtr.write(message);
 				wrtr.flush();
-				
+
 			} catch (IOException e) {
 				throw new UnForcedException(e);
 			}
@@ -212,7 +212,11 @@ public class Application extends HttpServlet {
 		HttpResponse response = client.execute(request);
 
 		log("Response Code : ", response.getStatusLine().getStatusCode());
-		resp.setStatus(response.getStatusLine().getStatusCode());
+		if (response.getStatusLine().getStatusCode() != 200) {
+			LOG.error("HTTP error" + response.getStatusLine().getStatusCode() + " received from " + url);
+		}
+		resp.setStatus(HttpServletResponse.SC_OK);
+
 		try {
 			BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
@@ -224,8 +228,8 @@ public class Application extends HttpServlet {
 
 			PrintWriter wrtr = resp.getWriter();
 			Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {
-				if(!downHeader.getName().toLowerCase().equals("content-length") || 
-						!downHeader.getName().toLowerCase().equals("transfer-encoding")){
+				if (!downHeader.getName().toLowerCase().equals("content-length")
+						|| !downHeader.getName().toLowerCase().equals("transfer-encoding")) {
 					log("<", downHeader.getName(), downHeader.getValue());
 					resp.addHeader(downHeader.getName(), downHeader.getValue());
 				}
@@ -233,7 +237,7 @@ public class Application extends HttpServlet {
 
 			wrtr.print(result.toString());
 			wrtr.flush();
-//			resp.flushBuffer();
+			// resp.flushBuffer();
 		} catch (Exception e) {
 			log(e);
 			throw e;
@@ -243,12 +247,12 @@ public class Application extends HttpServlet {
 
 	@Override
 	public void log(String msg) {
-		log((Object)msg);
+		log((Object) msg);
 	}
 
 	@Override
 	public void log(String message, Throwable t) {
-		log((Object)message, t);
+		log((Object) message, t);
 	}
 
 	private void serve(HttpServletRequest req, HttpServletResponse resp, Serve serve) {
@@ -261,7 +265,7 @@ public class Application extends HttpServlet {
 			PrintWriter wrtr = resp.getWriter();
 			wrtr.print(serve.payload);
 			wrtr.flush();
-//			resp.flushBuffer();
+			// resp.flushBuffer();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

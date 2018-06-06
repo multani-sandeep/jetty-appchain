@@ -1,8 +1,11 @@
 package com.appdynamics.test;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class UnForcedException extends RuntimeException{
 
-	final static java.util.logging.Logger LOG = java.util.logging.Logger.getLogger(UnForcedException.class.getName());
+	final static Logger LOG = LogManager.getLogger(UnForcedException.class.getName());
 	
 	public UnForcedException() {
 		super();
@@ -11,22 +14,22 @@ public class UnForcedException extends RuntimeException{
 
 	public UnForcedException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
+		LOG.error(message,cause);
 	}
 
 	public UnForcedException(String message, Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
+		LOG.error(message,cause);
 	}
 
 	public UnForcedException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
+		LOG.error(message);
 	}
 
 	public UnForcedException(Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
+		LOG.error(cause);
 	}
 
 }

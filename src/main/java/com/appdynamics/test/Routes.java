@@ -90,5 +90,7 @@ public class Routes {
 	public static class Serve{
 		@XmlElement
 		public String payload;
+		@XmlAttribute
+		public Integer random;
 	}
 }

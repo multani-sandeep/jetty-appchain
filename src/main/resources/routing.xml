@@ -106,8 +106,11 @@
 	<route url="/commercial-cpm/v1/basket">
 		<node name="Hybris-ACP">
 			<step seq="1">
-				<serve>
-					<payload>View Basket</payload>
+				<serve >
+					<payload><![CDATA[<proceed>false</proceed>]]></payload>
+				</serve>
+				<serve random="5">
+					<payload><![CDATA[<proceed>true</proceed>]]></payload>
 				</serve>
 				<delay msec="50" random="5" />
 			</step>
@@ -246,6 +249,11 @@
 					<payload>Empty</payload>
 				</http>
 				<delay msec="50" random="5" />
+				<error errsperhundred="1">
+					<errortype type="exception">
+						<message>Commit booking failed</message>
+					</errortype>
+				</error>
 			</step>
 		</node>
 	</route>
