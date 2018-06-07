@@ -357,6 +357,77 @@
 		</node>
 	</route>
 	<!-- Print Boarding pass END -->
+	
+	<!--Seat plan -->
+	<route url="/agentdesktop/seatPlan/getSeatMap">
+		<node name="Hybris-AD">
+			<step seq="1">
+				<http
+					url="http://localhost:8282/commercial-cpm/v1/flights/flight-key/seat-map">
+					<payload>Empty</payload>
+				</http>
+			</step>
+			<delay msec="50" random="1" />
+		</node>
+	</route>
+	<route
+		url="/commercial-cpm/v1/flights/flight-key/seat-map">
+		<node name="Hybris-ACP">
+			<step seq="1">
+				<http
+					url="http://localhost:8383/commercial-mnp/seating/v1/seat-map-flights/flight-key/getSeatMap">
+					<payload>Empty</payload>
+				</http>
+			</step>
+			<delay msec="50" random="3" />
+		</node>
+	</route>
+	<route url="/commercial-mnp/seating/v1/seat-map-flights/flight-key/getSeatMap">
+		<node name="EI-ESB">
+			<step seq="1">
+				<serve>
+					<payload>Seat map view success</payload>
+				</serve>
+				<delay msec="100" random="5" />
+			</step>
+		</node>
+	</route>
+	<!-- Seat plan END -->
+	<!--Purchase Seat -->
+	<route url="/agentdesktop/seatPlan/purchaseSeatProduct">
+		<node name="Hybris-AD">
+			<step seq="1">
+				<http
+					url="http://localhost:8282/commercial-cpm/v1/baskets/basket-id/seat-products">
+					<payload>Empty</payload>
+				</http>
+			</step>
+			<delay msec="50" random="1" />
+		</node>
+	</route>
+	<route
+		url="/commercial-cpm/v1/baskets/basket-id/seat-products">
+		<node name="Hybris-ACP">
+			<step seq="1">
+				<http
+					url="http://localhost:8383/commercial-mnp/seating/v1/flights/*/seat-inventory/seat-allocations">
+					<payload>Empty</payload>
+				</http>
+			</step>
+			<delay msec="50" random="3" />
+		</node>
+	</route>
+	<route url="/commercial-mnp/seating/v1/flights/*/seat-inventory/seat-allocations">
+		<node name="EI-ESB">
+			<step seq="1">
+				<serve>
+					<payload>Seat allocation success</payload>
+				</serve>
+				<delay msec="100" random="5" />
+			</step>
+		</node>
+	</route>
+	<!-- Purchase Seat END -->
 
 	<route url="/" default="true">
 		<node name="">
