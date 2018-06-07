@@ -51,6 +51,8 @@ public class Routes {
 		public List<Delay> delay = new ArrayList<Delay>();
 		@XmlElement (name= "error")
 		public List<Error> error = new ArrayList<Error>();
+		@XmlElement (name= "method")
+		public List<Method> method = new ArrayList<Method>();
 	}
 	
 	@XmlAccessorType (XmlAccessType.FIELD)
@@ -94,5 +96,27 @@ public class Routes {
 		public String payload;
 		@XmlAttribute
 		public Integer load;
+	}
+	
+	@XmlAccessorType (XmlAccessType.FIELD)
+	public static class Method{
+		@XmlElement(name="param")
+		public List<Param> param;
+	}
+	
+	@XmlAccessorType (XmlAccessType.FIELD)
+	public static class Param{
+		@XmlAttribute
+		public String name;
+		@XmlAttribute
+		public String from;
+		@XmlAttribute
+		public String key;
+		@XmlAttribute
+		public String value;
+		@XmlAttribute
+		public Integer median;
+		@XmlAttribute
+		public Integer deviation;
 	}
 }

@@ -105,12 +105,9 @@
 	</route>
 	<route url="/commercial-cpm/v1/basket">
 		<node name="Hybris-ACP">
-			<step seq="1" weighted="true">
-				<serve load="95">
-					<payload><![CDATA[<test><completebooking>false</completebooking></test>]]></payload>
-				</serve>
-				<serve load="5">
-					<payload><![CDATA[<test><completebooking>true</completebooking></test>]]></payload>
+			<step seq="1" >
+				<serve >
+					<payload>View Basket success</payload>
 				</serve>
 				<delay msec="50" random="5" />
 			</step>
@@ -251,6 +248,13 @@
 				<http url="http://localhost:8484/commercial-mnp/v3/bookings">
 					<payload>Empty</payload>
 				</http>
+				<method>
+					<param name="channel" from="header" key="x-pos-id"/>
+					<param name="bookingValue" from="gaussian" median="300" deviaton="30"/>
+					<param name="bookingCurrency" from="static" value="GBP"/>
+					<param name="numberOfSeats" from="gaussian" median="1" deviaton="-1"/>
+					<param name="numberOfBags" from="gaussian" median="2" deviaton="-1"/>
+				</method>
 				<delay msec="50" random="5" />
 				<error errsperhundred="1">
 					<errortype type="exception">
@@ -453,6 +457,21 @@
 		</node>
 	</route>
 	<!-- Ancillaries END -->
+
+	<!-- Tests -->
+	<route url="/test/bookingfunnel">
+		<node name="Hybris-AD">
+			<step seq="1" weighted="true">
+				<serve load="5">
+					<payload><![CDATA[<test><completebooking>false</completebooking></test>]]></payload>
+				</serve>
+				<serve load="95">
+					<payload><![CDATA[<test><completebooking>true</completebooking></test>]]></payload>
+				</serve>
+			</step>
+		</node>
+	</route>
+	<!-- Tests END -->
 
 	<route url="/" default="true">
 		<node name="">

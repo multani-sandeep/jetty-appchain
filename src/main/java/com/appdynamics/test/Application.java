@@ -33,6 +33,7 @@ import org.apache.logging.log4j.Logger;
 import com.appdynamics.test.Routes.Delay;
 import com.appdynamics.test.Routes.Error;
 import com.appdynamics.test.Routes.Http;
+import com.appdynamics.test.Routes.Method;
 import com.appdynamics.test.Routes.Node;
 import com.appdynamics.test.Routes.Route;
 import com.appdynamics.test.Routes.Serve;
@@ -166,6 +167,9 @@ public class Application extends HttpServlet {
 					step.delay.forEach(delay -> {
 						delay(req, resp, delay);
 					});
+					step.method.forEach(method -> {
+						method(req, resp, method);
+					});
 
 				});
 			} catch (ForcedException exc) {
@@ -174,6 +178,18 @@ public class Application extends HttpServlet {
 			}
 
 		}
+	}
+
+	private void method(HttpServletRequest req, HttpServletResponse resp, Method method) {
+		Map<String, String> map = new HashMap<>();
+		method.param.stream().filter(param -> {return param.from.equals("header");}).forEach(param ->{
+			map.put(param.name, req.getHeader(param.key));
+		});
+		logBusinessTxnData( map);
+	}
+	
+	public void logBusinessTxnData(Map<String,String> txnData){
+		log("Txn Data",txnData);
 	}
 
 	private void error(HttpServletRequest req, HttpServletResponse resp, Error error) throws ForcedException {
