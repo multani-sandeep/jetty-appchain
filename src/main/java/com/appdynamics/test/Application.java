@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -33,6 +36,7 @@ import com.appdynamics.test.Routes.Http;
 import com.appdynamics.test.Routes.Node;
 import com.appdynamics.test.Routes.Route;
 import com.appdynamics.test.Routes.Serve;
+import com.appdynamics.test.Routes.Step;
 
 public class Application extends HttpServlet {
 
@@ -61,7 +65,7 @@ public class Application extends HttpServlet {
 		}
 	}
 
-	public void log(Object... objects) {
+	public static void log(Object... objects) {
 		LOG.info(APP_NAME + ": " + Arrays.stream(objects).map(Object::toString).collect(Collectors.joining(" ")));
 	}
 
@@ -109,6 +113,12 @@ public class Application extends HttpServlet {
 		resp.setStatus(HttpServletResponse.SC_OK);
 	}
 
+	protected static final boolean serveMe(Step step, Serve serve) {
+		int rnd = new Random().nextInt(100);
+		log((Object)rnd);
+		return rnd<serve.load;
+	}
+
 	protected void route(HttpServletRequest req, HttpServletResponse resp) throws ClientProtocolException, IOException {
 		Routes.Route matchingRoute = ROUTES.routes.stream().filter(route -> {
 			return req.getRequestURI().endsWith(route.url) && route.nodes.stream().anyMatch(node -> {
@@ -126,7 +136,6 @@ public class Application extends HttpServlet {
 			log("Found matching route " + matchingRoute.url + " for node " + matchingNode.name);
 			try {
 				matchingNode.steps.forEach(step -> {
-					int rnd = new Random().nextInt(100);
 					step.error.forEach(error -> {
 						error(req, resp, error);
 					});
@@ -138,9 +147,16 @@ public class Application extends HttpServlet {
 							e.printStackTrace();
 						}
 					});
-					step.serve.stream().filter(serve->{ return serve.random ==0 ||rnd<serve.random;}).forEach(serve -> {
-						serve(req, resp, serve);
-					});
+					Serve srv = step.serve.stream().sorted(new Comparator<Serve>() {
+						@Override
+						public int compare(Serve o1, Serve o2) {
+							return o1.load<=o2.load?-1:1;
+						}
+					}).filter(serve -> {
+						return serveMe(step, serve);
+					}).findFirst().get();
+					serve(req, resp, srv);
+					
 					step.delay.forEach(delay -> {
 						delay(req, resp, delay);
 					});

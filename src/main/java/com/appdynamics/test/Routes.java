@@ -41,6 +41,8 @@ public class Routes {
 	public static class Step{
 		@XmlAttribute
 		public int sequence;
+		@XmlAttribute
+		public boolean weighted;
 		@XmlElement (name= "http")
 		public List<Http> http = new ArrayList<Http>();
 		@XmlElement (name= "serve")
@@ -91,6 +93,6 @@ public class Routes {
 		@XmlElement
 		public String payload;
 		@XmlAttribute
-		public Integer random;
+		public Integer load;
 	}
 }

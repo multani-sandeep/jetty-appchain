@@ -105,11 +105,11 @@
 	</route>
 	<route url="/commercial-cpm/v1/basket">
 		<node name="Hybris-ACP">
-			<step seq="1">
-				<serve >
+			<step seq="1" weighted="true">
+				<serve load="95">
 					<payload><![CDATA[<proceed>false</proceed>]]></payload>
 				</serve>
-				<serve random="5">
+				<serve load="5">
 					<payload><![CDATA[<proceed>true</proceed>]]></payload>
 				</serve>
 				<delay msec="50" random="5" />
