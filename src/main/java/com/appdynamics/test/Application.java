@@ -115,7 +115,7 @@ public class Application extends HttpServlet {
 
 	protected static final boolean serveMe(Step step, Serve serve) {
 		int rnd = new Random().nextInt(100);
-		log((Object)rnd);
+		log((Object)rnd, " ",serve.load);
 		return rnd<serve.load;
 	}
 
@@ -147,15 +147,21 @@ public class Application extends HttpServlet {
 							e.printStackTrace();
 						}
 					});
-					Serve srv = step.serve.stream().sorted(new Comparator<Serve>() {
-						@Override
-						public int compare(Serve o1, Serve o2) {
-							return o1.load<=o2.load?-1:1;
-						}
-					}).filter(serve -> {
-						return serveMe(step, serve);
-					}).findFirst().get();
-					serve(req, resp, srv);
+					if(step.weighted){
+						Serve srv = step.serve.stream().sorted(new Comparator<Serve>() {
+							@Override
+							public int compare(Serve o1, Serve o2) {
+								return o1.load<=o2.load?-1:1;
+							}
+						}).filter(serve -> {
+							return serveMe(step, serve);
+						}).findFirst().orElse(step.serve.get(0));
+						serve(req, resp, srv);
+					}else{
+						step.serve.forEach(serve -> {
+							serve(req, resp, serve);
+						});
+					}
 					
 					step.delay.forEach(delay -> {
 						delay(req, resp, delay);

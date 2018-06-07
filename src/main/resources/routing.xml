@@ -107,10 +107,10 @@
 		<node name="Hybris-ACP">
 			<step seq="1" weighted="true">
 				<serve load="95">
-					<payload><![CDATA[<proceed>false</proceed>]]></payload>
+					<payload><![CDATA[<completebooking>false</completebooking>]]></payload>
 				</serve>
 				<serve load="5">
-					<payload><![CDATA[<proceed>true</proceed>]]></payload>
+					<payload><![CDATA[<completebooking>true</completebooking>]]></payload>
 				</serve>
 				<delay msec="50" random="5" />
 			</step>
@@ -130,10 +130,13 @@
 		</node>
 	</route>
 	<route url="/commercial-cpm/v1/baskets/basket-id/passengers">
-		<node name="Hybris-ACP">
-			<step seq="1">
-				<serve>
-					<payload>Passenger Added to Basket</payload>
+		<node name="Hybris-ACP" weighted="true">
+			<step seq="1" weighted="true">
+				<serve load="65">
+					<payload><![CDATA[<buyaseat>false</buyaseat>]]></payload>
+				</serve>
+				<serve load="35">
+					<payload><![CDATA[<buyaseat>true</buyaseat>]]></payload>
 				</serve>
 				<delay msec="50" random="5" />
 			</step>

@@ -1,15 +1,15 @@
 #/bin/bash
 
-cd /Volumes/EXP2/ei-playpit/jetty-appchain/test;
+cd /Users/sandeepsingh/git/jetty-appchain/;
 mvn package;
-cd /Volumes/EXP2/ei-playpit/jetty-appchain/test/src/main/resources;
+cd /Users/sandeepsingh/git/jetty-appchain/src/main/resources/;
 
 #java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9000,suspend=n -Dappdynamics.agent.nodeName=App5 -Dappdynamics.agent.tierName=Hybris-AD -jar ../../../target/dependency/jetty-runner.jar --port 8181 ../../../target/test.war | tee -a /tmp/server.log &
 #java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9001,suspend=n -Dappdynamics.agent.nodeName=App5 -Dappdynamics.agent.tierName=Hybris-ACP -jar ../../../target/dependency/jetty-runner.jar --port 8282 ../../../target/test.war | tee -a /tmp/server.log &
 
 
 #debugAD="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9000,suspend=n"
-#debugACP="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9001,suspend=n"
+debugACP="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9001,suspend=n"
 #debugESB="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9002,suspend=n"
 #debugAMQ="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9003,suspend=n"
 
