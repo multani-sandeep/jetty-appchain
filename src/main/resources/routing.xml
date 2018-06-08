@@ -250,10 +250,14 @@
 				</http>
 				<method>
 					<param name="channel" from="header" key="x-pos-id"/>
-					<param name="bookingValue" from="gaussian" median="300" deviaton="30"/>
+					<param name="bookingValue" from="header" key="bookingValue"/>
+					<param name="bookingCurrency" from="header" key="bookingCurrency"/>
+					<param name="numberOfSeats" from="header" key="numberOfSeats"/>
+					<param name="numberOfBags" from="header" key="numberOfBags"/>
+					<!-- <param name="bookingValue" from="gaussian" median="300" deviaton="30"/>
 					<param name="bookingCurrency" from="static" value="GBP"/>
 					<param name="numberOfSeats" from="gaussian" median="1" deviaton="-1"/>
-					<param name="numberOfBags" from="gaussian" median="2" deviaton="-1"/>
+					<param name="numberOfBags" from="gaussian" median="2" deviaton="-1"/> -->
 				</method>
 				<delay msec="50" random="5" />
 				<error errsperhundred="1">
