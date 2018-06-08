@@ -466,10 +466,10 @@
 	<route url="/test/bookingfunnel">
 		<node name="Hybris-AD">
 			<step seq="1" weighted="true">
-				<serve load="5">
+				<serve load="95">
 					<payload><![CDATA[<test><completebooking>false</completebooking></test>]]></payload>
 				</serve>
-				<serve load="95">
+				<serve load="5">
 					<payload><![CDATA[<test><completebooking>true</completebooking></test>]]></payload>
 				</serve>
 			</step>
