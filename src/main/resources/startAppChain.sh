@@ -11,7 +11,7 @@ cd ./src/main/resources/;
 #debugAD="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9000,suspend=n"
 #debugACP="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9001,suspend=n"
 #debugESB="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9002,suspend=n"
-debugAMQ="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9003,suspend=y"
+debugAMQ="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9003,suspend=n"
 
 jmxEnable="--jar ../../../target/test/WEB-INF/lib/jetty-jmx-9.4.11.v20180605.jar --config ../../../src/etc/jetty-jmx.xml"
 

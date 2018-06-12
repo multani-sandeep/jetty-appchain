@@ -100,7 +100,6 @@ public class Application extends HttpServlet {
 					if (mbean.type.equals("Queue")) {
 						server.registerMBean(new Queue(mbean), objName);
 					}
-					ObjectInstance regMbean = server.getObjectInstance(objName);
 					MBEAN_APP = application;
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -248,7 +247,7 @@ public class Application extends HttpServlet {
 		try {
 			ObjectName objName = new ObjectName(mbean.objectName);
 			if (attr.valueFromHeader != null) {
-				server.setAttribute(objName, new Attribute(attr.name, req.getHeader(attr.valueFromHeader)));
+				server.setAttribute(objName, new Attribute(attr.name, req.getHeader(attr.valueFromHeader) ));
 			} else {
 				Integer dequeueCount = (Integer) server.getAttribute(objName, attr.name);
 				if (dequeueCount == null) {
