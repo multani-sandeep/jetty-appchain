@@ -100,6 +100,12 @@ public class Routes {
 	
 	@XmlAccessorType (XmlAccessType.FIELD)
 	public static class Method{
+		@XmlAttribute
+		public String name;
+		
+		@XmlAttribute
+		public String queueName;
+		
 		@XmlElement(name="param")
 		public List<Param> param;
 	}

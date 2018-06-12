@@ -248,7 +248,7 @@
 				<http url="http://localhost:8484/commercial-mnp/v3/bookings">
 					<payload>Empty</payload>
 				</http>
-				<method>
+				<method name="copyFromHeader">
 					<param name="channel" from="header" key="x-pos-id"/>
 					<param name="bookingValue" from="header" key="bookingValue"/>
 					<param name="bookingCurrency" from="header" key="bookingCurrency"/>
@@ -280,6 +280,8 @@
 						<message>Commit booking failed</message>
 					</errortype>
 				</error>
+				<method name="updateMbeanStats" queueName="com.bookingcreatedv1.queue.produce">
+				</method>
 			</step>
 		</node>
 	</route>
@@ -461,6 +463,88 @@
 		</node>
 	</route>
 	<!-- Ancillaries END -->
+	
+	<!-- Customer Create -->
+	<route url="/agentdesktop/_createcustomer">
+		<node name="Hybris-AD">
+			<step seq="1">
+				<http url="http://localhost:8282/commercial-cpm/v1/_createcustomer">
+					<payload>
+						<!-- <get> <param name="requestData.departureAirportCode"></param> 
+							</get> -->
+					</payload>
+				</http>
+				<delay msec="50" random="1" />
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-cpm/v1/_createcustomer">
+		<node name="Hybris-ACP">
+			<step seq="1">
+				<http url="http://localhost:8383/commercial-mnp/v3/_createcustomer">
+					<payload>Empty</payload>
+				</http>
+				<delay msec="50" random="5" />
+				<error errsperhundred="10" />
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/_createcustomer">
+		<node name="EI-AMQ">
+			<step seq="1">
+				<serve>
+					<payload>Found flights</payload>
+				</serve>
+				<delay msec="50" random="5" />
+				<error errsperhundred="10" />
+				<method name="updateMbeanStats" queueName="com.customerregisteredv1.queue.produce">
+				</method>
+			</step>
+		</node>
+	</route>
+
+	<!-- Customer Create END -->
+	
+	<!-- Customer Update -->
+	<route url="/agentdesktop/_updatecustomer">
+		<node name="Hybris-AD">
+			<step seq="1">
+				<http url="http://localhost:8282/commercial-cpm/v1/_updatecustomer">
+					<payload>
+						<!-- <get> <param name="requestData.departureAirportCode"></param> 
+							</get> -->
+					</payload>
+				</http>
+				<delay msec="50" random="1" />
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-cpm/v1/_updatecustomer">
+		<node name="Hybris-ACP">
+			<step seq="1">
+				<http url="http://localhost:8383/commercial-mnp/v3/_updatecustomer">
+					<payload>Empty</payload>
+				</http>
+				<delay msec="50" random="5" />
+				<error errsperhundred="10" />
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/_updatecustomer">
+		<node name="EI-AMQ">
+			<step seq="1">
+				<serve>
+					<payload>Found flights</payload>
+				</serve>
+				<delay msec="50" random="5" />
+				<error errsperhundred="10" />
+				<method name="updateMbeanStats" queueName="com.customeraccountchangedv1.queue.produce">
+				</method>
+			</step>
+		</node>
+	</route>
+
+	<!-- Customer Update END -->
 
 	<!-- Tests -->
 	<route url="/test/bookingfunnel">

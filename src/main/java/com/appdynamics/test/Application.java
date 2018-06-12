@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.management.ManagementFactory;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -12,6 +13,16 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import javax.management.Attribute;
+import javax.management.AttributeNotFoundException;
+import javax.management.InstanceNotFoundException;
+import javax.management.InvalidAttributeValueException;
+import javax.management.MBeanException;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectInstance;
+import javax.management.ObjectName;
+import javax.management.ReflectionException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,6 +41,9 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.appdynamics.test.MBeans.MBAttribute;
+import com.appdynamics.test.MBeans.MBean;
+import com.appdynamics.test.MBeans.MBeanApp;
 import com.appdynamics.test.Routes.Delay;
 import com.appdynamics.test.Routes.Error;
 import com.appdynamics.test.Routes.Http;
@@ -42,6 +56,8 @@ import com.appdynamics.test.Routes.Step;
 public class Application extends HttpServlet {
 
 	public static Routes ROUTES;
+	public static MBeans MBEANS;
+	public static MBeanApp MBEAN_APP;
 	public static Route DEF_ROUTE;
 	public static String APP_NAME = System.getProperty("appdynamics.agent.tierName");
 
@@ -61,9 +77,37 @@ public class Application extends HttpServlet {
 				return route.isDefaultRoute;
 			}).findAny().get();
 
+			jaxbContext = JAXBContext.newInstance(MBeans.class);
+			jaxbUnMarshaller = jaxbContext.createUnmarshaller();
+			jaxbMarshaller = jaxbContext.createMarshaller();
+
+			MBEANS = (MBeans) jaxbUnMarshaller.unmarshal(this.getClass().getResourceAsStream("/mbeans.xml"));
+			jaxbMarshaller.marshal(MBEANS, System.out);
+			registerMbeans();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static void registerMbeans() {
+		final MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+		MBEANS.application.stream().filter(application -> {
+			return application.name.equals(APP_NAME);
+		}).forEach(application -> {
+			application.mbean.forEach(mbean -> {
+				try {
+					ObjectName objName = new ObjectName(mbean.objectName);
+					if (mbean.type.equals("Queue")) {
+						server.registerMBean(new Queue(mbean), objName);
+					}
+					ObjectInstance regMbean = server.getObjectInstance(objName);
+					MBEAN_APP = application;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+		});
 	}
 
 	public static void log(Object... objects) {
@@ -116,8 +160,8 @@ public class Application extends HttpServlet {
 
 	protected static final boolean serveMe(Step step, Serve serve) {
 		int rnd = new Random().nextInt(100);
-		log((Object)rnd, " ",serve.load);
-		return rnd<serve.load;
+		log((Object) rnd, " ", serve.load);
+		return rnd < serve.load;
 	}
 
 	protected void route(HttpServletRequest req, HttpServletResponse resp) throws ClientProtocolException, IOException {
@@ -148,27 +192,35 @@ public class Application extends HttpServlet {
 							e.printStackTrace();
 						}
 					});
-					if(step.weighted){
+					if (step.weighted) {
 						Serve srv = step.serve.stream().sorted(new Comparator<Serve>() {
 							@Override
 							public int compare(Serve o1, Serve o2) {
-								return o1.load<=o2.load?-1:1;
+								return o1.load <= o2.load ? -1 : 1;
 							}
 						}).filter(serve -> {
 							return serveMe(step, serve);
 						}).findFirst().orElse(step.serve.get(0));
 						serve(req, resp, srv);
-					}else{
+					} else {
 						step.serve.forEach(serve -> {
 							serve(req, resp, serve);
 						});
 					}
-					
+
 					step.delay.forEach(delay -> {
 						delay(req, resp, delay);
 					});
-					step.method.forEach(method -> {
-						method(req, resp, method);
+					step.method.stream().filter(method -> {
+						return method.name.equals("copyFromHeader");
+					}).forEach(method -> {
+						copyFromHeader(req, resp, method);
+					});
+
+					step.method.stream().filter(method -> {
+						return method.name.equals("updateMbeanStats");
+					}).forEach(method -> {
+						updateMbeanStats(req, resp, method);
 					});
 
 				});
@@ -180,16 +232,50 @@ public class Application extends HttpServlet {
 		}
 	}
 
-	private void method(HttpServletRequest req, HttpServletResponse resp, Method method) {
+	private void updateMbeanStats(HttpServletRequest req, HttpServletResponse resp, Method method) {
+		MBEAN_APP.mbean.stream().filter(mbean ->{
+			return method.queueName==null || mbean.objectName.contains(method.queueName);
+		}).forEach(mbean -> {
+			mbean.attribute.stream().forEach(attr -> {
+				updateMbeanStats(req, resp, mbean, attr);
+			});
+		});
+	}
+
+	private void updateMbeanStats(HttpServletRequest req, HttpServletResponse resp, MBean mbean, MBAttribute attr) {
+		
+		final MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+		try {
+			ObjectName objName = new ObjectName(mbean.objectName);
+			if (attr.valueFromHeader != null) {
+				server.setAttribute(objName, new Attribute(attr.name, req.getHeader(attr.valueFromHeader)));
+			} else {
+				Integer dequeueCount = (Integer) server.getAttribute(objName, attr.name);
+				if (dequeueCount == null) {
+					dequeueCount = new Integer(attr.startingValue);
+				}
+				dequeueCount++;
+
+				server.setAttribute(objName, new Attribute(attr.name, dequeueCount));
+			}
+		} catch (InvalidAttributeValueException | AttributeNotFoundException | ReflectionException | MBeanException
+				| InstanceNotFoundException | MalformedObjectNameException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void copyFromHeader(HttpServletRequest req, HttpServletResponse resp, Method method) {
 		Map<String, String> map = new HashMap<>();
-		method.param.stream().filter(param -> {return param.from.equals("header");}).forEach(param ->{
+		method.param.stream().filter(param -> {
+			return param.from.equals("header");
+		}).forEach(param -> {
 			map.put(param.name, req.getHeader(param.key));
 		});
-		logBusinessTxnData( map);
+		logBusinessTxnData(map);
 	}
-	
-	public void logBusinessTxnData(Map<String,String> txnData){
-		log("Txn Data",txnData);
+
+	public void logBusinessTxnData(Map<String, String> txnData) {
+		log("Txn Data", txnData);
 	}
 
 	private void error(HttpServletRequest req, HttpServletResponse resp, Error error) throws ForcedException {
