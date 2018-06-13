@@ -233,7 +233,7 @@ public class Application extends HttpServlet {
 
 	private void updateMbeanStats(HttpServletRequest req, HttpServletResponse resp, Method method) {
 		MBEAN_APP.mbean.stream().filter(mbean ->{
-			return method.queueName==null || mbean.objectName.contains(method.queueName);
+			return method.queueName!=null && mbean.objectName.contains(method.queueName);
 		}).forEach(mbean -> {
 			mbean.attribute.stream().forEach(attr -> {
 				updateMbeanStats(req, resp, mbean, attr);
@@ -247,15 +247,18 @@ public class Application extends HttpServlet {
 		try {
 			ObjectName objName = new ObjectName(mbean.objectName);
 			if (attr.valueFromHeader != null) {
-				server.setAttribute(objName, new Attribute(attr.name, req.getHeader(attr.valueFromHeader) ));
-			} else {
-				Integer dequeueCount = (Integer) server.getAttribute(objName, attr.name);
-				if (dequeueCount == null) {
-					dequeueCount = new Integer(attr.startingValue);
+				if(req.getHeader(attr.valueFromHeader)!=null){
+					server.setAttribute(objName, new Attribute(attr.name, req.getHeader(attr.valueFromHeader) ));
 				}
-				dequeueCount++;
+			} else {
+				Integer updateCounter = (Integer) server.getAttribute(objName, attr.name);
+				if (updateCounter == null) {
+					updateCounter = new Integer(attr.startingValue);
+				}
+				updateCounter++;
+				log("Counter "+attr.name+" for queue name:"+objName.getKeyProperty("destinationName")+" "+updateCounter);
 
-				server.setAttribute(objName, new Attribute(attr.name, dequeueCount));
+				server.setAttribute(objName, new Attribute(attr.name, updateCounter));
 			}
 		} catch (InvalidAttributeValueException | AttributeNotFoundException | ReflectionException | MBeanException
 				| InstanceNotFoundException | MalformedObjectNameException e) {

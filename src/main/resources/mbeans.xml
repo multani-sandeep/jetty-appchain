@@ -9,8 +9,6 @@
 			<attribute name="MemoryPercentUsage" type="java.lang.Integer" value="0"></attribute>
 			<operation name=""></operation>
 		</mbean>
-	</application>
-	<application name="EI-AMQ">
 		<mbean type="Queue" objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customerregisteredv1.queue.produce">
 			<attribute name="QueueSize" type="java.lang.Integer" value="0" valueFromHeader="queuesize"></attribute>
 			<attribute name="EnqueueCount" type="java.lang.Integer" value="0"></attribute>
@@ -20,8 +18,6 @@
 			<attribute name="MemoryPercentUsage" type="java.lang.Integer" value="0"></attribute>
 			<operation name=""></operation>
 		</mbean>
-	</application>
-	<application name="EI-AMQ">
 		<mbean type="Queue" objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customeraccountchangedv1.queue.produce">
 			<attribute name="QueueSize" type="java.lang.Integer" value="0" valueFromHeader="queuesize"></attribute>
 			<attribute name="EnqueueCount" type="java.lang.Integer" value="0"></attribute>
