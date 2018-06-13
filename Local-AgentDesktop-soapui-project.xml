@@ -77,16 +77,20 @@ while ({
    context.cb_bookingCurrency="GBP";
    context.cb_numberOfSeats=(int)Math.round(rnd*0.5+2)
    context.cb_numberOfBags=(int)Math.round(rnd*0.5+1)
+   context.cb_flowcontrol=rnd>=1?"true":"false"
+   context.cb_percentusage=(Math.abs((int)Math.round(rnd*10+70)))
    context.cb_bookingValue&lt;=1 || context.cb_numberOfSeats&lt;0 ||context.cb_numberOfBags&lt;0 
 }()) continue
 
-
+log.info(context.cb_percentusage+" "+context.cb_flowcontrol)
 //log.info((context.cb_numberOfBags>context.cb_numberOfSeats).toString()
 //	+" "+context.cb_bookingValue+ " "+context.cb_numberOfSeats
 //	+" "+context.cb_numberOfBags)</script></con:config></con:testStep><con:testStep type="restrequest" name="CommitBooking" id="048d5485-2268-4816-b354-13e424258dbe"><con:settings/><con:config service="http://localhost:8181" resourcePath="/agentdesktop/commitAmendBooking" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="CommitBooking" id="b469b6cf-fd0c-4847-a688-32f009ee460b" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
   <con:entry key="numberOfBags" value="${cb_numberOfBags}"/>
   <con:entry key="numberOfSeats" value="${cb_numberOfSeats}"/>
   <con:entry key="x-client-transaction-id" value="${xclienttxnid}"/>
+  <con:entry key="flowcontrol" value="${cb_flowcontrol}"/>
+  <con:entry key="percentusage" value="${cb_percentusage}"/>
   <con:entry key="bookingCurrency" value="${cb_bookingCurrency}"/>
   <con:entry key="bookingValue" value="${cb_bookingValue}"/>
   <con:entry key="x-pos-id" value="${xposid}"/>

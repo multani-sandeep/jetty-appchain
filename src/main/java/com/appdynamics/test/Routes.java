@@ -53,6 +53,18 @@ public class Routes {
 		public List<Error> error = new ArrayList<Error>();
 		@XmlElement (name= "method")
 		public List<Method> method = new ArrayList<Method>();
+		@XmlElement (name= "methodwrapper")
+		public List<MethodWrapper> methodWrapper = new ArrayList<MethodWrapper>();
+	}
+	
+	@XmlAccessorType (XmlAccessType.FIELD)
+	public static class MethodWrapper extends Method{
+		@XmlElement (name= "http")
+		public List<Http> http = new ArrayList<Http>();
+		@XmlElement (name= "serve")
+		public List<Serve> serve = new ArrayList<Serve>();
+		@XmlElement (name= "delay")
+		public List<Delay> delay = new ArrayList<Delay>();
 	}
 	
 	@XmlAccessorType (XmlAccessType.FIELD)

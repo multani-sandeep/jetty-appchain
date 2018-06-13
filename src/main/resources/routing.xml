@@ -105,8 +105,8 @@
 	</route>
 	<route url="/commercial-cpm/v1/basket">
 		<node name="Hybris-ACP">
-			<step seq="1" >
-				<serve >
+			<step seq="1">
+				<serve>
 					<payload>View Basket success</payload>
 				</serve>
 				<delay msec="50" random="5" />
@@ -249,15 +249,15 @@
 					<payload>Empty</payload>
 				</http>
 				<method name="copyFromHeader">
-					<param name="channel" from="header" key="x-pos-id"/>
-					<param name="bookingValue" from="header" key="bookingValue"/>
-					<param name="bookingCurrency" from="header" key="bookingCurrency"/>
-					<param name="numberOfSeats" from="header" key="numberOfSeats"/>
-					<param name="numberOfBags" from="header" key="numberOfBags"/>
-					<!-- <param name="bookingValue" from="gaussian" median="300" deviaton="30"/>
-					<param name="bookingCurrency" from="static" value="GBP"/>
-					<param name="numberOfSeats" from="gaussian" median="1" deviaton="-1"/>
-					<param name="numberOfBags" from="gaussian" median="2" deviaton="-1"/> -->
+					<param name="channel" from="header" key="x-pos-id" />
+					<param name="bookingValue" from="header" key="bookingValue" />
+					<param name="bookingCurrency" from="header" key="bookingCurrency" />
+					<param name="numberOfSeats" from="header" key="numberOfSeats" />
+					<param name="numberOfBags" from="header" key="numberOfBags" />
+					<!-- <param name="bookingValue" from="gaussian" median="300" deviaton="30"/> 
+						<param name="bookingCurrency" from="static" value="GBP"/> <param name="numberOfSeats" 
+						from="gaussian" median="1" deviaton="-1"/> <param name="numberOfBags" from="gaussian" 
+						median="2" deviaton="-1"/> -->
 				</method>
 				<delay msec="50" random="5" />
 				<error errsperhundred="1">
@@ -271,17 +271,34 @@
 	<route url="/commercial-mnp/v3/bookings">
 		<node name="EI-AMQ">
 			<step seq="1">
-				<serve>
-					<payload>Commit booking accepted</payload>
-				</serve>
-				<delay msec="50" random="2" />
+				<methodwrapper name="updateMbeanStats"
+					queueName="com.bookingcreatedv1.queue.produce">
+					<http url="http://localhost:8585/commercial-mnp/v3/al-bookings">
+						<payload>Empty</payload>
+					</http>
+					<delay msec="100" random="20" />
+				</methodwrapper>
 				<error errsperhundred="1">
-					<errortype type="exception">
-						<message>Commit booking failed</message>
-					</errortype>
+						<errortype type="exception">
+							<message>Commit booking failed</message>
+						</errortype>
 				</error>
-				<method name="updateMbeanStats" queueName="com.bookingcreatedv1.queue.produce">
-				</method>
+				<delay msec="50" random="2" />
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/al-bookings">
+		<node name="EJ.AbstractionLayer">
+			<step seq="1">
+				<serve>
+					<payload>Commit booking success</payload>
+				</serve>
+				<error errsperhundred="1">
+						<errortype type="exception">
+							<message>Commit booking failed</message>
+						</errortype>
+				</error>
+				<delay msec="50" random="2" />
 			</step>
 		</node>
 	</route>
@@ -463,7 +480,7 @@
 		</node>
 	</route>
 	<!-- Ancillaries END -->
-	
+
 	<!-- Customer Create -->
 	<route url="/agentdesktop/_createcustomer">
 		<node name="Hybris-AD">
@@ -504,7 +521,7 @@
 	</route>
 
 	<!-- Customer Create END -->
-	
+
 	<!-- Customer Update -->
 	<route url="/agentdesktop/_updatecustomer">
 		<node name="Hybris-AD">

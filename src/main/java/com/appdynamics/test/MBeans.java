@@ -49,6 +49,9 @@ public class MBeans {
 		public String type;
 		
 		@XmlAttribute
+		public String attrType;
+		
+		@XmlAttribute
 		public String startingValue;
 		
 		@XmlAttribute

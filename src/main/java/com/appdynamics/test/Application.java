@@ -48,6 +48,7 @@ import com.appdynamics.test.Routes.Delay;
 import com.appdynamics.test.Routes.Error;
 import com.appdynamics.test.Routes.Http;
 import com.appdynamics.test.Routes.Method;
+import com.appdynamics.test.Routes.MethodWrapper;
 import com.appdynamics.test.Routes.Node;
 import com.appdynamics.test.Routes.Route;
 import com.appdynamics.test.Routes.Serve;
@@ -174,6 +175,32 @@ public class Application extends HttpServlet {
 			log("Switching to default route");
 			serve(req, resp, matchingRoute.nodes.get(0).steps.get(0).serve.get(0));
 		} else {
+			MethodWrapperCallback callback = new MethodWrapperCallback() {
+
+				@Override
+				public void execute(HttpServletRequest req, HttpServletResponse resp, Http http) {
+					try {
+						proxy(req, resp, http);
+					} catch (ClientProtocolException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+				@Override
+				public void execute(HttpServletRequest req, HttpServletResponse resp, Delay delay) {
+					delay(req, resp, delay);
+				}
+
+				@Override
+				public void execute(HttpServletRequest req, HttpServletResponse resp, Serve serve) {
+					serve(req, resp, serve);
+				}
+
+			};
 			Node matchingNode = matchingRoute.nodes.stream().filter(node -> {
 				return node.name.equals(APP_NAME);
 			}).findFirst().get();
@@ -219,7 +246,13 @@ public class Application extends HttpServlet {
 					step.method.stream().filter(method -> {
 						return method.name.equals("updateMbeanStats");
 					}).forEach(method -> {
-						updateMbeanStats(req, resp, method);
+						updateMbeanStats(req, resp, method, null);
+					});
+
+					step.methodWrapper.stream().filter(method -> {
+						return method.name.equals("updateMbeanStats");
+					}).forEach(method -> {
+						updateMbeanStats(req, resp, method, callback);
 					});
 
 				});
@@ -231,39 +264,97 @@ public class Application extends HttpServlet {
 		}
 	}
 
-	private void updateMbeanStats(HttpServletRequest req, HttpServletResponse resp, Method method) {
-		MBEAN_APP.mbean.stream().filter(mbean ->{
-			return method.queueName!=null && mbean.objectName.contains(method.queueName);
+	public static interface MethodWrapperCallback {
+		public void execute(HttpServletRequest req, HttpServletResponse resp, Http http);
+
+		public void execute(HttpServletRequest req, HttpServletResponse resp, Serve serve);
+
+		public void execute(HttpServletRequest req, HttpServletResponse resp, Delay delay);
+	}
+
+	private void updateMbeanStats(HttpServletRequest req, HttpServletResponse resp, Method method,
+			MethodWrapperCallback callback) {
+		MBEAN_APP.mbean.stream().filter(mbean -> {
+			return method.queueName != null && mbean.objectName.contains(method.queueName);
 		}).forEach(mbean -> {
-			mbean.attribute.stream().forEach(attr -> {
-				updateMbeanStats(req, resp, mbean, attr);
+			mbean.attribute.stream().filter(attr -> {
+				return attr.attrType != null
+						&& (attr.attrType.equals("increment") || attr.attrType.equals("transient"));
+			}).forEach(attr -> {
+				incrementCounter(req, resp, mbean, attr, method);
+			});
+		});
+		MethodWrapper mWrap = (MethodWrapper) method;
+		mWrap.http.forEach(http -> {
+			try {
+				proxy(req, resp, http);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		mWrap.serve.forEach(http -> {
+			serve(req, resp, http);
+		});
+		mWrap.delay.forEach(delay -> {
+			try {
+				delay(req, resp, delay);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		MBEAN_APP.mbean.stream().filter(mbean -> {
+			return method.queueName != null && mbean.objectName.contains(method.queueName);
+		}).forEach(mbean -> {
+			mbean.attribute.stream().filter(attr -> {
+				return attr.attrType != null && attr.attrType.equals("transient");
+			}).forEach(attr -> {
+				decrementCounter(req, resp, mbean, attr, method);
 			});
 		});
 	}
 
-	private void updateMbeanStats(HttpServletRequest req, HttpServletResponse resp, MBean mbean, MBAttribute attr) {
-		
+	private void decrementCounter(HttpServletRequest req, HttpServletResponse resp, MBean mbean, MBAttribute attr,
+			Method method) {
 		final MBeanServer server = ManagementFactory.getPlatformMBeanServer();
 		try {
 			ObjectName objName = new ObjectName(mbean.objectName);
-			if (attr.valueFromHeader != null) {
-				if(req.getHeader(attr.valueFromHeader)!=null){
-					server.setAttribute(objName, new Attribute(attr.name, req.getHeader(attr.valueFromHeader) ));
-				}
-			} else {
-				Integer updateCounter = (Integer) server.getAttribute(objName, attr.name);
-				if (updateCounter == null) {
-					updateCounter = new Integer(attr.startingValue);
-				}
-				updateCounter++;
-				log("Counter "+attr.name+" for queue name:"+objName.getKeyProperty("destinationName")+" "+updateCounter);
-
-				server.setAttribute(objName, new Attribute(attr.name, updateCounter));
+			Integer updateCounter = (Integer) server.getAttribute(objName, attr.name);
+			if (updateCounter == null) {
+				updateCounter = new Integer(attr.startingValue);
 			}
+			updateCounter++;
+			log("Counter " + attr.name + " for queue name:" + objName.getKeyProperty("destinationName") + " "
+					+ updateCounter);
+
+			server.setAttribute(objName, new Attribute(attr.name, updateCounter));
 		} catch (InvalidAttributeValueException | AttributeNotFoundException | ReflectionException | MBeanException
 				| InstanceNotFoundException | MalformedObjectNameException e) {
 			throw new RuntimeException(e);
 		}
+
+	}
+
+	private void incrementCounter(HttpServletRequest req, HttpServletResponse resp, MBean mbean, MBAttribute attr,
+			Method method) {
+		final MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+		try {
+			ObjectName objName = new ObjectName(mbean.objectName);
+			Integer updateCounter = (Integer) server.getAttribute(objName, attr.name);
+			if (updateCounter == null) {
+				updateCounter = new Integer(attr.startingValue);
+			}
+			updateCounter--;
+			log("Counter " + attr.name + " for queue name:" + objName.getKeyProperty("destinationName") + " "
+					+ updateCounter);
+
+			server.setAttribute(objName, new Attribute(attr.name, updateCounter));
+		} catch (InvalidAttributeValueException | AttributeNotFoundException | ReflectionException | MBeanException
+				| InstanceNotFoundException | MalformedObjectNameException e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 
 	private void copyFromHeader(HttpServletRequest req, HttpServletResponse resp, Method method) {
