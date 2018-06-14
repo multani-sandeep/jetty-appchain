@@ -13,13 +13,24 @@ import javax.management.MBeanException;
 import javax.management.MBeanInfo;
 import javax.management.MBeanNotificationInfo;
 import javax.management.MBeanOperationInfo;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
 import javax.management.ReflectionException;
+import javax.management.RuntimeErrorException;
 
 import com.appdynamics.test.MBeans.MBean;
 
 public class Queue extends JMXBean {
 
 	public Queue(MBean mbean) {
+		ObjectName objName;
+		try {
+			objName = new ObjectName(mbean.objectName);
+			map.put("Name", objName.getKeyProperty("destinationName"));
+		} catch (MalformedObjectNameException e1) {
+			throw new RuntimeException(e1);
+		}
+		
 		mbean.attribute.forEach(attr -> {
 			try {
 				map.put(attr.name, Class.forName(attr.type).getConstructor(String.class).newInstance("0"));

@@ -92,6 +92,10 @@ public class Routes {
 		public Integer msec;
 		@XmlAttribute
 		public Integer random;
+		@XmlAttribute (name="g-mean")
+		public Integer gaussMean;
+		@XmlAttribute (name="g-deviation")
+		public Integer gaussDeviation;
 	}
 	
 	@XmlAccessorType (XmlAccessType.FIELD)

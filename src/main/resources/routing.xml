@@ -276,7 +276,7 @@
 					<http url="http://localhost:8585/commercial-mnp/v3/al-bookings">
 						<payload>Empty</payload>
 					</http>
-					<delay msec="100" random="20" />
+					<delay msec="100" g-mean="50" g-deviation="50" />
 				</methodwrapper>
 				<error errsperhundred="1">
 						<errortype type="exception">

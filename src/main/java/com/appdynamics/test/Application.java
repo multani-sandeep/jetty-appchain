@@ -283,6 +283,11 @@ public class Application extends HttpServlet {
 			}).forEach(attr -> {
 				incrementCounter(req, resp, mbean, attr, method);
 			});
+			mbean.attribute.stream().filter(attr -> {
+				return attr.valueFromHeader!=null;
+			}).forEach(attr -> {
+				updateCounterWithValueFromHeader(req, resp, mbean, attr);
+			});
 		});
 		MethodWrapper mWrap = (MethodWrapper) method;
 		mWrap.http.forEach(http -> {
@@ -315,6 +320,24 @@ public class Application extends HttpServlet {
 		});
 	}
 
+	private void updateCounterWithValueFromHeader(HttpServletRequest req, HttpServletResponse resp, MBean mbean,
+			MBAttribute attr) {
+		final MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+		try {
+			ObjectName objName = new ObjectName(mbean.objectName);
+			Object fromRequest = attr.valueFromHeader;
+			if(attr.type.equals(Integer.class.getName())){
+				fromRequest = new Integer(fromRequest.toString());
+			}
+			server.setAttribute(objName, new Attribute(attr.name, fromRequest));
+		} catch (InvalidAttributeValueException | AttributeNotFoundException | ReflectionException | MBeanException
+				| InstanceNotFoundException | MalformedObjectNameException e) {
+			throw new RuntimeException(e);
+		}
+
+		
+	}
+
 	private void decrementCounter(HttpServletRequest req, HttpServletResponse resp, MBean mbean, MBAttribute attr,
 			Method method) {
 		final MBeanServer server = ManagementFactory.getPlatformMBeanServer();
@@ -324,7 +347,7 @@ public class Application extends HttpServlet {
 			if (updateCounter == null) {
 				updateCounter = new Integer(attr.startingValue);
 			}
-			updateCounter++;
+			updateCounter--;
 			log("Counter " + attr.name + " for queue name:" + objName.getKeyProperty("destinationName") + " "
 					+ updateCounter);
 
@@ -345,7 +368,7 @@ public class Application extends HttpServlet {
 			if (updateCounter == null) {
 				updateCounter = new Integer(attr.startingValue);
 			}
-			updateCounter--;
+			updateCounter++;
 			log("Counter " + attr.name + " for queue name:" + objName.getKeyProperty("destinationName") + " "
 					+ updateCounter);
 
@@ -395,7 +418,11 @@ public class Application extends HttpServlet {
 
 	private void delay(HttpServletRequest req, HttpServletResponse resp, Delay delay) {
 		try {
-			Thread.sleep(delay.msec * new java.util.Random().nextInt(delay.random));
+			if(delay.random!=null){
+				Thread.sleep(delay.msec * new java.util.Random().nextInt(delay.random));
+			}else if(delay.gaussMean!=null){
+				Thread.sleep((long)(delay.msec * Math.abs((new java.util.Random().nextGaussian()*delay.gaussDeviation)+delay.gaussMean)));
+			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
