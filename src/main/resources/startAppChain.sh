@@ -39,3 +39,5 @@ java $debug $appdABL -jar ../../../target/dependency/jetty-runner.jar $jmxEnable
 
 #Start CustomerPayments.Gateway
 java $debug $appdCPG -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8686 ../../../target/test.war >> /tmp/server.log &
+
+tail -f /tmp/server.log

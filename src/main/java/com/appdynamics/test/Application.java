@@ -284,7 +284,7 @@ public class Application extends HttpServlet {
 				incrementCounter(req, resp, mbean, attr, method);
 			});
 			mbean.attribute.stream().filter(attr -> {
-				return attr.valueFromHeader!=null;
+				return attr.valueFromHeader != null;
 			}).forEach(attr -> {
 				updateCounterWithValueFromHeader(req, resp, mbean, attr);
 			});
@@ -325,17 +325,18 @@ public class Application extends HttpServlet {
 		final MBeanServer server = ManagementFactory.getPlatformMBeanServer();
 		try {
 			ObjectName objName = new ObjectName(mbean.objectName);
-			Object fromRequest = attr.valueFromHeader;
-			if(attr.type.equals(Integer.class.getName())){
-				fromRequest = new Integer(fromRequest.toString());
+			Object fromRequest = req.getAttribute(attr.valueFromHeader);
+			if (fromRequest != null) {
+				if (attr.type.equals(Integer.class.getName())) {
+					fromRequest = new Integer(fromRequest.toString());
+				}
+				server.setAttribute(objName, new Attribute(attr.name, fromRequest));
 			}
-			server.setAttribute(objName, new Attribute(attr.name, fromRequest));
 		} catch (InvalidAttributeValueException | AttributeNotFoundException | ReflectionException | MBeanException
 				| InstanceNotFoundException | MalformedObjectNameException e) {
 			throw new RuntimeException(e);
 		}
 
-		
 	}
 
 	private void decrementCounter(HttpServletRequest req, HttpServletResponse resp, MBean mbean, MBAttribute attr,
@@ -418,10 +419,11 @@ public class Application extends HttpServlet {
 
 	private void delay(HttpServletRequest req, HttpServletResponse resp, Delay delay) {
 		try {
-			if(delay.random!=null){
+			if (delay.random != null) {
 				Thread.sleep(delay.msec * new java.util.Random().nextInt(delay.random));
-			}else if(delay.gaussMean!=null){
-				Thread.sleep((long)(delay.msec * Math.abs((new java.util.Random().nextGaussian()*delay.gaussDeviation)+delay.gaussMean)));
+			} else if (delay.gaussMean != null) {
+				Thread.sleep((long) (delay.msec
+						* Math.abs((new java.util.Random().nextGaussian() * delay.gaussDeviation) + delay.gaussMean)));
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

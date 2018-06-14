@@ -1,7 +1,7 @@
 <mbeans>
 	<application name="EI-AMQ">
 		<mbean type="Queue" objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.bookingcreatedv1.queue.produce">
-			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer" value="0" valueFromHeader="queuesize"></attribute>
+			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer" value="0"></attribute>
 			<attribute name="EnqueueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
 			<attribute name="DequeueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
 			<attribute name="AverageBlockedCount" attrType="transient" type="java.lang.Integer" value="0"></attribute>
@@ -10,7 +10,7 @@
 			<operation name=""></operation>
 		</mbean>
 		<mbean type="Queue" objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customerregisteredv1.queue.produce">
-			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer" value="0" valueFromHeader="queuesize"></attribute>
+			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer" value="0" ></attribute>
 			<attribute name="EnqueueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
 			<attribute name="DequeueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
 			<attribute name="AverageBlockedCount" attrType="transient" type="java.lang.Integer" value="0"></attribute>
@@ -19,7 +19,7 @@
 			<operation name=""></operation>
 		</mbean>
 		<mbean type="Queue" objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customeraccountchangedv1.queue.produce">
-			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer" value="0" valueFromHeader="queuesize"></attribute>
+			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer" value="0"></attribute>
 			<attribute name="EnqueueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
 			<attribute name="DequeueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
 			<attribute name="AverageBlockedCount" attrType="transient" type="java.lang.Integer" value="0"></attribute>
