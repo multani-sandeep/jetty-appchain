@@ -279,9 +279,9 @@
 					<delay msec="100" g-mean="50" g-deviation="50" />
 				</methodwrapper>
 				<error errsperhundred="1">
-						<errortype type="exception">
-							<message>Commit booking failed</message>
-						</errortype>
+					<errortype type="exception">
+						<message>Commit booking failed</message>
+					</errortype>
 				</error>
 				<delay msec="50" random="2" />
 			</step>
@@ -294,9 +294,9 @@
 					<payload>Commit booking success</payload>
 				</serve>
 				<error errsperhundred="1">
-						<errortype type="exception">
-							<message>Commit booking failed</message>
-						</errortype>
+					<errortype type="exception">
+						<message>Commit booking failed</message>
+					</errortype>
 				</error>
 				<delay msec="50" random="2" />
 			</step>
@@ -498,7 +498,7 @@
 	<route url="/commercial-cpm/v1/_createcustomer">
 		<node name="Hybris-ACP">
 			<step seq="1">
-				<http url="http://localhost:8383/commercial-mnp/v3/_createcustomer">
+				<http url="http://localhost:8484/commercial-mnp/v3/_createcustomer">
 					<payload>Empty</payload>
 				</http>
 				<delay msec="50" random="5" />
@@ -509,13 +509,43 @@
 	<route url="/commercial-mnp/v3/_createcustomer">
 		<node name="EI-AMQ">
 			<step seq="1">
+				<http url="http://localhost:8383/commercial-mnp/v3/_createcustomer_ESB">
+					<payload>Empty</payload>
+				</http>
+				<delay msec="50" random="5" />
+				<error errsperhundred="10" />
+				<method name="updateMbeanStats" queueName="com.customerregisteredv1.queue.produce">
+				</method>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/_createcustomer_ESB">
+		<node name="EI-ESB">
+			<step seq="1">
+				<http
+					url="http://localhost:8484/commercial-mnp/v3/_createcustomer_consumerq">
+					<payload>Empty</payload>
+				</http>
+				<delay msec="50" random="5" />
+				<error errsperhundred="10" />
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/_createcustomer_consumerq">
+		<node name="EI-AMQ">
+			<step seq="1">
 				<serve>
 					<payload>Found flights</payload>
 				</serve>
 				<delay msec="50" random="5" />
 				<error errsperhundred="10" />
-				<method name="updateMbeanStats" queueName="com.customerregisteredv1.queue.produce">
-				</method>
+				<methodwrapper name="updateMbeanStats"
+					queueName="com.customerregisteredv1.queue.consume">
+					<serve>
+						<payload>Customer updated</payload>
+					</serve>
+					<delay msec="100" g-mean="50" g-deviation="50" />
+				</methodwrapper>
 			</step>
 		</node>
 	</route>
@@ -539,7 +569,7 @@
 	<route url="/commercial-cpm/v1/_updatecustomer">
 		<node name="Hybris-ACP">
 			<step seq="1">
-				<http url="http://localhost:8383/commercial-mnp/v3/_updatecustomer">
+				<http url="http://localhost:8484/commercial-mnp/v3/_updatecustomer">
 					<payload>Empty</payload>
 				</http>
 				<delay msec="50" random="5" />
@@ -551,12 +581,48 @@
 		<node name="EI-AMQ">
 			<step seq="1">
 				<serve>
-					<payload>Found flights</payload>
+					<payload>Customer updated</payload>
 				</serve>
 				<delay msec="50" random="5" />
 				<error errsperhundred="10" />
-				<method name="updateMbeanStats" queueName="com.customeraccountchangedv1.queue.produce">
-				</method>
+				<methodwrapper name="updateMbeanStats"
+					queueName="com.customeraccountchangedv1.queue.produce">
+					<http url="http://localhost:8383/commercial-mnp/v3/_updatecustomer_ESB">
+						<payload>Empty</payload>
+					</http>
+					<delay msec="100" g-mean="50" g-deviation="50" />
+				</methodwrapper>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/_updatecustomer_ESB">
+		<node name="EI-ESB">
+			<step seq="1">
+				<serve>
+					<payload>Customer updated</payload>
+				</serve>
+				<delay msec="50" random="5" />
+				<error errsperhundred="10" />
+				<http
+					url="http://localhost:8484/commercial-mnp/v3/_updatecustomer_consumerq">
+					<payload>Empty</payload>
+				</http>
+				<delay msec="50" random="5" />
+				<error errsperhundred="10" />
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/_updatecustomer_consumerq">
+		<node name="EI-AMQ">
+			<step seq="1">
+				<error errsperhundred="10" />
+				<methodwrapper name="updateMbeanStats"
+					queueName="com.customeraccountchangedv1.queue.consume">
+					<serve>
+						<payload>Customer updated</payload>
+					</serve>
+					<delay msec="100" g-mean="50" g-deviation="50" />
+				</methodwrapper>
 			</step>
 		</node>
 	</route>

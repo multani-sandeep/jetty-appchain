@@ -289,35 +289,38 @@ public class Application extends HttpServlet {
 				updateCounterWithValueFromHeader(req, resp, mbean, attr);
 			});
 		});
-		MethodWrapper mWrap = (MethodWrapper) method;
-		mWrap.http.forEach(http -> {
-			try {
-				proxy(req, resp, http);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
-		mWrap.serve.forEach(http -> {
-			serve(req, resp, http);
-		});
-		mWrap.delay.forEach(delay -> {
-			try {
-				delay(req, resp, delay);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
-		MBEAN_APP.mbean.stream().filter(mbean -> {
-			return method.queueName != null && mbean.objectName.contains(method.queueName);
-		}).forEach(mbean -> {
-			mbean.attribute.stream().filter(attr -> {
-				return attr.attrType != null && attr.attrType.equals("transient");
-			}).forEach(attr -> {
-				decrementCounter(req, resp, mbean, attr, method);
+		try {
+			MethodWrapper mWrap = (MethodWrapper) method;
+			mWrap.http.forEach(http -> {
+				try {
+					proxy(req, resp, http);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			});
-		});
+			mWrap.serve.forEach(http -> {
+				serve(req, resp, http);
+			});
+			mWrap.delay.forEach(delay -> {
+				try {
+					delay(req, resp, delay);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+		} finally {
+			MBEAN_APP.mbean.stream().filter(mbean -> {
+				return method.queueName != null && mbean.objectName.contains(method.queueName);
+			}).forEach(mbean -> {
+				mbean.attribute.stream().filter(attr -> {
+					return attr.attrType != null && attr.attrType.equals("transient");
+				}).forEach(attr -> {
+					decrementCounter(req, resp, mbean, attr, method);
+				});
+			});
+		}
 	}
 
 	private void updateCounterWithValueFromHeader(HttpServletRequest req, HttpServletResponse resp, MBean mbean,
