@@ -1,40 +1,86 @@
 <mbeans>
 	<application name="EI-AMQ">
-		<mbean type="Queue" objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.bookingcreatedv1.queue.produce">
-			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="EnqueueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="DequeueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="AverageBlockedCount" attrType="transient" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="ProducerFlowControl" type="java.lang.Boolean" valueFromHeader="flowcontrol" value="0"></attribute>
-			<attribute name="MemoryPercentUsage" type="java.lang.Integer" valueFromHeader="percentusage" ></attribute>
+		<mbean type="Queue"
+			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.bookingcreatedv1.queue.produce">
+			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="EnqueueCount" attrType="increment" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="DequeueCount" attrType="increment" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="AverageBlockedCount" attrType="transient"
+				type="java.lang.Integer" value="0"></attribute>
+			<attribute name="ProducerFlowControl" type="java.lang.Boolean"
+				valueFromHeader="flowcontrol" value="0"></attribute>
+			<attribute name="MemoryPercentUsage" type="java.lang.Integer"
+				valueFromHeader="percentusage"></attribute>
 			<operation name=""></operation>
 		</mbean>
-		<mbean type="Queue" objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customerregisteredv1.queue.produce">
-			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer" value="0" ></attribute>
-			<attribute name="EnqueueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="DequeueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="AverageBlockedCount" attrType="transient" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="ProducerFlowControl" type="java.lang.Boolean" valueFromHeader="flowcontrol" value="0"></attribute>
-			<attribute name="MemoryPercentUsage" type="java.lang.Integer" valueFromHeader="percentusage" ></attribute>
+		<mbean type="Queue"
+			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customerregisteredv1.queue.produce">
+			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="EnqueueCount" attrType="increment" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="DequeueCount" attrType="increment" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="AverageBlockedCount" attrType="transient"
+				type="java.lang.Integer" value="0"></attribute>
+			<attribute name="ProducerFlowControl" type="java.lang.Boolean"
+				valueFromHeader="flowcontrol" value="0"></attribute>
+			<attribute name="MemoryPercentUsage" type="java.lang.Integer"
+				valueFromHeader="percentusage"></attribute>
 			<operation name=""></operation>
 		</mbean>
-		<mbean type="Queue" objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customeraccountchangedv1.queue.produce">
-			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="EnqueueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="DequeueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="AverageBlockedCount" attrType="transient" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="ProducerFlowControl" type="java.lang.Boolean" valueFromHeader="flowcontrol" value="0"></attribute>
-			<attribute name="MemoryPercentUsage" type="java.lang.Integer" valueFromHeader="percentusage" ></attribute>
+		<mbean type="Queue"
+			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customerregisteredv1.queue.consume">
+			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="EnqueueCount" attrType="increment" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="DequeueCount" attrType="increment" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="AverageBlockedCount" attrType="transient"
+				type="java.lang.Integer" value="0"></attribute>
+			<attribute name="ProducerFlowControl" type="java.lang.Boolean"
+				valueFromHeader="flowcontrol" value="0"></attribute>
+			<attribute name="MemoryPercentUsage" type="java.lang.Integer"
+				valueFromHeader="percentusage"></attribute>
 			<operation name=""></operation>
 		</mbean>
-		<mbean type="Queue" objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customerregisteredv1.queue.consume">
-			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="EnqueueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="DequeueCount" attrType="increment" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="AverageBlockedCount" attrType="transient" type="java.lang.Integer" value="0"></attribute>
-			<attribute name="ProducerFlowControl" type="java.lang.Boolean" valueFromHeader="flowcontrol" value="0"></attribute>
-			<attribute name="MemoryPercentUsage" type="java.lang.Integer" valueFromHeader="percentusage" ></attribute>
+
+		<mbean type="Queue"
+			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customeraccountchangedv1.queue.produce">
+			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="EnqueueCount" attrType="increment" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="DequeueCount" attrType="increment" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="AverageBlockedCount" attrType="transient"
+				type="java.lang.Integer" value="0"></attribute>
+			<attribute name="ProducerFlowControl" type="java.lang.Boolean"
+				valueFromHeader="flowcontrol" value="0"></attribute>
+			<attribute name="MemoryPercentUsage" type="java.lang.Integer"
+				valueFromHeader="percentusage"></attribute>
 			<operation name=""></operation>
 		</mbean>
+		<mbean type="Queue"
+			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customeraccountchangedv1.queue.consume">
+			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="EnqueueCount" attrType="increment" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="DequeueCount" attrType="increment" type="java.lang.Integer"
+				value="0"></attribute>
+			<attribute name="AverageBlockedCount" attrType="transient"
+				type="java.lang.Integer" value="0"></attribute>
+			<attribute name="ProducerFlowControl" type="java.lang.Boolean"
+				valueFromHeader="flowcontrol" value="0"></attribute>
+			<attribute name="MemoryPercentUsage" type="java.lang.Integer"
+				valueFromHeader="percentusage"></attribute>
+			<operation name=""></operation>
+		</mbean>
+
 	</application>
 </mbeans>

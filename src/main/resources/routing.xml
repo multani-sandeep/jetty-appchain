@@ -254,10 +254,6 @@
 					<param name="bookingCurrency" from="header" key="bookingCurrency" />
 					<param name="numberOfSeats" from="header" key="numberOfSeats" />
 					<param name="numberOfBags" from="header" key="numberOfBags" />
-					<!-- <param name="bookingValue" from="gaussian" median="300" deviaton="30"/> 
-						<param name="bookingCurrency" from="static" value="GBP"/> <param name="numberOfSeats" 
-						from="gaussian" median="1" deviaton="-1"/> <param name="numberOfBags" from="gaussian" 
-						median="2" deviaton="-1"/> -->
 				</method>
 				<delay msec="50" random="5" />
 				<error errsperhundred="1">
@@ -273,6 +269,44 @@
 			<step seq="1">
 				<methodwrapper name="updateMbeanStats"
 					queueName="com.bookingcreatedv1.queue.produce">
+					<http url="http://localhost:8383/commercial-mnp/v3/bookings_ESB">
+						<payload>Empty</payload>
+					</http>
+					<delay msec="100" g-mean="50" g-deviation="50" />
+				</methodwrapper>
+				<error errsperhundred="1">
+					<errortype type="exception">
+						<message>Commit booking failed</message>
+					</errortype>
+				</error>
+				<delay msec="50" random="2" />
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/bookings_ESB">
+		<node name="EI-ESB">
+			<step seq="1">
+				<methodwrapper name="updateMbeanStats"
+					queueName="">
+					<http url="http://localhost:8484/commercial-mnp/v3/bookings_consumerq">
+						<payload>Empty</payload>
+					</http>
+					<delay msec="100" g-mean="50" g-deviation="50" />
+				</methodwrapper>
+				<error errsperhundred="1">
+					<errortype type="exception">
+						<message>Commit booking failed</message>
+					</errortype>
+				</error>
+				<delay msec="50" random="2" />
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/bookings_consumerq">
+		<node name="EI-AMQ">
+			<step seq="1">
+				<methodwrapper name="updateMbeanStats"
+					queueName="com.bookingcreatedv1.queue.consume">
 					<http url="http://localhost:8585/commercial-mnp/v3/al-bookings">
 						<payload>Empty</payload>
 					</http>
@@ -509,13 +543,15 @@
 	<route url="/commercial-mnp/v3/_createcustomer">
 		<node name="EI-AMQ">
 			<step seq="1">
-				<http url="http://localhost:8383/commercial-mnp/v3/_createcustomer_ESB">
-					<payload>Empty</payload>
-				</http>
 				<delay msec="50" random="5" />
 				<error errsperhundred="10" />
-				<method name="updateMbeanStats" queueName="com.customerregisteredv1.queue.produce">
-				</method>
+				<methodwrapper name="updateMbeanStats"
+					queueName="com.customerregisteredv1.queue.consume">
+					<http url="http://localhost:8383/commercial-mnp/v3/_createcustomer_ESB">
+						<payload>Empty</payload>
+					</http>
+					<delay msec="100" g-mean="50" g-deviation="50" />
+				</methodwrapper>
 			</step>
 		</node>
 	</route>

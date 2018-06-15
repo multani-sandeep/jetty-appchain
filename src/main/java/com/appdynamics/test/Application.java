@@ -275,7 +275,7 @@ public class Application extends HttpServlet {
 	private void updateMbeanStats(HttpServletRequest req, HttpServletResponse resp, Method method,
 			MethodWrapperCallback callback) {
 		MBEAN_APP.mbean.stream().filter(mbean -> {
-			return method.queueName != null && mbean.objectName.contains(method.queueName);
+			return method.queueName != null && !method.queueName.isEmpty() && mbean.objectName.contains(method.queueName);
 		}).forEach(mbean -> {
 			mbean.attribute.stream().filter(attr -> {
 				return attr.attrType != null
