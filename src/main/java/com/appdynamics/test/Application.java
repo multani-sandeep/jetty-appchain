@@ -312,7 +312,7 @@ public class Application extends HttpServlet {
 			});
 		} finally {
 			MBEAN_APP.mbean.stream().filter(mbean -> {
-				return method.queueName != null && mbean.objectName.contains(method.queueName);
+				return method.queueName != null && !method.queueName.isEmpty() && mbean.objectName.contains(method.queueName);
 			}).forEach(mbean -> {
 				mbean.attribute.stream().filter(attr -> {
 					return attr.attrType != null && attr.attrType.equals("transient");
