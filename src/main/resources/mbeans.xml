@@ -81,6 +81,10 @@
 				valueFromHeader="percentusage"></attribute>
 			<operation name=""></operation>
 		</mbean>
-
+	</application>
+	<application name="EI-ESB">
+		<mbean type="ESB"
+			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=ESB">
+		</mbean>
 	</application>
 </mbeans>
