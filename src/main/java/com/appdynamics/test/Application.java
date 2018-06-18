@@ -11,6 +11,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.management.Attribute;
@@ -36,6 +37,7 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -61,6 +63,8 @@ public class Application extends HttpServlet {
 	public static MBeanApp MBEAN_APP;
 	public static Route DEF_ROUTE;
 	public static String APP_NAME = System.getProperty("appdynamics.agent.tierName");
+	
+	private static final int CONNECTION_TIMEOUT_SEC = 120;
 
 	static final Logger LOG = LogManager.getLogger(Application.class.getName());
 
@@ -448,7 +452,14 @@ public class Application extends HttpServlet {
 		String url = http.url;
 		log("Proxy", url);
 
-		HttpClient client = HttpClientBuilder.create().build();
+		HttpClient client = HttpClientBuilder.create().setConnectionTimeToLive(CONNECTION_TIMEOUT_SEC, TimeUnit.SECONDS).build();
+//		HttpClient client = HttpClientBuilder.create().
+//				RequestConfig.custom()
+//			    .setConnectionRequestTimeout(CONNECTION_TIMEOUT_MS)
+//			    .setConnectTimeout(CONNECTION_TIMEOUT_MS)
+//			    .setSocketTimeout(CONNECTION_TIMEOUT_MS)
+//			    .build();
+		
 		HttpGet request = new HttpGet(url);
 
 		// add request header
