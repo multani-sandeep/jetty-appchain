@@ -286,8 +286,7 @@
 	<route url="/commercial-mnp/v3/bookings_ESB">
 		<node name="EI-ESB">
 			<step seq="1">
-				<methodwrapper name="updateMbeanStats"
-					queueName="">
+				<methodwrapper name="updateMbeanStats" queueName="">
 					<http url="http://localhost:8484/commercial-mnp/v3/bookings_consumerq">
 						<payload>Empty</payload>
 					</http>
@@ -378,6 +377,10 @@
 					url="http://localhost:8383/commercial-mnp/v3/bookings/booking-id/checkin-request">
 					<payload>Empty</payload>
 				</http>
+				<http
+					url="http://localhost:8484/commercial-mnp/v3/bookings/booking-id/checkin-request/_bookingupdated">
+					<payload>Empty</payload>
+				</http>
 				<delay msec="50" random="5" />
 			</step>
 		</node>
@@ -386,9 +389,51 @@
 		<node name="EI-ESB">
 			<step seq="1">
 				<serve>
-					<payload>Checkin request processed success</payload>
+					<payload>Check-in request processed success</payload>
 				</serve>
 				<delay msec="50" random="2" />
+			</step>
+		</node>
+	</route>
+	<route
+		url="/commercial-mnp/v3/bookings/booking-id/checkin-request/_bookingupdated">
+		<node name="EI-AMQ">
+			<step seq="1">
+				<methodwrapper name="updateMbeanStats"
+					queueName="com.bookingupdatedv1.queue.produce">
+					<http url="http://localhost:8383/commercial-mnp/v3/_bookingupdated_ESB">
+						<payload>Empty</payload>
+					</http>
+					<delay msec="100" g-mean="50" g-deviation="50" />
+				</methodwrapper>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/_bookingupdated_ESB">
+		<node name="EI-ESB">
+			<step seq="1">
+				<methodwrapper name="updateMbeanStats"
+					queueName="">
+					<http url="http://localhost:8484/commercial-mnp/v3/_bookingupdated_consumerq">
+						<payload>Empty</payload>
+					</http>
+					<delay msec="100" g-mean="50" g-deviation="50" />
+				</methodwrapper>
+				<error errsperhundred="10" />
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/_bookingupdated_consumerq">
+		<node name="EI-AMQ">
+			<step seq="1">
+				<methodwrapper name="updateMbeanStats"
+					queueName="Consumer.AL.VirtualTopic.com.bookingupdatedv1">
+					<serve>
+						<payload>Booking updated</payload>
+					</serve>
+					<delay msec="100" g-mean="50" g-deviation="50" />
+				</methodwrapper>
+				<error errsperhundred="5" />
 			</step>
 		</node>
 	</route>

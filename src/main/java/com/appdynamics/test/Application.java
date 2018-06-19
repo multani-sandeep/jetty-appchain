@@ -355,7 +355,7 @@ public class Application extends HttpServlet {
 			if (updateCounter == null) {
 				updateCounter = new Integer(attr.startingValue);
 			}
-			updateCounter--;
+			updateCounter = updateCounter>0?updateCounter-1:0;
 			log("Counter " + attr.name + " for queue name:" + objName.getKeyProperty("destinationName") + " "
 					+ updateCounter);
 
