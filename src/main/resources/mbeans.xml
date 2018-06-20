@@ -1,6 +1,6 @@
 <mbeans>
 	<application name="EI-AMQ">
-		<mbean type="Queue"
+		<mbean type="Queue" nameKey="destinationName"
 			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.bookingcreatedv1.queue.produce">
 			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer"
 				value="0"></attribute>
@@ -16,7 +16,7 @@
 				valueFromHeader="percentusage"></attribute>
 			<operation name=""></operation>
 		</mbean>
-		<mbean type="Queue"
+		<mbean type="Queue" nameKey="destinationName"
 			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.bookingcreatedv1.queue.consume">
 			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer"
 				value="0"></attribute>
@@ -32,7 +32,7 @@
 				valueFromHeader="percentusage"></attribute>
 			<operation name=""></operation>
 		</mbean>
-		<mbean type="Queue"
+		<mbean type="Queue" nameKey="destinationName"
 			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.bookingupdatedv1.queue.produce">
 			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer"
 				value="0"></attribute>
@@ -48,7 +48,7 @@
 				valueFromHeader="percentusage"></attribute>
 			<operation name=""></operation>
 		</mbean>
-		<mbean type="Queue"
+		<mbean type="Queue" nameKey="destinationName"
 			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=Consumer.AL.VirtualTopic.com.bookingupdatedv1">
 			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer"
 				value="0"></attribute>
@@ -64,8 +64,8 @@
 				valueFromHeader="percentusage"></attribute>
 			<operation name=""></operation>
 		</mbean>
-		
-		<mbean type="Queue"
+
+		<mbean type="Queue" nameKey="destinationName"
 			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customerregisteredv1.queue.produce">
 			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer"
 				value="0"></attribute>
@@ -81,7 +81,7 @@
 				valueFromHeader="percentusage"></attribute>
 			<operation name=""></operation>
 		</mbean>
-		<mbean type="Queue"
+		<mbean type="Queue" nameKey="destinationName"
 			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customerregisteredv1.queue.consume">
 			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer"
 				value="0"></attribute>
@@ -98,7 +98,7 @@
 			<operation name=""></operation>
 		</mbean>
 
-		<mbean type="Queue"
+		<mbean type="Queue" nameKey="destinationName"
 			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customeraccountchangedv1.queue.produce">
 			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer"
 				value="0"></attribute>
@@ -114,7 +114,7 @@
 				valueFromHeader="percentusage"></attribute>
 			<operation name=""></operation>
 		</mbean>
-		<mbean type="Queue"
+		<mbean type="Queue" nameKey="destinationName"
 			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=com.customeraccountchangedv1.queue.consume">
 			<attribute name="QueueSize" attrType="transient" type="java.lang.Integer"
 				value="0"></attribute>
@@ -132,8 +132,21 @@
 		</mbean>
 	</application>
 	<application name="EI-ESB">
-		<mbean type="ESB"
-			objectName="org.apache.activemq:type=Broker,brokerName=easyjet-amq-pair1,destinationType=Queue,destinationName=ESB">
+		<mbean type="Route" nameKey="name"
+			objectName="org.apache.camel:context=com.easyjet.ei.commercial.bookingcreatedv1.service-BookingCreatedContext,type=routes,name=&quot;bookingCreated&quot;">
+			<attribute name="ExchangesCompleted" attrType="increment"
+				type="java.lang.Integer" value="0" />
+			<attribute name="ExchangesInflight" attrType="transient"
+				type="java.lang.Integer" value="0" />
+			<attribute name="ExchangesFailed" attrType="error"
+				type="java.lang.Integer" value="0" />
+			<attribute name="MaxProcessingTime" attrType="max-time"
+				type="java.lang.Integer" value="0" />
+			<attribute name="MinProcessingTime" attrType="min-time"
+				type="java.lang.Integer" value="0" />
+			<attribute name="MeanProcessingTime" attrType="mean-time"
+				type="java.lang.Integer" value="0" />
+				
 		</mbean>
 	</application>
 </mbeans>

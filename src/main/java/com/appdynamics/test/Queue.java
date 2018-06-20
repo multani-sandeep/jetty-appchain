@@ -26,7 +26,11 @@ public class Queue extends JMXBean {
 		ObjectName objName;
 		try {
 			objName = new ObjectName(mbean.objectName);
-			map.put("Name", objName.getKeyProperty("destinationName"));
+			if(objName.getKeyProperty(mbean.nameKey)!=null){
+				map.put("Name", objName.getKeyProperty(mbean.nameKey));
+			}else{
+				throw new IllegalArgumentException("Invalid mbean nameKey for objectName. "+mbean.objectName+" key:"+mbean.nameKey);
+			}
 		} catch (MalformedObjectNameException e1) {
 			throw new RuntimeException(e1);
 		}

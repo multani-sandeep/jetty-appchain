@@ -286,11 +286,17 @@
 	<route url="/commercial-mnp/v3/bookings_ESB">
 		<node name="EI-ESB">
 			<step seq="1">
-				<methodwrapper name="updateMbeanStats" queueName="">
+				<methodwrapper name="updateMbeanStats"
+					queueName="org.apache.camel:context=com.easyjet.ei.commercial.bookingcreatedv1.service-BookingCreatedContext,type=routes,name=&quot;bookingCreated&quot;">
 					<http url="http://localhost:8484/commercial-mnp/v3/bookings_consumerq">
 						<payload>Empty</payload>
 					</http>
 					<delay msec="100" g-mean="50" g-deviation="50" />
+					<error errsperhundred="1">
+						<errortype type="exception">
+							<message>Commit booking failed</message>
+						</errortype>
+					</error>
 				</methodwrapper>
 				<error errsperhundred="1">
 					<errortype type="exception">
@@ -404,7 +410,7 @@
 					<http url="http://localhost:8383/commercial-mnp/v3/_bookingupdated_ESB">
 						<payload>Empty</payload>
 					</http>
-					<delay msec="100" g-mean="50" g-deviation="50" />
+					<delay msec="100" random="10" />
 				</methodwrapper>
 			</step>
 		</node>
@@ -412,12 +418,12 @@
 	<route url="/commercial-mnp/v3/_bookingupdated_ESB">
 		<node name="EI-ESB">
 			<step seq="1">
-				<methodwrapper name="updateMbeanStats"
-					queueName="">
-					<http url="http://localhost:8484/commercial-mnp/v3/_bookingupdated_consumerq">
+				<methodwrapper name="updateMbeanStats" queueName="">
+					<http
+						url="http://localhost:8484/commercial-mnp/v3/_bookingupdated_consumerq">
 						<payload>Empty</payload>
 					</http>
-					<delay msec="100" g-mean="50" g-deviation="50" />
+					<delay msec="100" random="10" />
 				</methodwrapper>
 				<error errsperhundred="10" />
 			</step>
@@ -431,7 +437,7 @@
 					<serve>
 						<payload>Booking updated</payload>
 					</serve>
-					<delay msec="100" g-mean="50" g-deviation="50" />
+					<delay msec="100" random="10" />
 				</methodwrapper>
 				<error errsperhundred="5" />
 			</step>

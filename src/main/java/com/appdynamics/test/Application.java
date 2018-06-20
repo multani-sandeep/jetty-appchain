@@ -11,6 +11,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,6 @@ import javax.management.InvalidAttributeValueException;
 import javax.management.MBeanException;
 import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
-import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 import javax.management.ReflectionException;
 import javax.servlet.ServletConfig;
@@ -34,10 +34,10 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -63,7 +63,7 @@ public class Application extends HttpServlet {
 	public static MBeanApp MBEAN_APP;
 	public static Route DEF_ROUTE;
 	public static String APP_NAME = System.getProperty("appdynamics.agent.tierName");
-	
+
 	private static final int CONNECTION_TIMEOUT_SEC = 120;
 
 	static final Logger LOG = LogManager.getLogger(Application.class.getName());
@@ -104,6 +104,8 @@ public class Application extends HttpServlet {
 					ObjectName objName = new ObjectName(mbean.objectName);
 					if (mbean.type.equals("Queue")) {
 						server.registerMBean(new Queue(mbean), objName);
+					} else if (mbean.type.equals("Route")) {
+						server.registerMBean(new com.appdynamics.test.CamelRoute(mbean), objName);
 					}
 					MBEAN_APP = application;
 				} catch (Exception e) {
@@ -181,6 +183,10 @@ public class Application extends HttpServlet {
 		} else {
 			MethodWrapperCallback callback = new MethodWrapperCallback() {
 
+				StopWatch timer = null;
+				MeanCalc calc = new MeanCalc();
+				volatile boolean timerStarted = false;
+
 				@Override
 				public void execute(HttpServletRequest req, HttpServletResponse resp, Http http) {
 					try {
@@ -204,6 +210,37 @@ public class Application extends HttpServlet {
 					serve(req, resp, serve);
 				}
 
+				@Override
+				public StopWatch startTimer() {
+					timer = new StopWatch();
+					timer.start();
+					timerStarted = true;
+					return timer;
+				}
+
+				@Override
+				public StopWatch stopTimer() {
+					if (timer != null && isTimerStarted()) {
+						timer.stop();
+					}
+					return timer;
+				}
+
+				@Override
+				public StopWatch getTimer() {
+					return timer;
+				}
+
+				@Override
+				public boolean isTimerStarted() {
+					return timerStarted;
+				}
+
+				@Override
+				public MeanCalc getMeanCalc() {
+					return calc;
+				}
+
 			};
 			Node matchingNode = matchingRoute.nodes.stream().filter(node -> {
 				return node.name.equals(APP_NAME);
@@ -212,7 +249,7 @@ public class Application extends HttpServlet {
 			try {
 				matchingNode.steps.forEach(step -> {
 					step.error.forEach(error -> {
-						error(req, resp, error);
+						error(req, resp, step, error);
 					});
 					step.http.forEach(http -> {
 						try {
@@ -250,13 +287,13 @@ public class Application extends HttpServlet {
 					step.method.stream().filter(method -> {
 						return method.name.equals("updateMbeanStats");
 					}).forEach(method -> {
-						updateMbeanStats(req, resp, method, null);
+						updateMbeanStats(req, resp, step, method, null);
 					});
 
 					step.methodWrapper.stream().filter(method -> {
 						return method.name.equals("updateMbeanStats");
 					}).forEach(method -> {
-						updateMbeanStats(req, resp, method, callback);
+						updateMbeanStats(req, resp, step, method, callback);
 					});
 
 				});
@@ -268,7 +305,27 @@ public class Application extends HttpServlet {
 		}
 	}
 
+	public static class MeanCalc {
+		public Long minTime;
+		public Long maxTime;
+
+		public Long getMean() {
+			return (Long) minTime == null || maxTime == null ? Long.MIN_VALUE : ((maxTime - minTime / 2) + minTime);
+		}
+	}
+
 	public static interface MethodWrapperCallback {
+
+		public MeanCalc getMeanCalc();
+
+		public StopWatch startTimer();
+
+		public StopWatch stopTimer();
+
+		public StopWatch getTimer();
+
+		public boolean isTimerStarted();
+
 		public void execute(HttpServletRequest req, HttpServletResponse resp, Http http);
 
 		public void execute(HttpServletRequest req, HttpServletResponse resp, Serve serve);
@@ -276,10 +333,11 @@ public class Application extends HttpServlet {
 		public void execute(HttpServletRequest req, HttpServletResponse resp, Delay delay);
 	}
 
-	private void updateMbeanStats(HttpServletRequest req, HttpServletResponse resp, Method method,
+	private void updateMbeanStats(HttpServletRequest req, HttpServletResponse resp, Step step, Method method,
 			MethodWrapperCallback callback) {
 		MBEAN_APP.mbean.stream().filter(mbean -> {
-			return method.queueName != null && !method.queueName.isEmpty() && mbean.objectName.contains(method.queueName);
+			return method.queueName != null && !method.queueName.isEmpty()
+					&& mbean.objectName.contains(method.queueName);
 		}).forEach(mbean -> {
 			mbean.attribute.stream().filter(attr -> {
 				return attr.attrType != null
@@ -288,13 +346,36 @@ public class Application extends HttpServlet {
 				incrementCounter(req, resp, mbean, attr, method);
 			});
 			mbean.attribute.stream().filter(attr -> {
+				return attr.attrType != null && (attr.attrType.equals("max-time") || attr.attrType.equals("min-time")
+						|| attr.attrType.equals("mean-time"));
+			}).forEach(attr -> {
+				callback.startTimer();
+			});
+			mbean.attribute.stream().filter(attr -> {
 				return attr.valueFromHeader != null;
 			}).forEach(attr -> {
 				updateCounterWithValueFromHeader(req, resp, mbean, attr);
 			});
 		});
+		boolean failed = false;
 		try {
 			MethodWrapper mWrap = (MethodWrapper) method;
+			try {
+				mWrap.error.forEach(error -> {
+					error(req, resp, step, error);
+				});
+			} catch (ForcedException e) {
+				failed = true;
+				throw e;
+			}
+			mWrap.http.forEach(http -> {
+				try {
+					proxy(req, resp, http);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
 			mWrap.http.forEach(http -> {
 				try {
 					proxy(req, resp, http);
@@ -315,15 +396,70 @@ public class Application extends HttpServlet {
 				}
 			});
 		} finally {
+
 			MBEAN_APP.mbean.stream().filter(mbean -> {
-				return method.queueName != null && !method.queueName.isEmpty() && mbean.objectName.contains(method.queueName);
+				return method.queueName != null && !method.queueName.isEmpty()
+						&& mbean.objectName.contains(method.queueName);
 			}).forEach(mbean -> {
+				mbean.attribute.stream().sorted(new Comparator<MBAttribute>() {
+					@Override
+					public int compare(MBAttribute o1, MBAttribute o2) {
+						return o1.attrType == null || o2.attrType == null ? 0
+								: o1.attrType.equals("mean-time") ? 1 : o2.attrType.equals("mean-time") ? 1 : 0;
+					}
+				}).filter(attr -> {
+					return attr.attrType != null && (attr.attrType.equals("max-time")
+							|| attr.attrType.equals("min-time") || attr.attrType.equals("mean-time"));
+				}).forEach(attr -> {
+					updateTimes(req, resp, mbean, attr, method);
+				});
 				mbean.attribute.stream().filter(attr -> {
 					return attr.attrType != null && attr.attrType.equals("transient");
 				}).forEach(attr -> {
 					decrementCounter(req, resp, mbean, attr, method);
 				});
 			});
+		}
+	}
+
+	private void updateTimes(HttpServletRequest req, HttpServletResponse resp, MBean mbean, MBAttribute attr,
+			Method method) {
+		final MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+		log("Update times for ", mbean.objectName, " ", attr.attrType);
+		try {
+			if (attr.attrType != null && (attr.attrType.equals("max-time") || attr.attrType.equals("min-time")
+					|| attr.attrType.equals("mean-time")) && method instanceof MethodWrapperCallback) {
+				MethodWrapperCallback mWrapper = (MethodWrapperCallback) method;
+				ObjectName objName = new ObjectName(mbean.objectName);
+				Integer timeAttr = (Integer) server.getAttribute(objName, attr.name);
+				if (mWrapper.isTimerStarted()) {
+					mWrapper.stopTimer();
+				}
+
+				if (attr.attrType.equals("max-time")) {
+					long elapsedTime = mWrapper.getTimer().getTime();
+					mWrapper.getMeanCalc().maxTime = elapsedTime;
+					if (elapsedTime > timeAttr) {
+						server.setAttribute(objName, new Attribute(attr.name, elapsedTime));
+					}
+				} else if (attr.attrType.equals("min-time")) {
+					long elapsedTime = mWrapper.getTimer().getTime();
+					mWrapper.getMeanCalc().minTime = elapsedTime;
+					if (elapsedTime < timeAttr) {
+						server.setAttribute(objName, new Attribute(attr.name, elapsedTime));
+						mWrapper.getMeanCalc().maxTime = elapsedTime;
+					}
+				} else if (attr.attrType.equals("mean-time")) {
+					Long mean = mWrapper.getMeanCalc().getMean();
+					if (mean > timeAttr) {
+						server.setAttribute(objName, new Attribute(attr.name, mean));
+					}
+				}
+			}
+
+		} catch (AttributeNotFoundException | ReflectionException | MBeanException | InstanceNotFoundException
+				| MalformedObjectNameException | InvalidAttributeValueException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -355,8 +491,8 @@ public class Application extends HttpServlet {
 			if (updateCounter == null) {
 				updateCounter = new Integer(attr.startingValue);
 			}
-			updateCounter = updateCounter>0?updateCounter-1:0;
-			log("Counter " + attr.name + " for queue name:" + objName.getKeyProperty("destinationName") + " "
+			updateCounter = updateCounter > 0 ? updateCounter - 1 : 0;
+			log("Counter " + attr.name + " for object key:" + objName.getKeyProperty(mbean.nameKey) + " "
 					+ updateCounter);
 
 			server.setAttribute(objName, new Attribute(attr.name, updateCounter));
@@ -377,7 +513,7 @@ public class Application extends HttpServlet {
 				updateCounter = new Integer(attr.startingValue);
 			}
 			updateCounter++;
-			log("Counter " + attr.name + " for queue name:" + objName.getKeyProperty("destinationName") + " "
+			log("Counter " + attr.name + " for object key:" + objName.getKeyProperty(mbean.nameKey) + " "
 					+ updateCounter);
 
 			server.setAttribute(objName, new Attribute(attr.name, updateCounter));
@@ -402,13 +538,15 @@ public class Application extends HttpServlet {
 		log("Txn Data", txnData);
 	}
 
-	private void error(HttpServletRequest req, HttpServletResponse resp, Error error) throws ForcedException {
+	private void error(HttpServletRequest req, HttpServletResponse resp, Step step, Error error)
+			throws ForcedException {
 		if (new Random().nextInt(100) <= error.errsPerHundred) {
 			String message = "Generic Error";
 			log("Send 500 error");
 
 			if (error.errorType != null && error.errorType.type.equals("exception")) {
 				message = error.errorType.message == null ? message : error.errorType.message;
+
 				throw new ForcedException(error.errorType.message);
 			}
 			try {
@@ -452,28 +590,30 @@ public class Application extends HttpServlet {
 		String url = http.url;
 		log("Proxy", url);
 
-		HttpClient client = HttpClientBuilder.create().setConnectionTimeToLive(CONNECTION_TIMEOUT_SEC, TimeUnit.SECONDS).build();
-//		HttpClient client = HttpClientBuilder.create().
-//				RequestConfig.custom()
-//			    .setConnectionRequestTimeout(CONNECTION_TIMEOUT_MS)
-//			    .setConnectTimeout(CONNECTION_TIMEOUT_MS)
-//			    .setSocketTimeout(CONNECTION_TIMEOUT_MS)
-//			    .build();
-		
+		HttpClient client = HttpClientBuilder.create().setConnectionTimeToLive(CONNECTION_TIMEOUT_SEC, TimeUnit.SECONDS)
+				.build();
+		// HttpClient client = HttpClientBuilder.create().
+		// RequestConfig.custom()
+		// .setConnectionRequestTimeout(CONNECTION_TIMEOUT_MS)
+		// .setConnectTimeout(CONNECTION_TIMEOUT_MS)
+		// .setSocketTimeout(CONNECTION_TIMEOUT_MS)
+		// .build();
+
 		HttpGet request = new HttpGet(url);
 
 		// add request header
 		request.addHeader("User-Agent", "Test");
+		boolean logHeaders = false;
 		for (Enumeration<String> headers = req.getHeaderNames(); headers.hasMoreElements();) {
 			String headerName = headers.nextElement();
-			log(">", headerName, req.getHeader(headerName));
+			if(logHeaders)log(">", headerName, req.getHeader(headerName));
 			request.addHeader(headerName, req.getHeader(headerName));
 		}
 		HttpResponse response = client.execute(request);
 
 		log("Response Code : ", response.getStatusLine().getStatusCode());
 		if (response.getStatusLine().getStatusCode() != 200) {
-			LOG.error("HTTP error" + response.getStatusLine().getStatusCode() + " received from " + url);
+			LOG.error("HTTP error " + response.getStatusLine().getStatusCode() + " received from " + url);
 		}
 		resp.setStatus(HttpServletResponse.SC_OK);
 
@@ -490,7 +630,7 @@ public class Application extends HttpServlet {
 			Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {
 				if (!downHeader.getName().toLowerCase().equals("content-length")
 						|| !downHeader.getName().toLowerCase().equals("transfer-encoding")) {
-					log("<", downHeader.getName(), downHeader.getValue());
+					if(logHeaders)log("<", downHeader.getName(), downHeader.getValue());
 					resp.addHeader(downHeader.getName(), downHeader.getValue());
 				}
 			});

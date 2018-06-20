@@ -65,6 +65,8 @@ public class Routes {
 		public List<Serve> serve = new ArrayList<Serve>();
 		@XmlElement (name= "delay")
 		public List<Delay> delay = new ArrayList<Delay>();
+		@XmlElement (name= "error")
+		public List<Error> error = new ArrayList<Error>();
 	}
 	
 	@XmlAccessorType (XmlAccessType.FIELD)

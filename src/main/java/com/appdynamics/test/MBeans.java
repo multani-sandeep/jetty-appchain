@@ -36,6 +36,9 @@ public class MBeans {
 		@XmlAttribute
 		public String objectName;
 		
+		@XmlAttribute
+		public String nameKey;
+		
 		@javax.xml.bind.annotation.XmlElement
 		public List<MBAttribute> attribute;
 	}
