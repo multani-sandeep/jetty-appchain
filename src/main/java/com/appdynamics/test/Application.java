@@ -120,41 +120,41 @@ public class Application extends HttpServlet {
 		LOG.info(APP_NAME + ": " + Arrays.stream(objects).map(Object::toString).collect(Collectors.joining(" ")));
 	}
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-		service(req, resp);
-	}
-
-	@Override
-	protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		service(req, resp);
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		service(req, resp);
-	}
-
-	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		service(req, resp);
-	}
-
-	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		service(req, resp);
-	}
-
-	@Override
-	protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		service(req, resp);
-	}
-
-	@Override
-	protected void doTrace(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		service(req, resp);
-	}
+//	@Override
+//	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//
+//		service(req, resp);
+//	}
+//
+//	@Override
+//	protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		service(req, resp);
+//	}
+//
+//	@Override
+//	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		service(req, resp);
+//	}
+//
+//	@Override
+//	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		service(req, resp);
+//	}
+//
+//	@Override
+//	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		service(req, resp);
+//	}
+//
+//	@Override
+//	protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		service(req, resp);
+//	}
+//
+//	@Override
+//	protected void doTrace(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		service(req, resp);
+//	}
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -376,14 +376,6 @@ public class Application extends HttpServlet {
 					e.printStackTrace();
 				}
 			});
-			mWrap.http.forEach(http -> {
-				try {
-					proxy(req, resp, http);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
 			mWrap.serve.forEach(http -> {
 				serve(req, resp, http);
 			});
@@ -396,7 +388,7 @@ public class Application extends HttpServlet {
 				}
 			});
 		} finally {
-
+			final boolean incrementFailedCount = failed; 
 			MBEAN_APP.mbean.stream().filter(mbean -> {
 				return method.queueName != null && !method.queueName.isEmpty()
 						&& mbean.objectName.contains(method.queueName);
@@ -413,6 +405,13 @@ public class Application extends HttpServlet {
 				}).forEach(attr -> {
 					updateTimes(req, resp, mbean, attr, method);
 				});
+				if(incrementFailedCount){
+					mbean.attribute.stream().filter(attr -> {
+						return attr.attrType != null && attr.attrType.equals("error");
+					}).forEach(attr -> {
+						incrementCounter(req, resp, mbean, attr, method);
+					});
+				}
 				mbean.attribute.stream().filter(attr -> {
 					return attr.attrType != null && attr.attrType.equals("transient");
 				}).forEach(attr -> {
@@ -629,7 +628,7 @@ public class Application extends HttpServlet {
 			PrintWriter wrtr = resp.getWriter();
 			Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {
 				if (!downHeader.getName().toLowerCase().equals("content-length")
-						|| !downHeader.getName().toLowerCase().equals("transfer-encoding")) {
+						&& !downHeader.getName().toLowerCase().equals("transfer-encoding") && !downHeader.getName().toLowerCase().equals("date")) {
 					if(logHeaders)log("<", downHeader.getName(), downHeader.getValue());
 					resp.addHeader(downHeader.getName(), downHeader.getValue());
 				}
@@ -660,7 +659,7 @@ public class Application extends HttpServlet {
 		try {
 			for (Enumeration<String> headers = req.getHeaderNames(); headers.hasMoreElements();) {
 				String headerName = headers.nextElement();
-				log(">", headerName, req.getHeader(headerName));
+				//log(">", headerName, req.getHeader(headerName));
 			}
 			PrintWriter wrtr = resp.getWriter();
 			wrtr.print(serve.payload);

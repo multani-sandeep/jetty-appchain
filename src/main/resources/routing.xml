@@ -238,7 +238,7 @@
 				<http url="http://localhost:8282/commercial-cpm/v1/bookings">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="1" />
+				<!-- <delay msec="50" random="1" /> -->
 			</step>
 		</node>
 	</route>
@@ -255,7 +255,7 @@
 					<param name="numberOfSeats" from="header" key="numberOfSeats" />
 					<param name="numberOfBags" from="header" key="numberOfBags" />
 				</method>
-				<delay msec="50" random="5" />
+				<!-- <delay msec="50" random="5" /> -->
 				<error errsperhundred="1">
 					<errortype type="exception">
 						<message>Commit booking failed</message>
@@ -272,14 +272,14 @@
 					<http url="http://localhost:8383/commercial-mnp/v3/bookings_ESB">
 						<payload>Empty</payload>
 					</http>
-					<delay msec="100" g-mean="50" g-deviation="50" />
+					<!-- <delay msec="100" g-mean="50" g-deviation="50" /> -->
 				</methodwrapper>
 				<error errsperhundred="1">
 					<errortype type="exception">
 						<message>Commit booking failed</message>
 					</errortype>
 				</error>
-				<delay msec="50" random="2" />
+				<!-- <delay msec="50" random="2" /> -->
 			</step>
 		</node>
 	</route>
@@ -291,7 +291,7 @@
 					<http url="http://localhost:8484/commercial-mnp/v3/bookings_consumerq">
 						<payload>Empty</payload>
 					</http>
-					<delay msec="100" g-mean="50" g-deviation="50" />
+					<!-- <delay msec="100" g-mean="50" g-deviation="50" /> -->
 					<error errsperhundred="1">
 						<errortype type="exception">
 							<message>Commit booking failed</message>
@@ -303,7 +303,7 @@
 						<message>Commit booking failed</message>
 					</errortype>
 				</error>
-				<delay msec="50" random="2" />
+				<!-- <delay msec="50" random="2" /> -->
 			</step>
 		</node>
 	</route>
@@ -315,14 +315,14 @@
 					<http url="http://localhost:8585/commercial-mnp/v3/al-bookings">
 						<payload>Empty</payload>
 					</http>
-					<delay msec="100" g-mean="50" g-deviation="50" />
+					<!-- <delay msec="100" g-mean="50" g-deviation="50" /> -->
 				</methodwrapper>
 				<error errsperhundred="1">
 					<errortype type="exception">
 						<message>Commit booking failed</message>
 					</errortype>
 				</error>
-				<delay msec="50" random="2" />
+				<!-- <delay msec="50" random="2" /> -->
 			</step>
 		</node>
 	</route>
@@ -337,7 +337,7 @@
 						<message>Commit booking failed</message>
 					</errortype>
 				</error>
-				<delay msec="50" random="2" />
+				<!-- <delay msec="50" random="2" /> -->
 			</step>
 		</node>
 	</route>
