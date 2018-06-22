@@ -418,12 +418,14 @@
 	<route url="/commercial-mnp/v3/_bookingupdated_ESB">
 		<node name="EI-ESB">
 			<step seq="1">
-				<methodwrapper name="updateMbeanStats" queueName="">
+				<methodwrapper name="updateMbeanStats"
+					queueName="org.apache.camel:context=com.easyjet.ei.commercial.bookingupdatedv1.service-BookingUpdatedContext,type=routes,name=&quot;bookingupdated&quot;">
 					<http
 						url="http://localhost:8484/commercial-mnp/v3/_bookingupdated_consumerq">
 						<payload>Empty</payload>
 					</http>
-					<delay msec="100" random="10" />
+					<delay msec="100" random="5" />
+					<error errsperhundred="1" />
 				</methodwrapper>
 				<error errsperhundred="10" />
 			</step>

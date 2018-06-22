@@ -659,7 +659,7 @@ public class Application extends HttpServlet {
 		try {
 			for (Enumeration<String> headers = req.getHeaderNames(); headers.hasMoreElements();) {
 				String headerName = headers.nextElement();
-				//log(">", headerName, req.getHeader(headerName));
+				//log("<", headerName, req.getHeader(headerName));
 			}
 			PrintWriter wrtr = resp.getWriter();
 			wrtr.print(serve.payload);

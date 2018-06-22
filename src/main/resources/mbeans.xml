@@ -146,7 +146,21 @@
 				type="java.lang.Integer" value="0" />
 			<attribute name="MeanProcessingTime" attrType="mean-time"
 				type="java.lang.Integer" value="0" />
-				
+		</mbean>
+		<mbean type="Route" nameKey="name"
+			objectName="org.apache.camel:context=com.easyjet.ei.commercial.bookingupdatedv1.service-BookingUpdatedContext,type=routes,name=&quot;bookingupdated&quot;">
+			<attribute name="ExchangesCompleted" attrType="increment"
+				type="java.lang.Integer" value="0" />
+			<attribute name="ExchangesInflight" attrType="transient"
+				type="java.lang.Integer" value="0" />
+			<attribute name="ExchangesFailed" attrType="error"
+				type="java.lang.Integer" value="0" />
+			<attribute name="MaxProcessingTime" attrType="max-time"
+				type="java.lang.Integer" value="0" />
+			<attribute name="MinProcessingTime" attrType="min-time"
+				type="java.lang.Integer" value="0" />
+			<attribute name="MeanProcessingTime" attrType="mean-time"
+				type="java.lang.Integer" value="0" />
 		</mbean>
 	</application>
 </mbeans>
