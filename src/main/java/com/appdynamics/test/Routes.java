@@ -59,6 +59,7 @@ public class Routes {
 	
 	@XmlAccessorType (XmlAccessType.FIELD)
 	public static class MethodWrapper extends Method{
+		
 		@XmlElement (name= "http")
 		public List<Http> http = new ArrayList<Http>();
 		@XmlElement (name= "serve")
@@ -120,6 +121,9 @@ public class Routes {
 	public static class Method{
 		@XmlAttribute
 		public String name;
+		
+		@XmlAttribute
+		public Integer load;
 		
 		@XmlAttribute
 		public String queueName;

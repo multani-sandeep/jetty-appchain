@@ -120,41 +120,48 @@ public class Application extends HttpServlet {
 		LOG.info(APP_NAME + ": " + Arrays.stream(objects).map(Object::toString).collect(Collectors.joining(" ")));
 	}
 
-//	@Override
-//	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//
-//		service(req, resp);
-//	}
-//
-//	@Override
-//	protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		service(req, resp);
-//	}
-//
-//	@Override
-//	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		service(req, resp);
-//	}
-//
-//	@Override
-//	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		service(req, resp);
-//	}
-//
-//	@Override
-//	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		service(req, resp);
-//	}
-//
-//	@Override
-//	protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		service(req, resp);
-//	}
-//
-//	@Override
-//	protected void doTrace(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		service(req, resp);
-//	}
+	// @Override
+	// protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	// throws ServletException, IOException {
+	//
+	// service(req, resp);
+	// }
+	//
+	// @Override
+	// protected void doHead(HttpServletRequest req, HttpServletResponse resp)
+	// throws ServletException, IOException {
+	// service(req, resp);
+	// }
+	//
+	// @Override
+	// protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+	// throws ServletException, IOException {
+	// service(req, resp);
+	// }
+	//
+	// @Override
+	// protected void doPut(HttpServletRequest req, HttpServletResponse resp)
+	// throws ServletException, IOException {
+	// service(req, resp);
+	// }
+	//
+	// @Override
+	// protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
+	// throws ServletException, IOException {
+	// service(req, resp);
+	// }
+	//
+	// @Override
+	// protected void doOptions(HttpServletRequest req, HttpServletResponse
+	// resp) throws ServletException, IOException {
+	// service(req, resp);
+	// }
+	//
+	// @Override
+	// protected void doTrace(HttpServletRequest req, HttpServletResponse resp)
+	// throws ServletException, IOException {
+	// service(req, resp);
+	// }
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -168,6 +175,12 @@ public class Application extends HttpServlet {
 		int rnd = new Random().nextInt(100);
 		log((Object) rnd, " ", serve.load);
 		return rnd < serve.load;
+	}
+
+	protected static final boolean serveMe(Step step, MethodWrapper methodWrapper) {
+		int rnd = new Random().nextInt(100);
+		log((Object) rnd, " ", methodWrapper.load);
+		return rnd < methodWrapper.load;
 	}
 
 	protected void route(HttpServletRequest req, HttpServletResponse resp) throws ClientProtocolException, IOException {
@@ -260,41 +273,58 @@ public class Application extends HttpServlet {
 						}
 					});
 					if (step.weighted) {
-						Serve srv = step.serve.stream().sorted(new Comparator<Serve>() {
-							@Override
-							public int compare(Serve o1, Serve o2) {
-								return o1.load <= o2.load ? -1 : 1;
+						if (step.serve != null && !step.serve.isEmpty()) {
+							Serve srv = step.serve.stream().sorted(new Comparator<Serve>() {
+								@Override
+								public int compare(Serve o1, Serve o2) {
+									return o1.load <= o2.load ? -1 : 1;
+								}
+							}).filter(serve -> {
+								return serveMe(step, serve);
+							}).findFirst().orElse(step.serve.get(0));
+							serve(req, resp, srv);
+						}
+
+						if (step.methodWrapper != null && !step.methodWrapper.isEmpty()) {
+							MethodWrapper methodWrapper = step.methodWrapper.stream()
+									.sorted(new Comparator<MethodWrapper>() {
+										@Override
+										public int compare(MethodWrapper o1, MethodWrapper o2) {
+											return o1.load <= o2.load ? -1 : 1;
+										}
+									}).filter(mWrapper -> {
+										return serveMe(step, mWrapper);
+									}).findFirst().orElse(step.methodWrapper.get(0));
+							if (methodWrapper.name.equals("updateMbeanStats")) {
+								updateMbeanStats(req, resp, step, methodWrapper, callback);
 							}
-						}).filter(serve -> {
-							return serveMe(step, serve);
-						}).findFirst().orElse(step.serve.get(0));
-						serve(req, resp, srv);
+						}
 					} else {
 						step.serve.forEach(serve -> {
 							serve(req, resp, serve);
 						});
+
+						step.delay.forEach(delay -> {
+							delay(req, resp, delay);
+						});
+						step.method.stream().filter(method -> {
+							return method.name.equals("copyFromHeader");
+						}).forEach(method -> {
+							copyFromHeader(req, resp, method);
+						});
+
+						step.method.stream().filter(method -> {
+							return method.name.equals("updateMbeanStats");
+						}).forEach(method -> {
+							updateMbeanStats(req, resp, step, method, null);
+						});
+
+						step.methodWrapper.stream().filter(method -> {
+							return method.name.equals("updateMbeanStats");
+						}).forEach(method -> {
+							updateMbeanStats(req, resp, step, method, callback);
+						});
 					}
-
-					step.delay.forEach(delay -> {
-						delay(req, resp, delay);
-					});
-					step.method.stream().filter(method -> {
-						return method.name.equals("copyFromHeader");
-					}).forEach(method -> {
-						copyFromHeader(req, resp, method);
-					});
-
-					step.method.stream().filter(method -> {
-						return method.name.equals("updateMbeanStats");
-					}).forEach(method -> {
-						updateMbeanStats(req, resp, step, method, null);
-					});
-
-					step.methodWrapper.stream().filter(method -> {
-						return method.name.equals("updateMbeanStats");
-					}).forEach(method -> {
-						updateMbeanStats(req, resp, step, method, callback);
-					});
 
 				});
 			} catch (ForcedException exc) {
@@ -337,7 +367,7 @@ public class Application extends HttpServlet {
 			MethodWrapperCallback callback) {
 		MBEAN_APP.mbean.stream().filter(mbean -> {
 			return method.queueName != null && !method.queueName.isEmpty()
-					&& mbean.objectName.contains(method.queueName);
+					&& mbean.objectName.startsWith(method.queueName);
 		}).forEach(mbean -> {
 			mbean.attribute.stream().filter(attr -> {
 				return attr.attrType != null
@@ -388,10 +418,10 @@ public class Application extends HttpServlet {
 				}
 			});
 		} finally {
-			final boolean incrementFailedCount = failed; 
+			final boolean incrementFailedCount = failed;
 			MBEAN_APP.mbean.stream().filter(mbean -> {
 				return method.queueName != null && !method.queueName.isEmpty()
-						&& mbean.objectName.contains(method.queueName);
+						&& mbean.objectName.startsWith(method.queueName);
 			}).forEach(mbean -> {
 				mbean.attribute.stream().sorted(new Comparator<MBAttribute>() {
 					@Override
@@ -405,7 +435,7 @@ public class Application extends HttpServlet {
 				}).forEach(attr -> {
 					updateTimes(req, resp, mbean, attr, method);
 				});
-				if(incrementFailedCount){
+				if (incrementFailedCount) {
 					mbean.attribute.stream().filter(attr -> {
 						return attr.attrType != null && attr.attrType.equals("error");
 					}).forEach(attr -> {
@@ -605,7 +635,8 @@ public class Application extends HttpServlet {
 		boolean logHeaders = false;
 		for (Enumeration<String> headers = req.getHeaderNames(); headers.hasMoreElements();) {
 			String headerName = headers.nextElement();
-			if(logHeaders)log(">", headerName, req.getHeader(headerName));
+			if (logHeaders)
+				log(">", headerName, req.getHeader(headerName));
 			request.addHeader(headerName, req.getHeader(headerName));
 		}
 		HttpResponse response = client.execute(request);
@@ -628,8 +659,10 @@ public class Application extends HttpServlet {
 			PrintWriter wrtr = resp.getWriter();
 			Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {
 				if (!downHeader.getName().toLowerCase().equals("content-length")
-						&& !downHeader.getName().toLowerCase().equals("transfer-encoding") && !downHeader.getName().toLowerCase().equals("date")) {
-					if(logHeaders)log("<", downHeader.getName(), downHeader.getValue());
+						&& !downHeader.getName().toLowerCase().equals("transfer-encoding")
+						&& !downHeader.getName().toLowerCase().equals("date")) {
+					if (logHeaders)
+						log("<", downHeader.getName(), downHeader.getValue());
 					resp.addHeader(downHeader.getName(), downHeader.getValue());
 				}
 			});
@@ -659,7 +692,7 @@ public class Application extends HttpServlet {
 		try {
 			for (Enumeration<String> headers = req.getHeaderNames(); headers.hasMoreElements();) {
 				String headerName = headers.nextElement();
-				//log("<", headerName, req.getHeader(headerName));
+				// log("<", headerName, req.getHeader(headerName));
 			}
 			PrintWriter wrtr = resp.getWriter();
 			wrtr.print(serve.payload);

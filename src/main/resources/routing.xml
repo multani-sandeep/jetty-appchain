@@ -127,7 +127,7 @@
 		</node>
 	</route>
 	<route url="/commercial-cpm/v1/baskets/basket-id/passengers">
-		<node name="Hybris-ACP" weighted="true">
+		<node name="Hybris-ACP" >
 			<step seq="1" weighted="true">
 				<serve load="65">
 					<payload><![CDATA[<test><buyaseat>false</buyaseat></test>]]></payload>
@@ -622,18 +622,20 @@
 	</route>
 	<route url="/commercial-mnp/v3/_createcustomer_consumerq">
 		<node name="EI-AMQ">
-			<step seq="1">
-				<serve>
-					<payload>Found flights</payload>
-				</serve>
-				<delay msec="50" random="5" />
-				<error errsperhundred="10" />
+			<step seq="1" weighted="true">
 				<methodwrapper name="updateMbeanStats"
-					queueName="com.customerregisteredv1.queue.consume">
+					queueName="com.customerregisteredv1.queue.consume" load="95">
 					<serve>
 						<payload>Customer updated</payload>
 					</serve>
-					<delay msec="100" g-mean="50" g-deviation="50" />
+					<delay msec="100" random="1" />
+				</methodwrapper>
+				<methodwrapper name="updateMbeanStats"
+					queueName="DLQ.com.customerregisteredv1.queue.consume" load="5">
+					<serve>
+						<payload>Customer update in DLQ</payload>
+					</serve>
+					<delay msec="100" random="1" />
 				</methodwrapper>
 			</step>
 		</node>
