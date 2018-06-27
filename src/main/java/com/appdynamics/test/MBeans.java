@@ -54,7 +54,7 @@ public class MBeans {
 		@XmlAttribute
 		public String attrType;
 		
-		@XmlAttribute
+		@XmlAttribute (name="value")
 		public String startingValue;
 		
 		@XmlAttribute

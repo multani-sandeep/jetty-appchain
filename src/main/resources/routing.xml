@@ -15,7 +15,7 @@
 				<serve>
 					<payload>Agent Login Successful</payload>
 				</serve>
-				<delay msec="50" random="3" />
+				<delay msec="10" random="3" />
 			</step>
 		</node>
 	</route>
@@ -30,7 +30,7 @@
 							</get> -->
 					</payload>
 				</http>
-				<delay msec="50" random="1" />
+				<delay msec="10" random="1" />
 			</step>
 		</node>
 	</route>
@@ -40,7 +40,7 @@
 				<http url="http://localhost:8383/commercial-mnp/v3/search/flights">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 				<error errsperhundred="10" />
 			</step>
 		</node>
@@ -51,7 +51,7 @@
 				<serve>
 					<payload>Found flights</payload>
 				</serve>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 				<error errsperhundred="10" />
 			</step>
 		</node>
@@ -65,7 +65,7 @@
 				<http url="http://localhost:8282/commercial-cpm/v1/basket/flight">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="1" />
+				<delay msec="10" random="1" />
 			</step>
 		</node>
 	</route>
@@ -75,7 +75,7 @@
 				<http url="http://localhost:8383/commercial-mnp/v3/basket/flight">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 				<error errsperhundred="10" />
 			</step>
 		</node>
@@ -86,7 +86,7 @@
 				<serve>
 					<payload>Added flight to Basket</payload>
 				</serve>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 				<error errsperhundred="5" />
 			</step>
 		</node>
@@ -99,7 +99,7 @@
 				<http url="http://localhost:8282/commercial-cpm/v1/basket">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="1" />
+				<delay msec="10" random="1" />
 			</step>
 		</node>
 	</route>
@@ -109,7 +109,7 @@
 				<serve>
 					<payload>View Basket success</payload>
 				</serve>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 			</step>
 		</node>
 	</route>
@@ -122,7 +122,7 @@
 					url="http://localhost:8282/commercial-cpm/v1/baskets/basket-id/passengers">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="1" />
+				<delay msec="10" random="1" />
 			</step>
 		</node>
 	</route>
@@ -135,7 +135,7 @@
 				<serve load="35">
 					<payload><![CDATA[<test><buyaseat>true</buyaseat></test>]]></payload>
 				</serve>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 			</step>
 		</node>
 	</route>
@@ -147,7 +147,7 @@
 				<http url="http://localhost:8282/commercial-cpm/v1/payment-methods">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="1" />
+				<delay msec="10" random="1" />
 			</step>
 		</node>
 	</route>
@@ -157,7 +157,7 @@
 				<http url="http://localhost:8383/commercial-mnp/v3/payment-methods">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 				<error errsperhundred="1" />
 			</step>
 		</node>
@@ -169,7 +169,7 @@
 					url="http://localhost:8686/easyJet.CustomerPayments.Gateway/PaymentGateway.svc">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="1" />
+				<delay msec="10" random="1" />
 			</step>
 		</node>
 	</route>
@@ -179,7 +179,7 @@
 				<serve>
 					<payload>Payment methods</payload>
 				</serve>
-				<delay msec="50" random="2" />
+				<delay msec="10" random="2" />
 			</step>
 		</node>
 	</route>
@@ -192,7 +192,7 @@
 					url="http://localhost:8282/commercial-cpm/v1/basket/basket-id/make-payment-request">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="1" />
+				<delay msec="10" random="1" />
 			</step>
 		</node>
 	</route>
@@ -203,7 +203,7 @@
 					url="http://localhost:8383/commercial-mnp/v3/basket/basket-id/make-payment-request">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 			</step>
 		</node>
 	</route>
@@ -214,7 +214,7 @@
 					url="http://localhost:8686/easyJet.CustomerPayments.Gateway/PaymentGateway.svc/makepayment">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="2" />
+				<delay msec="10" random="2" />
 			</step>
 		</node>
 	</route>
@@ -225,7 +225,7 @@
 				<serve>
 					<payload>Payment accepted</payload>
 				</serve>
-				<delay msec="50" random="2" />
+				<delay msec="10" random="2" />
 			</step>
 		</node>
 	</route>
@@ -238,7 +238,7 @@
 				<http url="http://localhost:8282/commercial-cpm/v1/bookings">
 					<payload>Empty</payload>
 				</http>
-				<!-- <delay msec="50" random="1" /> -->
+				<!-- <delay msec="10" random="1" /> -->
 			</step>
 		</node>
 	</route>
@@ -255,7 +255,7 @@
 					<param name="numberOfSeats" from="header" key="numberOfSeats" />
 					<param name="numberOfBags" from="header" key="numberOfBags" />
 				</method>
-				<!-- <delay msec="50" random="5" /> -->
+				<!-- <delay msec="10" random="5" /> -->
 				<error errsperhundred="1">
 					<errortype type="exception">
 						<message>Commit booking failed</message>
@@ -272,14 +272,14 @@
 					<http url="http://localhost:8383/commercial-mnp/v3/bookings_ESB">
 						<payload>Empty</payload>
 					</http>
-					<!-- <delay msec="100" g-mean="50" g-deviation="50" /> -->
+					<!-- <delay msec="10" g-mean="50" g-deviation="50" /> -->
 				</methodwrapper>
 				<error errsperhundred="1">
 					<errortype type="exception">
 						<message>Commit booking failed</message>
 					</errortype>
 				</error>
-				<!-- <delay msec="50" random="2" /> -->
+				<!-- <delay msec="10" random="2" /> -->
 			</step>
 		</node>
 	</route>
@@ -287,11 +287,11 @@
 		<node name="EI-ESB">
 			<step seq="1">
 				<methodwrapper name="updateMbeanStats"
-					queueName="org.apache.camel:context=com.easyjet.ei.commercial.bookingcreatedv1.service-BookingCreatedContext,type=routes,name=&quot;bookingCreated&quot;">
+					queueName="&quot;bookingCreated&quot;">
 					<http url="http://localhost:8484/commercial-mnp/v3/bookings_consumerq">
 						<payload>Empty</payload>
 					</http>
-					<!-- <delay msec="100" g-mean="50" g-deviation="50" /> -->
+					<!-- <delay msec="10" g-mean="50" g-deviation="50" /> -->
 					<error errsperhundred="1">
 						<errortype type="exception">
 							<message>Commit booking failed</message>
@@ -303,7 +303,7 @@
 						<message>Commit booking failed</message>
 					</errortype>
 				</error>
-				<!-- <delay msec="50" random="2" /> -->
+				<!-- <delay msec="10" random="2" /> -->
 			</step>
 		</node>
 	</route>
@@ -315,14 +315,14 @@
 					<http url="http://localhost:8585/commercial-mnp/v3/al-bookings">
 						<payload>Empty</payload>
 					</http>
-					<!-- <delay msec="100" g-mean="50" g-deviation="50" /> -->
+					<!-- <delay msec="10" g-mean="50" g-deviation="50" /> -->
 				</methodwrapper>
 				<error errsperhundred="1">
 					<errortype type="exception">
 						<message>Commit booking failed</message>
 					</errortype>
 				</error>
-				<!-- <delay msec="50" random="2" /> -->
+				<!-- <delay msec="10" random="2" /> -->
 			</step>
 		</node>
 	</route>
@@ -337,7 +337,7 @@
 						<message>Commit booking failed</message>
 					</errortype>
 				</error>
-				<!-- <delay msec="50" random="2" /> -->
+				<!-- <delay msec="10" random="2" /> -->
 			</step>
 		</node>
 	</route>
@@ -349,7 +349,7 @@
 				<http url="http://localhost:8282/commercial-cpm/v1/bookings/booking-id">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="1" />
+				<delay msec="10" random="1" />
 			</step>
 		</node>
 	</route>
@@ -359,7 +359,7 @@
 				<serve>
 					<payload>View booking success</payload>
 				</serve>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 			</step>
 		</node>
 	</route>
@@ -372,7 +372,7 @@
 					url="http://localhost:8282/commercial-cpm/v1/bookings/booking-id/checkin-request">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="1" />
+				<delay msec="10" random="1" />
 			</step>
 		</node>
 	</route>
@@ -387,7 +387,7 @@
 					url="http://localhost:8484/commercial-mnp/v3/bookings/booking-id/checkin-request/_bookingupdated">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 			</step>
 		</node>
 	</route>
@@ -397,7 +397,7 @@
 				<serve>
 					<payload>Check-in request processed success</payload>
 				</serve>
-				<delay msec="50" random="2" />
+				<delay msec="10" random="2" />
 			</step>
 		</node>
 	</route>
@@ -410,7 +410,7 @@
 					<http url="http://localhost:8383/commercial-mnp/v3/_bookingupdated_ESB">
 						<payload>Empty</payload>
 					</http>
-					<delay msec="100" random="10" />
+					<delay msec="10" random="10" />
 				</methodwrapper>
 			</step>
 		</node>
@@ -419,12 +419,12 @@
 		<node name="EI-ESB">
 			<step seq="1">
 				<methodwrapper name="updateMbeanStats"
-					queueName="org.apache.camel:context=com.easyjet.ei.commercial.bookingupdatedv1.service-BookingUpdatedContext,type=routes,name=&quot;bookingupdated&quot;">
+					queueName="&quot;bookingupdated&quot;">
 					<http
 						url="http://localhost:8484/commercial-mnp/v3/_bookingupdated_consumerq">
 						<payload>Empty</payload>
 					</http>
-					<delay msec="100" random="5" />
+					<delay msec="10" random="5" />
 					<error errsperhundred="1" />
 				</methodwrapper>
 				<error errsperhundred="10" />
@@ -439,7 +439,7 @@
 					<serve>
 						<payload>Booking updated</payload>
 					</serve>
-					<delay msec="100" random="10" />
+					<delay msec="10" random="2" />
 				</methodwrapper>
 				<error errsperhundred="5" />
 			</step>
@@ -456,7 +456,7 @@
 					<payload>Empty</payload>
 				</http>
 			</step>
-			<delay msec="50" random="1" />
+			<delay msec="10" random="1" />
 		</node>
 	</route>
 	<route
@@ -467,7 +467,7 @@
 					<payload>Boarding pass gen'd successfully</payload>
 				</serve>
 			</step>
-			<delay msec="50" random="3" />
+			<delay msec="10" random="3" />
 		</node>
 	</route>
 	<!-- Print Boarding pass END -->
@@ -481,7 +481,7 @@
 					<payload>Empty</payload>
 				</http>
 			</step>
-			<delay msec="50" random="1" />
+			<delay msec="10" random="1" />
 		</node>
 	</route>
 	<route url="/commercial-cpm/v1/flights/flight-key/seat-map">
@@ -492,7 +492,7 @@
 					<payload>Empty</payload>
 				</http>
 			</step>
-			<delay msec="50" random="3" />
+			<delay msec="10" random="3" />
 		</node>
 	</route>
 	<route
@@ -502,7 +502,7 @@
 				<serve>
 					<payload>Seat map view success</payload>
 				</serve>
-				<delay msec="100" random="5" />
+				<delay msec="10" random="5" />
 			</step>
 		</node>
 	</route>
@@ -516,7 +516,7 @@
 					<payload>Empty</payload>
 				</http>
 			</step>
-			<delay msec="50" random="1" />
+			<delay msec="10" random="1" />
 		</node>
 	</route>
 	<route url="/commercial-cpm/v1/baskets/basket-id/seat-products">
@@ -527,7 +527,7 @@
 					<payload>Empty</payload>
 				</http>
 			</step>
-			<delay msec="50" random="3" />
+			<delay msec="10" random="3" />
 		</node>
 	</route>
 	<route
@@ -537,7 +537,7 @@
 				<serve>
 					<payload>Seat allocation success</payload>
 				</serve>
-				<delay msec="100" random="5" />
+				<delay msec="10" random="5" />
 			</step>
 		</node>
 	</route>
@@ -552,7 +552,7 @@
 				<serve load="5">
 					<payload><![CDATA[<test><addancillary>true</addancillary></test>]]></payload>
 				</serve>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 			</step>
 		</node>
 	</route>
@@ -562,7 +562,7 @@
 				<serve>
 					<payload>Ancillary added to basket</payload>
 				</serve>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 			</step>
 		</node>
 	</route>
@@ -578,7 +578,7 @@
 							</get> -->
 					</payload>
 				</http>
-				<delay msec="50" random="1" />
+				<delay msec="10" random="1" />
 			</step>
 		</node>
 	</route>
@@ -588,7 +588,7 @@
 				<http url="http://localhost:8484/commercial-mnp/v3/_createcustomer">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 				<error errsperhundred="10" />
 			</step>
 		</node>
@@ -596,14 +596,14 @@
 	<route url="/commercial-mnp/v3/_createcustomer">
 		<node name="EI-AMQ">
 			<step seq="1">
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 				<error errsperhundred="10" />
 				<methodwrapper name="updateMbeanStats"
 					queueName="com.customerregisteredv1.queue.consume">
 					<http url="http://localhost:8383/commercial-mnp/v3/_createcustomer_ESB">
 						<payload>Empty</payload>
 					</http>
-					<delay msec="100" g-mean="50" g-deviation="50" />
+					<delay msec="10" g-mean="50" g-deviation="50" />
 				</methodwrapper>
 			</step>
 		</node>
@@ -615,7 +615,7 @@
 					url="http://localhost:8484/commercial-mnp/v3/_createcustomer_consumerq">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 				<error errsperhundred="10" />
 			</step>
 		</node>
@@ -628,14 +628,14 @@
 					<serve>
 						<payload>Customer updated</payload>
 					</serve>
-					<delay msec="100" random="1" />
+					<delay msec="10" random="1" />
 				</methodwrapper>
 				<methodwrapper name="updateMbeanStats"
 					queueName="DLQ.com.customerregisteredv1.queue.consume" load="5">
 					<serve>
 						<payload>Customer update in DLQ</payload>
 					</serve>
-					<delay msec="100" random="1" />
+					<delay msec="10" random="1" />
 				</methodwrapper>
 			</step>
 		</node>
@@ -653,7 +653,7 @@
 							</get> -->
 					</payload>
 				</http>
-				<delay msec="50" random="1" />
+				<delay msec="10" random="1" />
 			</step>
 		</node>
 	</route>
@@ -663,7 +663,7 @@
 				<http url="http://localhost:8484/commercial-mnp/v3/_updatecustomer">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 				<error errsperhundred="10" />
 			</step>
 		</node>
@@ -674,14 +674,14 @@
 				<serve>
 					<payload>Customer updated</payload>
 				</serve>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 				<error errsperhundred="10" />
 				<methodwrapper name="updateMbeanStats"
 					queueName="com.customeraccountchangedv1.queue.produce">
 					<http url="http://localhost:8383/commercial-mnp/v3/_updatecustomer_ESB">
 						<payload>Empty</payload>
 					</http>
-					<delay msec="100" g-mean="50" g-deviation="50" />
+					<delay msec="10" g-mean="50" g-deviation="50" />
 				</methodwrapper>
 			</step>
 		</node>
@@ -692,13 +692,13 @@
 				<serve>
 					<payload>Customer updated</payload>
 				</serve>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 				<error errsperhundred="10" />
 				<http
 					url="http://localhost:8484/commercial-mnp/v3/_updatecustomer_consumerq">
 					<payload>Empty</payload>
 				</http>
-				<delay msec="50" random="5" />
+				<delay msec="10" random="5" />
 				<error errsperhundred="10" />
 			</step>
 		</node>
@@ -712,7 +712,7 @@
 					<serve>
 						<payload>Customer updated</payload>
 					</serve>
-					<delay msec="100" g-mean="50" g-deviation="50" />
+					<delay msec="10" g-mean="50" g-deviation="50" />
 				</methodwrapper>
 			</step>
 		</node>
@@ -741,7 +741,7 @@
 				<serve>
 					<payload>Default Response</payload>
 				</serve>
-				<delay msec="50" random="1" />
+				<delay msec="10" random="1" />
 			</step>
 		</node>
 	</route>

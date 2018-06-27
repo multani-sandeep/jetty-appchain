@@ -37,7 +37,7 @@ public class Queue extends JMXBean {
 		
 		mbean.attribute.forEach(attr -> {
 			try {
-				map.put(attr.name, Class.forName(attr.type).getConstructor(String.class).newInstance("0"));
+				map.put(attr.name, Class.forName(attr.type).getConstructor(String.class).newInstance(attr.attrType!=null && attr.attrType.equals("static")?attr.startingValue:"0"));
 
 			} catch (Exception e) {
 				e.printStackTrace();

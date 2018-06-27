@@ -162,6 +162,9 @@
 				type="java.lang.Integer" value="0" />
 			<attribute name="MeanProcessingTime" attrType="mean-time"
 				type="java.lang.Integer" value="0" />
+			<attribute name="EndpointUri" attrType="static"
+				type="java.lang.String" value="amq://queue:com.bookingcreatedv1.queue.produce" />
+				
 		</mbean>
 		<mbean type="Route" nameKey="name"
 			objectName="org.apache.camel:context=com.easyjet.ei.commercial.bookingupdatedv1.service-BookingUpdatedContext,type=routes,name=&quot;bookingupdated&quot;">
@@ -177,6 +180,8 @@
 				type="java.lang.Integer" value="0" />
 			<attribute name="MeanProcessingTime" attrType="mean-time"
 				type="java.lang.Integer" value="0" />
+			<attribute name="EndpointUri" attrType="static"
+				type="java.lang.String" value="amq://queue:com.bookingupdatedv1.queue.produce" />
 		</mbean>
 	</application>
 </mbeans>

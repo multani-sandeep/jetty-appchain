@@ -23,22 +23,29 @@ appdAMQ="-javaagent:/Users/sandeepsingh/Downloads/appagent/javaagent.jar -Dappdy
 appdABL="-javaagent:/Users/sandeepsingh/Downloads/appagent/javaagent.jar -Dappdynamics.agent.nodeName=App5 -Dappdynamics.agent.tierName=EJ.AbstractionLayer -Djetty.jmxrmiport=9104 "
 appdCPG="-javaagent:/Users/sandeepsingh/Downloads/appagent/javaagent.jar -Dappdynamics.agent.nodeName=App6 -Dappdynamics.agent.tierName=CustomerPayments.Gateway -Djetty.jmxrmiport=9105 "
 
+sleep 2
 #Start Hybris-AD
+set +x
 java $debugAD  $appdAD -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8181 ../../../target/test.war > /tmp/server.log &
 
+sleep 2
 #Start Hybris-ACP
 java $debugACP $appdACP -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8282 ../../../target/test.war >> /tmp/server.log &
 
+sleep 2
 #Start EI-ESB
 java $debugESB $appdESB -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8383 ../../../target/test.war >> /tmp/server.log &
 
+sleep 2
 #Start EI-AMQ
 java $debugAMQ $appdAMQ -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8484 ../../../target/test.war >> /tmp/server.log &
 
+sleep 2
 #Start AbstractionLayer
 java $debugABL $appdABL -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8585 ../../../target/test.war >> /tmp/server.log &
 
+sleep 2
 #Start CustomerPayments.Gateway
 java $debug $appdCPG -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8686 ../../../target/test.war >> /tmp/server.log &
-
+set +x
 tail -f /tmp/server.log

@@ -24,6 +24,7 @@ import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import javax.management.ReflectionException;
+import javax.management.RuntimeErrorException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -366,8 +367,18 @@ public class Application extends HttpServlet {
 	private void updateMbeanStats(HttpServletRequest req, HttpServletResponse resp, Step step, Method method,
 			MethodWrapperCallback callback) {
 		MBEAN_APP.mbean.stream().filter(mbean -> {
+			ObjectName objName = null;
+			try {
+				objName = new ObjectName(mbean.objectName);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
 			return method.queueName != null && !method.queueName.isEmpty()
-					&& mbean.objectName.startsWith(method.queueName);
+					&& ((mbean.type.equals("Queue")
+							&& method.queueName.equals(objName.getKeyProperty("destinationName")))
+							|| (mbean.type.equals("Route")
+									&& method.queueName.equals(objName.getKeyProperty("name"))));
 		}).forEach(mbean -> {
 			mbean.attribute.stream().filter(attr -> {
 				return attr.attrType != null
@@ -420,8 +431,18 @@ public class Application extends HttpServlet {
 		} finally {
 			final boolean incrementFailedCount = failed;
 			MBEAN_APP.mbean.stream().filter(mbean -> {
+				ObjectName objName = null;
+				try {
+					objName = new ObjectName(mbean.objectName);
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
 				return method.queueName != null && !method.queueName.isEmpty()
-						&& mbean.objectName.startsWith(method.queueName);
+						&& ((mbean.type.equals("Queue")
+								&& method.queueName.equals(objName.getKeyProperty("destinationName")))
+								|| (mbean.type.equals("Route")
+										&& method.queueName.equals(objName.getKeyProperty("name"))));
 			}).forEach(mbean -> {
 				mbean.attribute.stream().sorted(new Comparator<MBAttribute>() {
 					@Override
