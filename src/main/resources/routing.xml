@@ -678,6 +678,7 @@
 				<error errsperhundred="10" />
 				<methodwrapper name="updateMbeanStats"
 					queueName="com.customeraccountchangedv1.queue.produce">
+					<error errsperhundred="10" />
 					<http url="http://localhost:8383/commercial-mnp/v3/_updatecustomer_ESB">
 						<payload>Empty</payload>
 					</http>
