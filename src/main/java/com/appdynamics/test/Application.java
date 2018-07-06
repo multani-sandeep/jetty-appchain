@@ -462,12 +462,13 @@ public class Application extends HttpServlet {
 					}).forEach(attr -> {
 						incrementCounter(req, resp, mbean, attr, method);
 					});
+				
+					mbean.attribute.stream().filter(attr -> {
+						return attr.attrType != null && attr.attrType.equals("transient");
+					}).forEach(attr -> {
+						decrementCounter(req, resp, mbean, attr, method);
+					});
 				}
-				mbean.attribute.stream().filter(attr -> {
-					return attr.attrType != null && attr.attrType.equals("transient");
-				}).forEach(attr -> {
-					decrementCounter(req, resp, mbean, attr, method);
-				});
 			});
 		}
 	}
