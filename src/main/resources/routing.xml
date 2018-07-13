@@ -34,6 +34,19 @@
 			</step>
 		</node>
 	</route>
+	<route url="/commercial-cpm/megaswitch/v1/b2brouting">
+		<node name="MS">
+			<step seq="1">
+				<http url="http://localhost:8282/commercial-cpm/v1/search/flights">
+					<payload>
+						<!-- <get> <param name="requestData.departureAirportCode"></param> 
+							</get> -->
+					</payload>
+				</http>
+				<delay msec="10" random="1" />
+			</step>
+		</node>
+	</route>
 	<route url="/commercial-cpm/v1/search/flights">
 		<node name="Hybris-ACP">
 			<step seq="1">
@@ -47,6 +60,20 @@
 	</route>
 	<route url="/commercial-mnp/v3/search/flights">
 		<node name="EI-ESB">
+			<step seq="1">
+			<methodwrapper name="updateMbeanStats"
+					queueName="&quot;PricedAvailability&quot;">
+					<http url="http://localhost:8585/commercial-mnp/v3/search/al-flights">
+						<payload>Empty</payload>
+					</http>
+					<delay msec="10" random="5" />
+					<error errsperhundred="1" />
+				</methodwrapper>
+			</step>
+		</node>
+	</route>
+	<route url="/commercial-mnp/v3/search/al-flights">
+		<node name="EJ.AbstractionLayer">
 			<step seq="1">
 				<serve>
 					<payload>Found flights</payload>

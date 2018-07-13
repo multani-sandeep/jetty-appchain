@@ -13,6 +13,7 @@ cd ./src/main/resources/;
 #debugESB="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9002,suspend=n"
 debugAMQ="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9003,suspend=n"
 #debugABL="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9004,suspend=n"
+#debugMSW="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9005,suspend=n"
 
 jmxEnable="--jar ../../../target/test/WEB-INF/lib/jetty-jmx-9.4.11.v20180605.jar --config ../../../src/etc/jetty-jmx.xml"
 
@@ -22,6 +23,8 @@ appdESB="-javaagent:/Users/sandeepsingh/Downloads/appagent/javaagent.jar -Dappdy
 appdAMQ="-javaagent:/Users/sandeepsingh/Downloads/appagent/javaagent.jar -Dappdynamics.agent.nodeName=App4 -Dappdynamics.agent.tierName=EI-AMQ -Djetty.jmxrmiport=9103 "
 appdABL="-javaagent:/Users/sandeepsingh/Downloads/appagent/javaagent.jar -Dappdynamics.agent.nodeName=App5 -Dappdynamics.agent.tierName=EJ.AbstractionLayer -Djetty.jmxrmiport=9104 "
 appdCPG="-javaagent:/Users/sandeepsingh/Downloads/appagent/javaagent.jar -Dappdynamics.agent.nodeName=App6 -Dappdynamics.agent.tierName=CustomerPayments.Gateway -Djetty.jmxrmiport=9105 "
+appdMSW="-javaagent:/Users/sandeepsingh/Downloads/appagent/javaagent.jar -Dappdynamics.agent.nodeName=App7 -Dappdynamics.agent.tierName=MS -Djetty.jmxrmiport=9106 "
+
 
 sleep 2
 #Start Hybris-AD
@@ -47,5 +50,12 @@ java $debugABL $appdABL -jar ../../../target/dependency/jetty-runner.jar $jmxEna
 sleep 2
 #Start CustomerPayments.Gateway
 java $debug $appdCPG -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8686 ../../../target/test.war >> /tmp/server.log &
+
+sleep 4
+#Start CustomerPayments.Gateway
+java $debugMSW $appdMSW -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8787 ../../../target/test.war >> /tmp/server.log &
+
 set +x
+
+
 tail -f /tmp/server.log

@@ -461,8 +461,8 @@ public class Application extends HttpServlet {
 						return attr.attrType != null && attr.attrType.equals("error");
 					}).forEach(attr -> {
 						incrementCounter(req, resp, mbean, attr, method);
-					});
-				
+					});	
+				}else{
 					mbean.attribute.stream().filter(attr -> {
 						return attr.attrType != null && attr.attrType.equals("transient");
 					}).forEach(attr -> {
