@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.management.ManagementFactory;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -36,11 +37,16 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.time.StopWatch;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.routing.HttpRoute;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -78,7 +84,7 @@ public class Application extends HttpServlet {
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
 			ROUTES = (Routes) jaxbUnMarshaller.unmarshal(this.getClass().getResourceAsStream("/routing.xml"));
-			jaxbMarshaller.marshal(ROUTES, System.out);
+			// jaxbMarshaller.marshal(ROUTES, System.out);
 			DEF_ROUTE = ROUTES.routes.stream().filter(route -> {
 				return route.isDefaultRoute;
 			}).findAny().get();
@@ -88,7 +94,7 @@ public class Application extends HttpServlet {
 			jaxbMarshaller = jaxbContext.createMarshaller();
 
 			MBEANS = (MBeans) jaxbUnMarshaller.unmarshal(this.getClass().getResourceAsStream("/mbeans.xml"));
-			jaxbMarshaller.marshal(MBEANS, System.out);
+			// jaxbMarshaller.marshal(MBEANS, System.out);
 			registerMbeans();
 		} catch (JAXBException e) {
 			e.printStackTrace();
@@ -119,55 +125,14 @@ public class Application extends HttpServlet {
 
 	public static void log(Object... objects) {
 		LOG.info(APP_NAME + ": " + Arrays.stream(objects).map(Object::toString).collect(Collectors.joining(" ")));
+		// System.out.println(APP_NAME + ": " +
+		// Arrays.stream(objects).map(Object::toString).collect(Collectors.joining("
+		// ")));
 	}
-
-	// @Override
-	// protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-	// throws ServletException, IOException {
-	//
-	// service(req, resp);
-	// }
-	//
-	// @Override
-	// protected void doHead(HttpServletRequest req, HttpServletResponse resp)
-	// throws ServletException, IOException {
-	// service(req, resp);
-	// }
-	//
-	// @Override
-	// protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-	// throws ServletException, IOException {
-	// service(req, resp);
-	// }
-	//
-	// @Override
-	// protected void doPut(HttpServletRequest req, HttpServletResponse resp)
-	// throws ServletException, IOException {
-	// service(req, resp);
-	// }
-	//
-	// @Override
-	// protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
-	// throws ServletException, IOException {
-	// service(req, resp);
-	// }
-	//
-	// @Override
-	// protected void doOptions(HttpServletRequest req, HttpServletResponse
-	// resp) throws ServletException, IOException {
-	// service(req, resp);
-	// }
-	//
-	// @Override
-	// protected void doTrace(HttpServletRequest req, HttpServletResponse resp)
-	// throws ServletException, IOException {
-	// service(req, resp);
-	// }
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		// proxyOrServe(req, resp);
 		route(req, resp);
 		resp.setStatus(HttpServletResponse.SC_OK);
 	}
@@ -185,16 +150,18 @@ public class Application extends HttpServlet {
 	}
 
 	protected void route(HttpServletRequest req, HttpServletResponse resp) throws ClientProtocolException, IOException {
+		log("Route 1");
 		Routes.Route matchingRoute = ROUTES.routes.stream().filter(route -> {
 			return req.getRequestURI().endsWith(route.url) && route.nodes.stream().anyMatch(node -> {
 				return node.name.equals(APP_NAME);
 			});
 		}).findFirst().orElse(DEF_ROUTE);
-
+		log("Route 2");
 		if (matchingRoute.isDefaultRoute) {
 			log("Switching to default route");
 			serve(req, resp, matchingRoute.nodes.get(0).steps.get(0).serve.get(0));
 		} else {
+			log("Route 3");
 			MethodWrapperCallback callback = new MethodWrapperCallback() {
 
 				StopWatch timer = null;
@@ -256,9 +223,11 @@ public class Application extends HttpServlet {
 				}
 
 			};
+
 			Node matchingNode = matchingRoute.nodes.stream().filter(node -> {
 				return node.name.equals(APP_NAME);
 			}).findFirst().get();
+			log("Route 4");
 			log("Found matching route " + matchingRoute.url + " for node " + matchingNode.name);
 			try {
 				matchingNode.steps.forEach(step -> {
@@ -287,6 +256,7 @@ public class Application extends HttpServlet {
 						}
 
 						if (step.methodWrapper != null && !step.methodWrapper.isEmpty()) {
+							log("Route 4.1");
 							MethodWrapper methodWrapper = step.methodWrapper.stream()
 									.sorted(new Comparator<MethodWrapper>() {
 										@Override
@@ -296,11 +266,16 @@ public class Application extends HttpServlet {
 									}).filter(mWrapper -> {
 										return serveMe(step, mWrapper);
 									}).findFirst().orElse(step.methodWrapper.get(0));
+
+							log("Route 4.2");
 							if (methodWrapper.name.equals("updateMbeanStats")) {
+								log("Route 4.3");
 								updateMbeanStats(req, resp, step, methodWrapper, callback);
+								log("Route 4.4");
 							}
 						}
 					} else {
+						log("Route 4.5");
 						step.serve.forEach(serve -> {
 							serve(req, resp, serve);
 						});
@@ -313,7 +288,7 @@ public class Application extends HttpServlet {
 						}).forEach(method -> {
 							copyFromHeader(req, resp, method);
 						});
-
+						log("Route 4.6");
 						step.method.stream().filter(method -> {
 							return method.name.equals("updateMbeanStats");
 						}).forEach(method -> {
@@ -325,9 +300,11 @@ public class Application extends HttpServlet {
 						}).forEach(method -> {
 							updateMbeanStats(req, resp, step, method, callback);
 						});
+						log("Route 4.7");
 					}
 
 				});
+				log("Route 5");
 			} catch (ForcedException exc) {
 				log("Exception occured:", exc);
 				throw exc;
@@ -377,8 +354,7 @@ public class Application extends HttpServlet {
 			return method.queueName != null && !method.queueName.isEmpty()
 					&& ((mbean.type.equals("Queue")
 							&& method.queueName.equals(objName.getKeyProperty("destinationName")))
-							|| (mbean.type.equals("Route")
-									&& method.queueName.equals(objName.getKeyProperty("name"))));
+							|| (mbean.type.equals("Route") && method.queueName.equals(objName.getKeyProperty("name"))));
 		}).forEach(mbean -> {
 			mbean.attribute.stream().filter(attr -> {
 				return attr.attrType != null
@@ -461,8 +437,8 @@ public class Application extends HttpServlet {
 						return attr.attrType != null && attr.attrType.equals("error");
 					}).forEach(attr -> {
 						incrementCounter(req, resp, mbean, attr, method);
-					});	
-				}else{
+					});
+				} else {
 					mbean.attribute.stream().filter(attr -> {
 						return attr.attrType != null && attr.attrType.equals("transient");
 					}).forEach(attr -> {
@@ -615,24 +591,38 @@ public class Application extends HttpServlet {
 
 	private void delay(HttpServletRequest req, HttpServletResponse resp, Delay delay) {
 		try {
+			long injectDelay = 0;
 			if (delay.random != null) {
-				Thread.sleep(delay.msec * new java.util.Random().nextInt(delay.random));
+				injectDelay = (delay.msec * new java.util.Random().nextInt(delay.random));
 			} else if (delay.gaussMean != null) {
-				Thread.sleep((long) (delay.msec
-						* Math.abs((new java.util.Random().nextGaussian() * delay.gaussDeviation) + delay.gaussMean)));
+				injectDelay = (long) (delay.msec
+						* Math.abs((new java.util.Random().nextGaussian() * delay.gaussDeviation) + delay.gaussMean));
 			}
+			log("Delay: " + injectDelay + " ms");
+			Thread.sleep(injectDelay);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	protected void proxyOrServe(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		if ("server".equals(System.getProperties().getProperty("type"))) {
-			serve(req, resp, DEF_ROUTE.nodes.get(0).steps.get(0).serve.get(0));
-		} else {
-			proxy(req, resp, DEF_ROUTE.nodes.get(0).steps.get(0).http.get(0));
+	private HttpClient sharedClient = null;
+
+	private HttpClient getHttpClient(String host, int port) {
+		if (sharedClient == null) {
+			PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+			// Increase max total connection to 200
+			cm.setMaxTotal(200);
+			// Increase default max connection per route to 20
+			cm.setDefaultMaxPerRoute(20);
+			// Increase max connections for localhost:80 to 50
+			HttpHost localhost = new HttpHost(host, port);
+			cm.setMaxPerRoute(new HttpRoute(localhost), 50);
+
+			sharedClient = HttpClients.custom().setConnectionManager(cm)
+					.setConnectionTimeToLive(CONNECTION_TIMEOUT_SEC, TimeUnit.SECONDS).build();
 		}
+		return sharedClient;
 	}
 
 	private void proxy(HttpServletRequest req, HttpServletResponse resp, Http http)
@@ -640,18 +630,13 @@ public class Application extends HttpServlet {
 
 		String url = http.url;
 		log("Proxy", url);
-
-		HttpClient client = HttpClientBuilder.create().setConnectionTimeToLive(CONNECTION_TIMEOUT_SEC, TimeUnit.SECONDS)
-				.build();
-		// HttpClient client = HttpClientBuilder.create().
-		// RequestConfig.custom()
-		// .setConnectionRequestTimeout(CONNECTION_TIMEOUT_MS)
-		// .setConnectTimeout(CONNECTION_TIMEOUT_MS)
-		// .setSocketTimeout(CONNECTION_TIMEOUT_MS)
-		// .build();
+		log("Proxy 1");
+		URL url1 = new URL(url);
+		HttpClient client = getHttpClient(url1.getHost(), url1.getPort());
 
 		HttpGet request = new HttpGet(url);
 
+		log("Proxy 2");
 		// add request header
 		request.addHeader("User-Agent", "Test");
 		boolean logHeaders = false;
@@ -659,44 +644,55 @@ public class Application extends HttpServlet {
 			String headerName = headers.nextElement();
 			if (logHeaders)
 				log(">", headerName, req.getHeader(headerName));
-			request.addHeader(headerName, req.getHeader(headerName));
-		}
-		HttpResponse response = client.execute(request);
-
-		log("Response Code : ", response.getStatusLine().getStatusCode());
-		if (response.getStatusLine().getStatusCode() != 200) {
-			LOG.error("HTTP error " + response.getStatusLine().getStatusCode() + " received from " + url);
-		}
-		resp.setStatus(HttpServletResponse.SC_OK);
-
-		try {
-			BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-			StringBuffer result = new StringBuffer();
-			String line = "";
-			while ((line = rd.readLine()) != null) {
-				result.append(line);
+			if (!headerName.toLowerCase().equals("content-length")){
+				request.addHeader(headerName, req.getHeader(headerName));
 			}
-
-			PrintWriter wrtr = resp.getWriter();
-			Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {
-				if (!downHeader.getName().toLowerCase().equals("content-length")
-						&& !downHeader.getName().toLowerCase().equals("transfer-encoding")
-						&& !downHeader.getName().toLowerCase().equals("date")) {
-					if (logHeaders)
-						log("<", downHeader.getName(), downHeader.getValue());
-					resp.addHeader(downHeader.getName(), downHeader.getValue());
-				}
-			});
-
-			wrtr.print(result.toString());
-			wrtr.flush();
-			// resp.flushBuffer();
-		} catch (Exception e) {
-			log(e);
-			throw e;
+			log("Proxy 2.5");
 		}
+		log("Proxy 3");
+		HttpResponse response = null;
+		try {
+			response = client.execute(request);
+			log("Proxy 3.5");
+			log("Response Code : ", response.getStatusLine().getStatusCode());
+			if (response.getStatusLine().getStatusCode() != 200) {
+				LOG.error("HTTP error " + response.getStatusLine().getStatusCode() + " received from " + url);
+			}
+			resp.setStatus(HttpServletResponse.SC_OK);
 
+			try {
+				log("Proxy 4");
+				BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+				StringBuffer result = new StringBuffer();
+				String line = "";
+				while ((line = rd.readLine()) != null) {
+					result.append(line);
+				}
+				log("Proxy 5");
+				PrintWriter wrtr = resp.getWriter();
+				Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {
+					if (!downHeader.getName().toLowerCase().equals("content-length")
+							&& !downHeader.getName().toLowerCase().equals("transfer-encoding")
+							&& !downHeader.getName().toLowerCase().equals("date")) {
+						if (logHeaders)
+							log("<", downHeader.getName(), downHeader.getValue());
+						resp.addHeader(downHeader.getName(), downHeader.getValue());
+						log("Proxy 5.5");
+					}
+				});
+				log("Proxy 6");
+				wrtr.print(result.toString());
+				wrtr.flush();
+				// resp.flushBuffer();
+			} catch (Exception e) {
+				log(e);
+				throw e;
+			}
+		} finally {
+			request.releaseConnection();
+		}
+		log("Proxy 7");
 	}
 
 	@Override

@@ -11,9 +11,9 @@ cd ./src/main/resources/;
 #debugAD="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9000,suspend=n"
 #debugACP="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9001,suspend=n"
 #debugESB="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9002,suspend=n"
-debugAMQ="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9003,suspend=n"
+#debugAMQ="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9003,suspend=n"
 #debugABL="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9004,suspend=n"
-#debugMSW="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9005,suspend=n"
+debugMSW="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9005,suspend=n -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog -Dorg.apache.commons.logging.simplelog.showdatetime=true -Dorg.apache.commons.logging.simplelog.log.org.apache.http=DEBUG"
 
 jmxEnable="--jar ../../../target/test/WEB-INF/lib/jetty-jmx-9.4.11.v20180605.jar --config ../../../src/etc/jetty-jmx.xml"
 
@@ -31,7 +31,7 @@ sleep 2
 set +x
 java $debugAD  $appdAD -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8181 ../../../target/test.war > /tmp/server.log &
 
-sleep 2
+sleep 3
 #Start Hybris-ACP
 java $debugACP $appdACP -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8282 ../../../target/test.war >> /tmp/server.log &
 
