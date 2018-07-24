@@ -1,4 +1,78 @@
 <routes>
+
+<!-- Non-Trans Partners' Flight Search Rel-1 Initial START -->
+	<!-- <route url="/non-trans-b2b/dummy/auth">
+		<node name="APIGWY">
+			<step seq="1">
+				<http url="http://localhost:8282/commercial-cpm/v1/agent-login-request">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route> -->
+	
+	<route url="/non-trans-partner/dummy/flight-search">
+		<node name="APIGWY">
+			<step seq="1">
+				<http url="http://localhost:9191/commercial-cpm/megaswitch/v1/b2brouting">
+					<payload>
+						<!-- <get> <param name="requestData.departureAirportCode"></param> 
+							</get> -->
+					</payload>
+				</http>
+				<delay msec="10" random="1" />
+			</step>
+		</node>
+	</route>
+	
+	<route url="/non-trans-partner/dummy/b2b/flight-search">
+		<node name="APIGWY">
+			<step seq="1">
+				<http url="http://localhost:9191/commercial-cpm/megaswitch/v1/b2brouting">
+					<payload>
+						<!-- <get> <param name="requestData.departureAirportCode"></param> 
+							</get> -->
+					</payload>
+				</http>
+				<delay msec="10" random="1" />
+			</step>
+		</node>
+	</route>
+	
+	<route url="/commercial-cpm/megaswitch/v1/b2brouting">
+		<node name="MS">
+			<step seq="1">
+				<http url="http://localhost:8282/dummy/b2b/search/flights">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	
+	<route url="/dummy/b2b/search/flights">
+		<node name="B2B">
+			<step seq="1">
+				<serve>
+					<payload>Found flights</payload>
+				</serve>
+				<delay msec="10" random="5" />
+				<error errsperhundred="10" />
+			</step>
+		</node>
+	</route>
+	
+	
+	<!-- <route url="/non-trans-b2b/auth">
+		<node name="ERES">
+			<step seq="1">
+				<http url="http://localhost:8282/commercial-cpm/v1/agent-login-request">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route> -->
+	
+	<!-- Non-Trans Partners' Flight Search Rel-1 Initial END -->
 	<!-- Login -->
 	<route url="/agentdesktop/login">
 		<node name="Hybris-AD">
