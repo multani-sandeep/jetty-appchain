@@ -1,3 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE routes [
+<!ENTITY bookings_table_name 	"bookings">
+<!ENTITY flights_table_name 	"flights">
+]>
+
 <routes>
 	<!-- Login -->
 	<route url="/agentdesktop/login">
@@ -61,8 +68,7 @@
 	<route url="/commercial-mnp/v3/search/flights">
 		<node name="EI-ESB">
 			<step seq="1">
-			<methodwrapper name="updateMbeanStats"
-					queueName="&quot;PricedAvailability&quot;">
+				<methodwrapper name="updateMbeanStats" queueName="&quot;PricedAvailability&quot;">
 					<http url="http://localhost:8585/commercial-mnp/v3/search/al-flights">
 						<payload>Empty</payload>
 					</http>
@@ -75,11 +81,14 @@
 	<route url="/commercial-mnp/v3/search/al-flights">
 		<node name="EJ.AbstractionLayer">
 			<step seq="1">
-				<serve>
-					<payload>Found flights</payload>
-				</serve>
-				<delay msec="10" random="5" />
-				<error errsperhundred="10" />
+				<methodwrapper name="updateMbeanStats" queueName="DoNothing">
+					<sql name="search_flights" db="eres.db">
+						<select>
+							select * from &flights_table_name;
+							where ref like 'LGW%'
+						</select>
+					</sql>
+				</methodwrapper>
 			</step>
 		</node>
 	</route>
@@ -154,7 +163,7 @@
 		</node>
 	</route>
 	<route url="/commercial-cpm/v1/baskets/basket-id/passengers">
-		<node name="Hybris-ACP" >
+		<node name="Hybris-ACP">
 			<step seq="1" weighted="true">
 				<serve load="65">
 					<payload><![CDATA[<test><buyaseat>false</buyaseat></test>]]></payload>
@@ -313,8 +322,7 @@
 	<route url="/commercial-mnp/v3/bookings_ESB">
 		<node name="EI-ESB">
 			<step seq="1">
-				<methodwrapper name="updateMbeanStats"
-					queueName="&quot;bookingCreated&quot;">
+				<methodwrapper name="updateMbeanStats" queueName="&quot;bookingCreated&quot;">
 					<http url="http://localhost:8484/commercial-mnp/v3/bookings_consumerq">
 						<payload>Empty</payload>
 					</http>
@@ -445,8 +453,7 @@
 	<route url="/commercial-mnp/v3/_bookingupdated_ESB">
 		<node name="EI-ESB">
 			<step seq="1">
-				<methodwrapper name="updateMbeanStats"
-					queueName="&quot;bookingupdated&quot;">
+				<methodwrapper name="updateMbeanStats" queueName="&quot;bookingupdated&quot;">
 					<http
 						url="http://localhost:8484/commercial-mnp/v3/_bookingupdated_consumerq">
 						<payload>Empty</payload>
