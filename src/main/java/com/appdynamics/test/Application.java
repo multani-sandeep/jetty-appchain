@@ -6,13 +6,18 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.management.ManagementFactory;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
-import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -25,7 +30,6 @@ import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import javax.management.ReflectionException;
-import javax.management.RuntimeErrorException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -43,8 +47,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.routing.HttpRoute;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.logging.log4j.LogManager;
@@ -60,6 +62,7 @@ import com.appdynamics.test.Routes.Method;
 import com.appdynamics.test.Routes.MethodWrapper;
 import com.appdynamics.test.Routes.Node;
 import com.appdynamics.test.Routes.Route;
+import com.appdynamics.test.Routes.SQL;
 import com.appdynamics.test.Routes.Serve;
 import com.appdynamics.test.Routes.Step;
 
@@ -67,6 +70,7 @@ public class Application extends HttpServlet {
 
 	public static Routes ROUTES;
 	public static MBeans MBEANS;
+	public static DBs DATABASES;
 	public static MBeanApp MBEAN_APP;
 	public static Route DEF_ROUTE;
 	public static String APP_NAME = System.getProperty("appdynamics.agent.tierName");
@@ -96,7 +100,21 @@ public class Application extends HttpServlet {
 			MBEANS = (MBeans) jaxbUnMarshaller.unmarshal(this.getClass().getResourceAsStream("/mbeans.xml"));
 			// jaxbMarshaller.marshal(MBEANS, System.out);
 			registerMbeans();
+
+			// Initialize sqlite schema
+
+			jaxbContext = JAXBContext.newInstance(DBs.class);
+			jaxbUnMarshaller = jaxbContext.createUnmarshaller();
+			jaxbMarshaller = jaxbContext.createMarshaller();
+
+			DATABASES = (DBs) jaxbUnMarshaller.unmarshal(this.getClass().getResourceAsStream("/dbs.xml"));
+
+			Class.forName("org.sqlite.JDBC");
+
 		} catch (JAXBException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -343,37 +361,41 @@ public class Application extends HttpServlet {
 
 	private void updateMbeanStats(HttpServletRequest req, HttpServletResponse resp, Step step, Method method,
 			MethodWrapperCallback callback) {
-		MBEAN_APP.mbean.stream().filter(mbean -> {
-			ObjectName objName = null;
-			try {
-				objName = new ObjectName(mbean.objectName);
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-			return method.queueName != null && !method.queueName.isEmpty()
-					&& ((mbean.type.equals("Queue")
-							&& method.queueName.equals(objName.getKeyProperty("destinationName")))
-							|| (mbean.type.equals("Route") && method.queueName.equals(objName.getKeyProperty("name"))));
-		}).forEach(mbean -> {
-			mbean.attribute.stream().filter(attr -> {
-				return attr.attrType != null
-						&& (attr.attrType.equals("increment") || attr.attrType.equals("transient"));
-			}).forEach(attr -> {
-				incrementCounter(req, resp, mbean, attr, method);
-			});
-			mbean.attribute.stream().filter(attr -> {
-				return attr.attrType != null && (attr.attrType.equals("max-time") || attr.attrType.equals("min-time")
-						|| attr.attrType.equals("mean-time"));
-			}).forEach(attr -> {
-				callback.startTimer();
-			});
-			mbean.attribute.stream().filter(attr -> {
-				return attr.valueFromHeader != null;
-			}).forEach(attr -> {
-				updateCounterWithValueFromHeader(req, resp, mbean, attr);
-			});
-		});
+		{
+			if (MBEAN_APP != null && MBEAN_APP.mbean != null)
+				MBEAN_APP.mbean.stream().filter(mbean -> {
+					ObjectName objName = null;
+					try {
+						objName = new ObjectName(mbean.objectName);
+					} catch (Exception e) {
+						e.printStackTrace();
+						throw new RuntimeException(e);
+					}
+					return method.queueName != null && !method.queueName.isEmpty()
+							&& ((mbean.type.equals("Queue")
+									&& method.queueName.equals(objName.getKeyProperty("destinationName")))
+									|| (mbean.type.equals("Route")
+											&& method.queueName.equals(objName.getKeyProperty("name"))));
+				}).forEach(mbean -> {
+					mbean.attribute.stream().filter(attr -> {
+						return attr.attrType != null
+								&& (attr.attrType.equals("increment") || attr.attrType.equals("transient"));
+					}).forEach(attr -> {
+						incrementCounter(req, resp, mbean, attr, method);
+					});
+					mbean.attribute.stream().filter(attr -> {
+						return attr.attrType != null && (attr.attrType.equals("max-time")
+								|| attr.attrType.equals("min-time") || attr.attrType.equals("mean-time"));
+					}).forEach(attr -> {
+						callback.startTimer();
+					});
+					mbean.attribute.stream().filter(attr -> {
+						return attr.valueFromHeader != null;
+					}).forEach(attr -> {
+						updateCounterWithValueFromHeader(req, resp, mbean, attr);
+					});
+				});
+		}
 		boolean failed = false;
 		try {
 			MethodWrapper mWrap = (MethodWrapper) method;
@@ -404,49 +426,88 @@ public class Application extends HttpServlet {
 					e.printStackTrace();
 				}
 			});
-		} finally {
-			final boolean incrementFailedCount = failed;
-			MBEAN_APP.mbean.stream().filter(mbean -> {
-				ObjectName objName = null;
+			mWrap.sql.select.forEach(select -> {
 				try {
-					objName = new ObjectName(mbean.objectName);
+					executeSelectSql(req, resp, mWrap.sql, select);
 				} catch (Exception e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
-					throw new RuntimeException(e);
-				}
-				return method.queueName != null && !method.queueName.isEmpty()
-						&& ((mbean.type.equals("Queue")
-								&& method.queueName.equals(objName.getKeyProperty("destinationName")))
-								|| (mbean.type.equals("Route")
-										&& method.queueName.equals(objName.getKeyProperty("name"))));
-			}).forEach(mbean -> {
-				mbean.attribute.stream().sorted(new Comparator<MBAttribute>() {
-					@Override
-					public int compare(MBAttribute o1, MBAttribute o2) {
-						return o1.attrType == null || o2.attrType == null ? 0
-								: o1.attrType.equals("mean-time") ? 1 : o2.attrType.equals("mean-time") ? 1 : 0;
-					}
-				}).filter(attr -> {
-					return attr.attrType != null && (attr.attrType.equals("max-time")
-							|| attr.attrType.equals("min-time") || attr.attrType.equals("mean-time"));
-				}).forEach(attr -> {
-					updateTimes(req, resp, mbean, attr, method);
-				});
-				if (incrementFailedCount) {
-					mbean.attribute.stream().filter(attr -> {
-						return attr.attrType != null && attr.attrType.equals("error");
-					}).forEach(attr -> {
-						incrementCounter(req, resp, mbean, attr, method);
-					});
-				} else {
-					mbean.attribute.stream().filter(attr -> {
-						return attr.attrType != null && attr.attrType.equals("transient");
-					}).forEach(attr -> {
-						decrementCounter(req, resp, mbean, attr, method);
-					});
 				}
 			});
+		} finally {
+			final boolean incrementFailedCount = failed;
+			{
+				if (MBEAN_APP != null && MBEAN_APP.mbean != null)
+					MBEAN_APP.mbean.stream().filter(mbean -> {
+						ObjectName objName = null;
+						try {
+							objName = new ObjectName(mbean.objectName);
+						} catch (Exception e) {
+							e.printStackTrace();
+							throw new RuntimeException(e);
+						}
+						return method.queueName != null && !method.queueName.isEmpty()
+								&& ((mbean.type.equals("Queue")
+										&& method.queueName.equals(objName.getKeyProperty("destinationName")))
+										|| (mbean.type.equals("Route")
+												&& method.queueName.equals(objName.getKeyProperty("name"))));
+					}).forEach(mbean -> {
+						mbean.attribute.stream().sorted(new Comparator<MBAttribute>() {
+							@Override
+							public int compare(MBAttribute o1, MBAttribute o2) {
+								return o1.attrType == null || o2.attrType == null ? 0
+										: o1.attrType.equals("mean-time") ? 1 : o2.attrType.equals("mean-time") ? 1 : 0;
+							}
+						}).filter(attr -> {
+							return attr.attrType != null && (attr.attrType.equals("max-time")
+									|| attr.attrType.equals("min-time") || attr.attrType.equals("mean-time"));
+						}).forEach(attr -> {
+							updateTimes(req, resp, mbean, attr, method);
+						});
+						if (incrementFailedCount) {
+							mbean.attribute.stream().filter(attr -> {
+								return attr.attrType != null && attr.attrType.equals("error");
+							}).forEach(attr -> {
+								incrementCounter(req, resp, mbean, attr, method);
+							});
+						} else {
+							mbean.attribute.stream().filter(attr -> {
+								return attr.attrType != null && attr.attrType.equals("transient");
+							}).forEach(attr -> {
+								decrementCounter(req, resp, mbean, attr, method);
+							});
+						}
+					});
+			}
 		}
+	}
+
+	private void executeSelectSql(HttpServletRequest req, HttpServletResponse resp, SQL sql, String select) {
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection("jdbc:sqlite:" + Database.getDBPath(DATABASES) + "/" + sql.db);
+			Statement statement = connection.createStatement();
+			statement.setQueryTimeout(30); // set timeout to 30 sec.
+			ResultSet rs = statement.executeQuery(select);
+			log("Select sql:", select, " executed successfully against", sql.db);
+			while (rs.next()) {
+				log(sql.name, rs.getInt(1));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new UnForcedException();
+		} finally {
+			try {
+				if (!connection.isClosed()) {
+					connection.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new UnForcedException();
+			}
+		}
+
 	}
 
 	private void updateTimes(HttpServletRequest req, HttpServletResponse resp, MBean mbean, MBAttribute attr,
@@ -644,7 +705,7 @@ public class Application extends HttpServlet {
 			String headerName = headers.nextElement();
 			if (logHeaders)
 				log(">", headerName, req.getHeader(headerName));
-			if (!headerName.toLowerCase().equals("content-length")){
+			if (!headerName.toLowerCase().equals("content-length")) {
 				request.addHeader(headerName, req.getHeader(headerName));
 			}
 			log("Proxy 2.5");

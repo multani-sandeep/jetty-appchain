@@ -68,6 +68,19 @@ public class Routes {
 		public List<Delay> delay = new ArrayList<Delay>();
 		@XmlElement (name= "error")
 		public List<Error> error = new ArrayList<Error>();
+		@XmlElement (name= "sql")
+		public SQL sql = new SQL();
+	}
+	
+	@XmlAccessorType (XmlAccessType.FIELD)
+	public static class SQL{
+		@XmlAttribute
+		public String name;
+		@XmlAttribute
+		public String db;
+		@XmlElement (name="select")
+		public List<String> select = new ArrayList<String>();
+		
 	}
 	
 	@XmlAccessorType (XmlAccessType.FIELD)

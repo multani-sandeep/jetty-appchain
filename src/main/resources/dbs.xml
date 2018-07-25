@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dbs [
+<!ENTITY bookings_table_name 	"bookings">
+<!ENTITY flights_table_name 	"flights">
+]>
+<dbs>
+	<properties >
+		<property name="path" value="/tmp"/>
+	</properties>
+	<db name="eres.db">
+		<schema>
+			<table name="&bookings_table_name;">
+				<create>drop
+					table if exists &bookings_table_name;;create
+					table &bookings_table_name;
+					(id integer, ref string)
+				</create>
+				<populate>
+					<insert>insert
+						into &bookings_table_name;
+						values(1, 'eres-001')
+					</insert>
+					<insert>insert
+						into &bookings_table_name;
+						values(2, 'eres-001')
+					</insert>
+					<insert>insert
+						into &bookings_table_name;
+						values(3, 'hyb-001')
+					</insert>
+				</populate>
+			</table>
+			<table name="&flights_table_name;">
+				<create>drop
+					table if exists &flights_table_name;;create
+					table &flights_table_name;
+					(id integer, ref string)
+				</create>
+				<populate>
+					<insert>insert
+						into &flights_table_name;
+						values(1, 'LGW-EDI-1')
+					</insert>
+					<insert>insert
+						into &flights_table_name;
+						values(2, 'LGW-EDI-2')
+					</insert>
+					<insert>insert
+						into &flights_table_name;
+						values(3, 'LGW-EDI-3')
+					</insert>
+				</populate>
+			</table>
+		</schema>
+	</db>
+</dbs>
