@@ -489,8 +489,9 @@ public class Application extends HttpServlet {
 			Statement statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 			ResultSet rs = statement.executeQuery(select);
+			log("Select sql:", select, " executed successfully against", sql.db);
 			while (rs.next()) {
-				log(sql.name, rs.getInt(0));
+				log(sql.name, rs.getInt(1));
 			}
 
 		} catch (Exception e) {

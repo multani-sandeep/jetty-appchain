@@ -69,7 +69,7 @@ public class Routes {
 		@XmlElement (name= "error")
 		public List<Error> error = new ArrayList<Error>();
 		@XmlElement (name= "sql")
-		public SQL sql ;
+		public SQL sql = new SQL();
 	}
 	
 	@XmlAccessorType (XmlAccessType.FIELD)
@@ -79,7 +79,7 @@ public class Routes {
 		@XmlAttribute
 		public String db;
 		@XmlElement (name="select")
-		public List<String> select;
+		public List<String> select = new ArrayList<String>();
 		
 	}
 	
