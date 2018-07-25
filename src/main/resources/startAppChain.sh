@@ -28,7 +28,7 @@ appdMSW="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.
 appdAPIGWY="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App8 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=APIGWY -Djetty.jmxrmiport=2007"
 appdB2B="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App9 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=B2B -Djetty.jmxrmiport=2008"
 appdERES="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App10 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=ERES -Djetty.jmxrmiport=2009"
-appdMSW="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App11 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=MSW -Djetty.jmxrmiport=2010"
+appdMeSW="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App11 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=MSW -Djetty.jmxrmiport=2010"
 
 
 sleep 2
@@ -59,7 +59,7 @@ java $debug $appdCPG -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-ru
 
 sleep 4
 #Start MS
-java $debugMSW $appdMSW -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 9191 /c/jetty-app/jetty-appchain/target/test.war >> /tmp/server.log &
+#java $debugMSW $appdMSW -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 9191 /c/jetty-app/jetty-appchain/target/test.war >> /tmp/server.log &
 
 sleep 4
 #Start API.Gateway
@@ -76,7 +76,7 @@ java $debugERES $appdERES -jar /c/jetty-app/jetty-appchain/target/dependency/jet
 
 sleep 4
 #Start ERES
-java $debugMSW $appdMSW -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 9191 /c/jetty-app/jetty-appchain/target/test.war >> /tmp/server.log &
+java $debugMeSW $appdMeSW -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 9191 /c/jetty-app/jetty-appchain/target/test.war >> /tmp/server.log &
 
 
 set +x

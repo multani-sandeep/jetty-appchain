@@ -40,9 +40,9 @@
 	</route>
 	
 	<route url="/commercial-cpm/megaswitch/v1/b2brouting">
-		<node name="MS">
+		<node name="MSW">
 			<step seq="1">
-				<http url="http://localhost:8282/dummy/b2b/search/flights">
+				<http url="http://localhost:8989/dummy/b2b/search/flights">
 					<payload>Empty</payload>
 				</http>
 			</step>
