@@ -56,28 +56,46 @@
 		</node>
 	</route>
 	
+	<route url="/dummy/b2b/flight-search">
+	  <node name="B2B">
+		<step seq="1" weighted="true">
+                <methodwrapper name="updateMbeanStats"
+                    queueName="com.customerregisteredv1.queue.consume" load="95">
+                    <http url="http://localhost:8989/dummy/b2b/search/flights">
+	                    <serve>
+	                        <payload>Empty</payload>
+	                    </serve>
+                    </http>
+                    <delay msec="10" random="1" />
+                </methodwrapper>
+         </step>
+       </node>  
+       <node name="Hybris-ACP">
+         <step seq="1" weighted="true">      
+                <methodwrapper name="updateMbeanStats"
+                    queueName="DLQ.com.customerregisteredv1.queue.consume" load="5">
+                    <http url="http://localhost:8383/commercial-mnp/v3/search/flights">
+	                    <serve>
+	                        <payload>Empty</payload>
+	                    </serve>
+                    </http>
+                    <delay msec="10" random="1" />
+                </methodwrapper>
+          </step>
+	    </node>
+	</route> 
+	
 	<route url="/dummy/b2b/search/flights">
 		<node name="B2B">
 			<step seq="1">
 				<serve>
-					<payload>Found flights</payload>
+					<payload>Found flights via B2B</payload>
 				</serve>
 				<delay msec="10" random="5" />
 				<error errsperhundred="10" />
 			</step>
 		</node>
 	</route>
-	
-	
-	<!-- <route url="/non-trans-b2b/auth">
-		<node name="ERES">
-			<step seq="1">
-				<http url="http://localhost:8282/commercial-cpm/v1/agent-login-request">
-					<payload>Empty</payload>
-				</http>
-			</step>
-		</node>
-	</route> -->
 	
 	<!-- Non-Trans Partners' Flight Search Rel-1 Initial END -->
 	<!-- Login -->
