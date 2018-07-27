@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project id="c5e76375-0534-424c-9e0c-7c63dda651a2" activeEnvironment="Default" name="Local AgentDesktop" soapui-version="5.4.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config">
+<con:soapui-project id="c5e76375-0534-424c-9e0c-7c63dda651a2" activeEnvironment="Default" name="Local AgentDesktop" soapui-version="5.4.0" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" xmlns:con="http://eviware.com/soapui/config">
   <con:settings/>
   <con:interface xsi:type="con:RestService" id="e0a6add6-b980-4ffe-8526-4340c23e2a04" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://localhost:8181" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <con:settings/>
