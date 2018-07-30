@@ -30,6 +30,9 @@ appdB2B="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.
 appdERES="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App10 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=ERES -Djetty.jmxrmiport=2009"
 appdMeSW="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App11 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=MSW -Djetty.jmxrmiport=2010"
 
+jettyAkamai=" -Djetty.jmxrmiport=2011 -Dappdynamics.agent.tierName=AKAMAI"
+jettyAPIGWY=" -Djetty.jmxrmiport=2007 -Dappdynamics.agent.tierName=APIGWY"
+
 
 sleep 2
 #Start Hybris-AD
@@ -63,7 +66,7 @@ sleep 4
 
 sleep 4
 #Start API.Gateway
-java $debugAPIGWY $appdAPIGWY -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8888 /c/jetty-app/jetty-appchain/target/test.war >> /tmp/server.log &
+java $debugAPIGWY $jettyAPIGWY -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8888 /c/jetty-app/jetty-appchain/target/test.war >> /tmp/server.log &
 
 sleep 4
 #Start B2B
@@ -77,6 +80,11 @@ java $debugERES $appdERES -jar /c/jetty-app/jetty-appchain/target/dependency/jet
 sleep 4
 #Start ERES
 java $debugMeSW $appdMeSW -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 9191 /c/jetty-app/jetty-appchain/target/test.war >> /tmp/server.log &
+
+
+sleep 4
+#Start AKAMAI
+java $debugAkamai $jettyAkamai -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 9292 /c/jetty-app/jetty-appchain/target/test.war >> /tmp/server.log &
 
 
 set +x

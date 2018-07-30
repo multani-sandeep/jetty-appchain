@@ -7,6 +7,21 @@
 
 <routes>
 
+
+	<route url="/trans-partner/dummy/flight-search">
+		<node name="AKAMAI">
+			<step seq="1">
+				<http url="http://localhost:8989/dummy/b2b/search/flights">
+					<payload>
+						<!-- <get> <param name="requestData.departureAirportCode"></param> 
+							</get> -->
+					</payload>
+				</http>
+				<delay msec="10" random="1" />
+			</step>
+		</node>
+	</route>	
+	
 	
 	<route url="/non-trans-partner/dummy/flight-search">
 		<node name="APIGWY">
@@ -21,30 +36,6 @@
 			</step>
 		</node>
 	</route>
-	
-	<!-- <route url="/non-trans-partner/dummy/b2b/flight-search">
-		<node name="APIGWY">
-			<step seq="1">
-				<http url="http://localhost:9191/commercial-cpm/megaswitch/v1/b2brouting">
-					<payload>
-						<get> <param name="requestData.departureAirportCode"></param> 
-							</get>
-					</payload>
-				</http>
-				<delay msec="10" random="1" />
-			</step>
-		</node>
-	</route> -->
-	
-	<!-- <route url="/commercial-cpm/megaswitch/v1/b2brouting">
-		<node name="MSW">
-			<step seq="1">
-				<http url="http://localhost:8989/dummy/b2b/flight-search">
-					<payload>Empty</payload>
-				</http>
-			</step>
-		</node>
-	</route> -->
 	
 	<route url="/commercial-cpm/megaswitch/v1/b2brouting">
         <node name="MSW">
