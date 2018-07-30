@@ -7,16 +7,34 @@
 
 <routes>
 
-<!-- Non-Trans Partners' Flight Search Rel-1 Initial START -->
-	<!-- <route url="/non-trans-b2b/dummy/auth">
-		<node name="APIGWY">
-			<step seq="1">
-				<http url="http://localhost:8282/commercial-cpm/v1/agent-login-request">
-					<payload>Empty</payload>
-				</http>
-			</step>
-		</node>
-	</route> -->
+
+
+<route url="/non-trans-partner/dummy/akamai/flight-search">
+        <node name="AKAMAI">
+            <step seq="1" weighted="true">
+                <methodwrapper name="updateMbeanStats"
+                    queueName="com.customerregisteredv1.queue.consume" load="95">
+					<http url="http://localhost:8989/dummy/b2b/search/flights">
+                    <serve>
+                        <payload>Empty</payload>
+                    </serve>
+					</http>
+                    <delay msec="10" random="1" />
+                </methodwrapper>
+                <methodwrapper name="updateMbeanStats"
+                    queueName="DLQ.com.customerregisteredv1.queue.consume" load="5">
+                    <http url="http://localhost:8888/non-trans-partner/dummy/flight-search">
+	                    <serve>
+	                        <payload>Empty</payload>
+	                    </serve>
+                    </http>
+                    <delay msec="10" random="1" />
+                </methodwrapper>
+            </step>
+        </node>
+    </route>
+
+
 	
 	<route url="/non-trans-partner/dummy/flight-search">
 		<node name="APIGWY">
@@ -32,52 +50,30 @@
 		</node>
 	</route>
 	
-	<route url="/non-trans-partner/dummy/b2b/flight-search">
-		<node name="APIGWY">
-			<step seq="1">
-				<http url="http://localhost:9191/commercial-cpm/megaswitch/v1/b2brouting">
-					<payload>
-						<!-- <get> <param name="requestData.departureAirportCode"></param> 
-							</get> -->
-					</payload>
-				</http>
-				<delay msec="10" random="1" />
-			</step>
-		</node>
-	</route>
-	
 	<route url="/commercial-cpm/megaswitch/v1/b2brouting">
-		<node name="MSW">
-			<step seq="1">
-				<http url="http://localhost:8989/dummy/b2b/search/flights">
-					<payload>Empty</payload>
-				</http>
-			</step>
-		</node>
-	</route>
+        <node name="MSW">
+            <step seq="1" weighted="true">
+						<http url="http://localhost:8989/dummy/b2b/search/flights">
+		                    <serve>
+		                        <payload>Empty</payload>
+		                    </serve>
+						</http>
+                    <delay msec="10" random="1" />
+            </step>
+        </node>
+    </route>
 	
-	<route url="/dummy/b2b/search/flights">
+	 <route url="/dummy/b2b/search/flights">
 		<node name="B2B">
 			<step seq="1">
 				<serve>
-					<payload>Found flights</payload>
+					<payload>Found flights via B2B</payload>
 				</serve>
 				<delay msec="10" random="5" />
 				<error errsperhundred="10" />
 			</step>
 		</node>
-	</route>
-	
-	
-	<!-- <route url="/non-trans-b2b/auth">
-		<node name="ERES">
-			<step seq="1">
-				<http url="http://localhost:8282/commercial-cpm/v1/agent-login-request">
-					<payload>Empty</payload>
-				</http>
-			</step>
-		</node>
-	</route> -->
+	</route> 
 	
 	<!-- Non-Trans Partners' Flight Search Rel-1 Initial END -->
 	<!-- Login -->

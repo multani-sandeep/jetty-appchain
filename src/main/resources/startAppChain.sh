@@ -29,6 +29,7 @@ appdAPIGWY="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.age
 appdB2B="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App9 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=B2B -Djetty.jmxrmiport=2008"
 appdERES="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App10 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=ERES -Djetty.jmxrmiport=2009"
 appdMeSW="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App11 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=MSW -Djetty.jmxrmiport=2010"
+appdAkamai="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App1 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=AKAMAI -Djetty.jmxrmiport=2011"
 
 
 sleep 2
@@ -75,8 +76,12 @@ java $debugERES $appdERES -jar /c/jetty-app/jetty-appchain/target/dependency/jet
 
 
 sleep 4
-#Start ERES
+#Start MSW
 java $debugMeSW $appdMeSW -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 9191 /c/jetty-app/jetty-appchain/target/test.war >> /tmp/server.log &
+
+sleep 4
+#Start AKAMAI
+java $debugAkamai $appdAkamai -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 9292 /c/jetty-app/jetty-appchain/target/test.war >> /tmp/server.log &
 
 
 set +x
