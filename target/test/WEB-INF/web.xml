@@ -4,21 +4,34 @@
 
 <web-app>
 	<display-name>Archetype Created Web Application</display-name>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring/context-provider.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 
 	<servlet>
+		<servlet-name>cxf</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
+	<servlet-mapping>
+		<servlet-name>cxf</servlet-name>
+		<url-pattern>/cxf/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>proxy</servlet-name>
-
 		<servlet-class>com.appdynamics.test.Application</servlet-class>
 		<load-on-startup>1</load-on-startup>
-
 	</servlet>
 	<servlet-mapping>
-
 		<servlet-name>proxy</servlet-name>
-
-		<url-pattern>/</url-pattern>
-
+		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
 
 </web-app>

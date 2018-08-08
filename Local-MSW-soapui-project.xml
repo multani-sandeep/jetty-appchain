@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project id="f6981060-e985-4dd8-92a2-edb893a3a450" activeEnvironment="Default" name="Local MSW" soapui-version="5.4.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config">
+<con:soapui-project id="f6981060-e985-4dd8-92a2-edb893a3a450" activeEnvironment="Default" name="Local MSW" soapui-version="5.4.0" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" xmlns:con="http://eviware.com/soapui/config">
   <con:settings/>
   <con:interface xsi:type="con:RestService" id="070d8e20-1c7e-4e46-94b1-02579fe973e7" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://web-msw-ipt.wip.europe.easyjet.local" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <con:settings/>
@@ -272,6 +272,194 @@
       </con:method>
     </con:resource>
   </con:interface>
+  <con:interface xsi:type="con:WsdlInterface" id="47d9b5ff-7f5f-4675-b08e-2667399a70af" wsaVersion="NONE" name="ApplicationServiceSoapBinding" type="wsdl" bindingName="{http://test.appdynamics.com/}ApplicationServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart="http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl">
+      <con:part>
+        <con:url>http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl</con:url>
+        <con:content><![CDATA[<wsdl:definitions name="ApplicationService" targetNamespace="http://test.appdynamics.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://test.appdynamics.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting">
+  <wsdl:import location="http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl=B2BAvailability_PortType.wsdl" namespace="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting"></wsdl:import>
+  <wsdl:binding name="ApplicationServiceSoapBinding" type="ns1:B2BAvailability_PortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="b2bAvailabilityRequest">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="b2bAvailabilityRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="b2bAvailabilityRequestResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ApplicationService">
+    <wsdl:port binding="tns:ApplicationServiceSoapBinding" name="ApplicationPort">
+      <soap:address location="http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content>
+        <con:type>http://schemas.xmlsoap.org/wsdl/</con:type>
+      </con:part>
+      <con:part>
+        <con:url>http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl=B2BAvailability_PortType.wsdl</con:url>
+        <con:content><![CDATA[<wsdl:definitions name="B2BAvailability_PortType" targetNamespace="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting">
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="RequestXml">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="oInputXml">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="B2BAvailabilityRequest">
+                    <xs:complexType>
+                      <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                          <xs:attribute name="APIVersion" type="xs:float"/>
+                          <xs:attribute name="B2BAPIUserEmailAddress" type="xs:string"/>
+                          <xs:attribute name="B2BAPIUserPassword" type="xs:string"/>
+                          <xs:attribute name="DepAirportCode" type="xs:string"/>
+                          <xs:attribute name="ArrAirportCode" type="xs:string"/>
+                          <xs:attribute name="DepBeginDate" type="xs:string"/>
+                          <xs:attribute name="AdultSeats" type="xs:integer"/>
+                          <xs:attribute name="ReturnBeginDate" type="xs:string"/>
+                        </xs:extension>
+                      </xs:simpleContent>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="RequestXmlResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="RequestXmlResult">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="ResponseRoot">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="DataListRoot">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="AvailabilityResponse">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="AvailabilityList">
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element maxOccurs="unbounded" minOccurs="0" name="Availability">
+                                            <xs:complexType>
+                                              <xs:simpleContent>
+                                                <xs:extension base="xs:string">
+                                                  <xs:attribute name="ArrivalAirportCode" type="xs:string"/>
+                                                  <xs:attribute name="CarrierCode" type="xs:string"/>
+                                                  <xs:attribute name="CurrencyCode" type="xs:string"/>
+                                                  <xs:attribute name="DepAirportCode" type="xs:string"/>
+                                                  <xs:attribute name="Direction" type="xs:integer"/>
+                                                  <xs:attribute name="DisplayCurrencyCode" type="xs:string"/>
+                                                  <xs:attribute name="FareAmount" type="xs:float"/>
+                                                  <xs:attribute name="FareClass" type="xs:string"/>
+                                                  <xs:attribute name="FlightIdentification" type="xs:string"/>
+                                                  <xs:attribute name="FlightNum" type="xs:short"/>
+                                                  <xs:attribute name="InternetDiscount" type="xs:float"/>
+                                                  <xs:attribute name="LocalArrTime" type="xs:short"/>
+                                                  <xs:attribute name="LocalDepDate" type="xs:date"/>
+                                                  <xs:attribute name="LocalDepTime" type="xs:short"/>
+                                                  <xs:attribute name="TaxAmount" type="xs:float"/>
+                                                  <xs:attribute name="TotalSeatsAvailable" type="xs:integer"/>
+                                                </xs:extension>
+                                              </xs:simpleContent>
+                                            </xs:complexType>
+                                          </xs:element>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="WarningList">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="Warning">
+                                      <xs:complexType>
+                                        <xs:simpleContent>
+                                          <xs:extension base="xs:string">
+                                            <xs:attribute name="Action" type="xs:string"/>
+                                            <xs:attribute name="Description" type="xs:string"/>
+                                            <xs:attribute name="ID" type="xs:int"/>
+                                          </xs:extension>
+                                        </xs:simpleContent>
+                                      </xs:complexType>
+                                    </xs:element>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                      <xs:attribute name="APIVersion" type="xs:float"/>
+                      <xs:attribute name="Success" type="xs:integer"/>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="b2bAvailabilityRequest">
+    <wsdl:part element="ns1:RequestXml" name="request"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="b2bAvailabilityRequestResponse">
+    <wsdl:part element="ns1:RequestXmlResponse" name="greeting"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="B2BAvailability_PortType">
+    <wsdl:operation name="b2bAvailabilityRequest">
+      <wsdl:input message="ns1:b2bAvailabilityRequest" name="b2bAvailabilityRequest"></wsdl:input>
+      <wsdl:output message="ns1:b2bAvailabilityRequestResponse" name="b2bAvailabilityRequestResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>]]></con:content>
+        <con:type>http://schemas.xmlsoap.org/wsdl/</con:type>
+      </con:part>
+    </con:definitionCache>
+    <con:endpoints>
+      <con:endpoint>http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting</con:endpoint>
+    </con:endpoints>
+    <con:operation id="9d619731-893e-4c82-a841-0589c58b105b" isOneWay="false" action="" name="b2bAvailabilityRequest" bindingOperationName="b2bAvailabilityRequest" type="Request-Response" outputName="b2bAvailabilityRequestResponse" inputName="b2bAvailabilityRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
+      <con:settings/>
+      <con:call id="88bba46c-8acb-413c-afc7-96b5401ad04f" name="Request 1">
+        <con:settings>
+          <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+        </con:settings>
+        <con:encoding>UTF-8</con:encoding>
+        <con:endpoint>http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting</con:endpoint>
+        <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:b2b="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <b2b:RequestXml>
+         <b2b:oInputXml>
+            <b2b:B2BAvailabilityRequest APIVersion="1.5E2" B2BAPIUserEmailAddress="gero et" B2BAPIUserPassword="sonoras imperio" DepAirportCode="quae divum incedo" ArrAirportCode="verrantque per auras" DepBeginDate="per auras" AdultSeats="100" ReturnBeginDate="circum claustra">nimborum in</b2b:B2BAvailabilityRequest>
+         </b2b:oInputXml>
+      </b2b:RequestXml>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+        <con:credentials>
+          <con:authType>No Authorization</con:authType>
+        </con:credentials>
+        <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+        <con:jmsPropertyConfig/>
+        <con:wsaConfig mustUnderstand="NONE" version="200508" action="http://test.appdynamics.com/B2BAvailability_PortType/b2bAvailabilityRequest"/>
+        <con:wsrmConfig version="1.2"/>
+      </con:call>
+    </con:operation>
+  </con:interface>
   <con:testSuite id="cefd15c0-46cf-4cae-b1c8-444f32e177f4" name="MSW">
     <con:settings/>
     <con:runType>SEQUENTIAL</con:runType>
@@ -328,6 +516,76 @@
             <testDelay>5000</testDelay>
             <randomFactor>0.5</randomFactor>
           </con:config>
+        </con:loadStrategy>
+        <con:assertion type="Step Status" name="Step Status"/>
+        <con:maxAssertionErrors>100</con:maxAssertionErrors>
+        <con:cancelExcessiveThreads>true</con:cancelExcessiveThreads>
+        <con:strategyInterval>500</con:strategyInterval>
+      </con:loadTest>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase id="ac3afa65-1722-49d0-94b8-79ebd61b78a5" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="b2bAvailabilityRequest TestCase" searchProperties="true">
+      <con:settings/>
+      <con:loadTest id="b7098ddd-9c56-4890-a5ee-dbdb1722521c" name="LoadTest 1">
+        <con:settings/>
+        <con:threadCount>5</con:threadCount>
+        <con:startDelay>0</con:startDelay>
+        <con:sampleInterval>250</con:sampleInterval>
+        <con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed>
+        <con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange>
+        <con:historyLimit>-1</con:historyLimit>
+        <con:testLimit>60</con:testLimit>
+        <con:limitType>TIME</con:limitType>
+        <con:loadStrategy>
+          <con:type>Simple</con:type>
+        </con:loadStrategy>
+        <con:assertion type="Step Status" name="Step Status"/>
+        <con:maxAssertionErrors>100</con:maxAssertionErrors>
+        <con:cancelExcessiveThreads>true</con:cancelExcessiveThreads>
+        <con:strategyInterval>500</con:strategyInterval>
+      </con:loadTest>
+      <con:properties/>
+    </con:testCase>
+    <con:testCase id="34f91050-baf6-4e70-9c20-ee174af07551" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="ApplicationServiceSoapBinding TestSuite" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="request" id="91d9e2f7-a5d9-425b-b641-9fca27acac26" name="b2bAvailabilityRequest">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>ApplicationServiceSoapBinding</con:interface>
+          <con:operation>b2bAvailabilityRequest</con:operation>
+          <con:request name="b2bAvailabilityRequest" id="e6479edb-db93-4031-9f80-ba1c5b25de28">
+            <con:settings/>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:b2b="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <b2b:RequestXml>
+         <b2b:oInputXml>
+            <b2b:B2BAvailabilityRequest APIVersion="1.5E2" B2BAPIUserEmailAddress="gero et" B2BAPIUserPassword="sonoras imperio" DepAirportCode="quae divum incedo" ArrAirportCode="verrantque per auras" DepBeginDate="per auras" AdultSeats="100" ReturnBeginDate="circum claustra">nimborum in</b2b:B2BAvailabilityRequest>
+         </b2b:oInputXml>
+      </b2b:RequestXml>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:wsaConfig action="http://test.appdynamics.com/B2BAvailability_PortType/b2bAvailabilityRequest"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:loadTest id="aafd56b7-4afe-4946-badd-7cb7b4e987b5" name="LoadTest 1">
+        <con:settings/>
+        <con:threadCount>5</con:threadCount>
+        <con:startDelay>0</con:startDelay>
+        <con:sampleInterval>250</con:sampleInterval>
+        <con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed>
+        <con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange>
+        <con:historyLimit>-1</con:historyLimit>
+        <con:testLimit>60</con:testLimit>
+        <con:limitType>TIME</con:limitType>
+        <con:loadStrategy>
+          <con:type>Simple</con:type>
         </con:loadStrategy>
         <con:assertion type="Step Status" name="Step Status"/>
         <con:maxAssertionErrors>100</con:maxAssertionErrors>
