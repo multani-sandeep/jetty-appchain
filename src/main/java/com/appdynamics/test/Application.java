@@ -52,6 +52,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.B2BAvailabilityPortType;
 import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.RequestXml;
@@ -86,7 +87,7 @@ public class Application extends HttpServlet implements B2BAvailabilityPortType 
 
 	@Override
 	public RequestXmlResponse b2BAvailabilityRequest(RequestXml soapRequest) {
-
+		log("b2BAvailabilityRequest");
 		HttpServletRequest request = (HttpServletRequest) PhaseInterceptorChain.getCurrentMessage().get("HTTP.REQUEST");
 		HttpServletResponse response = (HttpServletResponse) PhaseInterceptorChain.getCurrentMessage()
 				.get("HTTP.RESPONSE");
@@ -107,7 +108,9 @@ public class Application extends HttpServlet implements B2BAvailabilityPortType 
 		soapResponse.getRequestXmlResult().getResponseRoot().getDataListRoot().getAvailabilityResponse()
 				.getAvailabilityList().getAvailability().add(availability);
 		try {
+			
 			request.setAttribute(SOAP_SERVICE, "/commercial-cpm/megaswitch/v1/b2brouting/flight-search");
+
 			route(request, response);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -156,9 +159,12 @@ public class Application extends HttpServlet implements B2BAvailabilityPortType 
 		}
 	}
 
+	private static boolean isSoap(HttpServletRequest request) {
+		return (request.getAttribute(SOAP_SERVICE) != null);
+	}
+
 	private static String getRequestURI(HttpServletRequest request) {
-		return request.getAttribute(SOAP_SERVICE) == null ? request.getRequestURI()
-				: request.getAttribute(SOAP_SERVICE).toString();
+		return isSoap(request) ? request.getAttribute(SOAP_SERVICE).toString() : request.getRequestURI() ;
 	}
 
 	private static void registerMbeans() {
@@ -732,13 +738,12 @@ public class Application extends HttpServlet implements B2BAvailabilityPortType 
 
 		String url = http.url;
 		log("Proxy", url);
-		log("Proxy 1");
+
 		URL url1 = new URL(url);
 		HttpClient client = getHttpClient(url1.getHost(), url1.getPort());
 
 		HttpGet request = new HttpGet(url);
 
-		log("Proxy 2");
 		// add request header
 		request.addHeader("User-Agent", "Test");
 		boolean logHeaders = false;
@@ -749,21 +754,23 @@ public class Application extends HttpServlet implements B2BAvailabilityPortType 
 			if (!headerName.toLowerCase().equals("content-length")) {
 				request.addHeader(headerName, req.getHeader(headerName));
 			}
-			log("Proxy 2.5");
+
 		}
-		log("Proxy 3");
+
 		HttpResponse response = null;
 		try {
 			response = client.execute(request);
-			log("Proxy 3.5");
+
 			log("Response Code : ", response.getStatusLine().getStatusCode());
 			if (response.getStatusLine().getStatusCode() != 200) {
 				LOG.error("HTTP error " + response.getStatusLine().getStatusCode() + " received from " + url);
 			}
-			resp.setStatus(HttpServletResponse.SC_OK);
+			if (!isSoap(req)){
+				resp.setStatus(HttpServletResponse.SC_OK);
+			}
 
 			try {
-				log("Proxy 4");
+
 				BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
 				StringBuffer result = new StringBuffer();
@@ -771,22 +778,23 @@ public class Application extends HttpServlet implements B2BAvailabilityPortType 
 				while ((line = rd.readLine()) != null) {
 					result.append(line);
 				}
-				log("Proxy 5");
-				PrintWriter wrtr = resp.getWriter();
-				Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {
-					if (!downHeader.getName().toLowerCase().equals("content-length")
-							&& !downHeader.getName().toLowerCase().equals("transfer-encoding")
-							&& !downHeader.getName().toLowerCase().equals("date")) {
-						if (logHeaders)
-							log("<", downHeader.getName(), downHeader.getValue());
-						resp.addHeader(downHeader.getName(), downHeader.getValue());
-						log("Proxy 5.5");
-					}
-				});
-				log("Proxy 6");
-				wrtr.print(result.toString());
-				wrtr.flush();
-				// resp.flushBuffer();
+
+				if (!isSoap(req)) {
+					PrintWriter wrtr = resp.getWriter();
+					Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {
+						if (!downHeader.getName().toLowerCase().equals("content-length")
+								&& !downHeader.getName().toLowerCase().equals("transfer-encoding")
+								&& !downHeader.getName().toLowerCase().equals("date")) {
+							if (logHeaders)
+								log("<", downHeader.getName(), downHeader.getValue());
+							resp.addHeader(downHeader.getName(), downHeader.getValue());
+
+						}
+					});
+
+					wrtr.print(result.toString());
+					wrtr.flush();
+				}
 			} catch (Exception e) {
 				log(e);
 				throw e;
@@ -794,7 +802,7 @@ public class Application extends HttpServlet implements B2BAvailabilityPortType 
 		} finally {
 			request.releaseConnection();
 		}
-		log("Proxy 7");
+
 	}
 
 	@Override

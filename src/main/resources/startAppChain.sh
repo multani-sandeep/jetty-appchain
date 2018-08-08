@@ -1,7 +1,7 @@
 #/bin/bash
 
 cd ../../../;
-mvn package && java -cp ./target/test-jar-with-dependencies.jar com.appdynamics.test.Database
+mvn generate-sources && mvn package && java -cp ./target/test-jar-with-dependencies.jar com.appdynamics.test.Database
 cd ./src/main/resources/;
 
 #java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9000,suspend=n -Dappdynamics.agent.nodeName=App5 -Dappdynamics.agent.tierName=Hybris-AD -jar ../../../target/dependency/jetty-runner.jar --port 8181 ../../../target/test.war | tee -a /tmp/server.log &
@@ -34,12 +34,11 @@ jettyABL=" -Djetty.jmxrmiport=9104 -Dappdynamics.agent.tierName=EJ.AbstractionLa
 jettyCPG=" -Djetty.jmxrmiport=9105 -Dappdynamics.agent.tierName=CustomerPayments.Gateway "
 jettyMSW=" -Djetty.jmxrmiport=9106 -Dappdynamics.agent.tierName=MS " 
 
-sleep 2
 #Start Hybris-AD
 set +x
 java $debugAD $jettyAD  $appdAD -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8181 ../../../target/test.war > /tmp/server.log &
 
-sleep 3
+sleep 2
 #Start Hybris-ACP
 java $debugACP $jettyACP $appdACP -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8282 ../../../target/test.war >> /tmp/server.log &
 
@@ -59,8 +58,8 @@ sleep 2
 #Start CustomerPayments.Gateway
 java $debug $jettyCPG $appdCPG -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8686 ../../../target/test.war >> /tmp/server.log &
 
-sleep 4
-#Start CustomerPayments.Gateway
+sleep 2
+#Start MSW
 java $debugMSW $jettyMSW $appdMSW -jar ../../../target/dependency/jetty-runner.jar $jmxEnable --port 8787 ../../../target/test.war >> /tmp/server.log &
 
 set +x
