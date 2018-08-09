@@ -5,18 +5,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.management.ManagementFactory;
+import java.math.BigInteger;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -41,6 +41,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.time.StopWatch;
+import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -51,7 +52,11 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.mock.web.MockHttpServletResponse;
 
+import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.B2BAvailabilityPortType;
+import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.RequestXml;
+import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.RequestXmlResponse;
 import com.appdynamics.test.MBeans.MBAttribute;
 import com.appdynamics.test.MBeans.MBean;
 import com.appdynamics.test.MBeans.MBeanApp;
@@ -66,7 +71,7 @@ import com.appdynamics.test.Routes.SQL;
 import com.appdynamics.test.Routes.Serve;
 import com.appdynamics.test.Routes.Step;
 
-public class Application extends HttpServlet {
+public class Application extends HttpServlet implements B2BAvailabilityPortType {
 
 	public static Routes ROUTES;
 	public static MBeans MBEANS;
@@ -74,10 +79,45 @@ public class Application extends HttpServlet {
 	public static MBeanApp MBEAN_APP;
 	public static Route DEF_ROUTE;
 	public static String APP_NAME = System.getProperty("appdynamics.agent.tierName");
+	public static final String SOAP_SERVICE = "SOAP_SERVICE";
 
 	private static final int CONNECTION_TIMEOUT_SEC = 120;
 
 	static final Logger LOG = LogManager.getLogger(Application.class.getName());
+
+	@Override
+	public RequestXmlResponse b2BAvailabilityRequest(RequestXml soapRequest) {
+		log("b2BAvailabilityRequest");
+		HttpServletRequest request = (HttpServletRequest) PhaseInterceptorChain.getCurrentMessage().get("HTTP.REQUEST");
+		HttpServletResponse response = (HttpServletResponse) PhaseInterceptorChain.getCurrentMessage()
+				.get("HTTP.RESPONSE");
+		RequestXmlResponse soapResponse = new RequestXmlResponse();
+		soapResponse.setRequestXmlResult(new RequestXmlResponse.RequestXmlResult());
+		soapResponse.getRequestXmlResult().setResponseRoot(new RequestXmlResponse.RequestXmlResult.ResponseRoot());
+		soapResponse.getRequestXmlResult().getResponseRoot()
+				.setAPIVersion(soapRequest.getOInputXml().getB2BAvailabilityRequest().getAPIVersion());
+		soapResponse.getRequestXmlResult().getResponseRoot().setSuccess(BigInteger.ONE);
+		soapResponse.getRequestXmlResult().getResponseRoot()
+				.setDataListRoot(new RequestXmlResponse.RequestXmlResult.ResponseRoot.DataListRoot());
+		soapResponse.getRequestXmlResult().getResponseRoot().getDataListRoot().setAvailabilityResponse(
+				new RequestXmlResponse.RequestXmlResult.ResponseRoot.DataListRoot.AvailabilityResponse());
+		soapResponse.getRequestXmlResult().getResponseRoot().getDataListRoot().getAvailabilityResponse()
+				.setAvailabilityList(
+						new RequestXmlResponse.RequestXmlResult.ResponseRoot.DataListRoot.AvailabilityResponse.AvailabilityList());
+		RequestXmlResponse.RequestXmlResult.ResponseRoot.DataListRoot.AvailabilityResponse.AvailabilityList.Availability availability = new RequestXmlResponse.RequestXmlResult.ResponseRoot.DataListRoot.AvailabilityResponse.AvailabilityList.Availability();
+		soapResponse.getRequestXmlResult().getResponseRoot().getDataListRoot().getAvailabilityResponse()
+				.getAvailabilityList().getAvailability().add(availability);
+		try {
+			
+			request.setAttribute(SOAP_SERVICE, "/commercial-cpm/megaswitch/v1/b2brouting/flight-search");
+
+			route(request, response);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return soapResponse;
+	}
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -117,6 +157,14 @@ public class Application extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private static boolean isSoap(HttpServletRequest request) {
+		return (request.getAttribute(SOAP_SERVICE) != null);
+	}
+
+	private static String getRequestURI(HttpServletRequest request) {
+		return isSoap(request) ? request.getAttribute(SOAP_SERVICE).toString() : request.getRequestURI() ;
 	}
 
 	private static void registerMbeans() {
@@ -168,18 +216,18 @@ public class Application extends HttpServlet {
 	}
 
 	protected void route(HttpServletRequest req, HttpServletResponse resp) throws ClientProtocolException, IOException {
-		log("Route 1");
+
 		Routes.Route matchingRoute = ROUTES.routes.stream().filter(route -> {
-			return req.getRequestURI().endsWith(route.url) && route.nodes.stream().anyMatch(node -> {
+			return getRequestURI(req).endsWith(route.url) && route.nodes.stream().anyMatch(node -> {
 				return node.name.equals(APP_NAME);
 			});
 		}).findFirst().orElse(DEF_ROUTE);
-		log("Route 2");
+
 		if (matchingRoute.isDefaultRoute) {
 			log("Switching to default route");
 			serve(req, resp, matchingRoute.nodes.get(0).steps.get(0).serve.get(0));
 		} else {
-			log("Route 3");
+
 			MethodWrapperCallback callback = new MethodWrapperCallback() {
 
 				StopWatch timer = null;
@@ -245,7 +293,7 @@ public class Application extends HttpServlet {
 			Node matchingNode = matchingRoute.nodes.stream().filter(node -> {
 				return node.name.equals(APP_NAME);
 			}).findFirst().get();
-			log("Route 4");
+
 			log("Found matching route " + matchingRoute.url + " for node " + matchingNode.name);
 			try {
 				matchingNode.steps.forEach(step -> {
@@ -274,7 +322,7 @@ public class Application extends HttpServlet {
 						}
 
 						if (step.methodWrapper != null && !step.methodWrapper.isEmpty()) {
-							log("Route 4.1");
+
 							MethodWrapper methodWrapper = step.methodWrapper.stream()
 									.sorted(new Comparator<MethodWrapper>() {
 										@Override
@@ -285,15 +333,14 @@ public class Application extends HttpServlet {
 										return serveMe(step, mWrapper);
 									}).findFirst().orElse(step.methodWrapper.get(0));
 
-							log("Route 4.2");
 							if (methodWrapper.name.equals("updateMbeanStats")) {
-								log("Route 4.3");
+
 								updateMbeanStats(req, resp, step, methodWrapper, callback);
-								log("Route 4.4");
+
 							}
 						}
 					} else {
-						log("Route 4.5");
+
 						step.serve.forEach(serve -> {
 							serve(req, resp, serve);
 						});
@@ -306,7 +353,7 @@ public class Application extends HttpServlet {
 						}).forEach(method -> {
 							copyFromHeader(req, resp, method);
 						});
-						log("Route 4.6");
+
 						step.method.stream().filter(method -> {
 							return method.name.equals("updateMbeanStats");
 						}).forEach(method -> {
@@ -318,11 +365,11 @@ public class Application extends HttpServlet {
 						}).forEach(method -> {
 							updateMbeanStats(req, resp, step, method, callback);
 						});
-						log("Route 4.7");
+
 					}
 
 				});
-				log("Route 5");
+
 			} catch (ForcedException exc) {
 				log("Exception occured:", exc);
 				throw exc;
@@ -691,13 +738,12 @@ public class Application extends HttpServlet {
 
 		String url = http.url;
 		log("Proxy", url);
-		log("Proxy 1");
+
 		URL url1 = new URL(url);
 		HttpClient client = getHttpClient(url1.getHost(), url1.getPort());
 
 		HttpGet request = new HttpGet(url);
 
-		log("Proxy 2");
 		// add request header
 		request.addHeader("User-Agent", "Test");
 		boolean logHeaders = false;
@@ -708,21 +754,23 @@ public class Application extends HttpServlet {
 			if (!headerName.toLowerCase().equals("content-length")) {
 				request.addHeader(headerName, req.getHeader(headerName));
 			}
-			log("Proxy 2.5");
+
 		}
-		log("Proxy 3");
+
 		HttpResponse response = null;
 		try {
 			response = client.execute(request);
-			log("Proxy 3.5");
+
 			log("Response Code : ", response.getStatusLine().getStatusCode());
 			if (response.getStatusLine().getStatusCode() != 200) {
 				LOG.error("HTTP error " + response.getStatusLine().getStatusCode() + " received from " + url);
 			}
-			resp.setStatus(HttpServletResponse.SC_OK);
+			if (!isSoap(req)){
+				resp.setStatus(HttpServletResponse.SC_OK);
+			}
 
 			try {
-				log("Proxy 4");
+
 				BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
 				StringBuffer result = new StringBuffer();
@@ -730,22 +778,23 @@ public class Application extends HttpServlet {
 				while ((line = rd.readLine()) != null) {
 					result.append(line);
 				}
-				log("Proxy 5");
-				PrintWriter wrtr = resp.getWriter();
-				Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {
-					if (!downHeader.getName().toLowerCase().equals("content-length")
-							&& !downHeader.getName().toLowerCase().equals("transfer-encoding")
-							&& !downHeader.getName().toLowerCase().equals("date")) {
-						if (logHeaders)
-							log("<", downHeader.getName(), downHeader.getValue());
-						resp.addHeader(downHeader.getName(), downHeader.getValue());
-						log("Proxy 5.5");
-					}
-				});
-				log("Proxy 6");
-				wrtr.print(result.toString());
-				wrtr.flush();
-				// resp.flushBuffer();
+
+				if (!isSoap(req)) {
+					PrintWriter wrtr = resp.getWriter();
+					Arrays.stream(response.getAllHeaders()).forEach(downHeader -> {
+						if (!downHeader.getName().toLowerCase().equals("content-length")
+								&& !downHeader.getName().toLowerCase().equals("transfer-encoding")
+								&& !downHeader.getName().toLowerCase().equals("date")) {
+							if (logHeaders)
+								log("<", downHeader.getName(), downHeader.getValue());
+							resp.addHeader(downHeader.getName(), downHeader.getValue());
+
+						}
+					});
+
+					wrtr.print(result.toString());
+					wrtr.flush();
+				}
 			} catch (Exception e) {
 				log(e);
 				throw e;
@@ -753,7 +802,7 @@ public class Application extends HttpServlet {
 		} finally {
 			request.releaseConnection();
 		}
-		log("Proxy 7");
+
 	}
 
 	@Override

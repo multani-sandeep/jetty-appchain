@@ -110,13 +110,25 @@
 			</step>
 		</node>
 	</route>
-	<route url="/commercial-cpm/megaswitch/v1/b2brouting">
+	<!-- <route url="/commercial-cpm/megaswitch/v1/b2brouting">
 		<node name="MS">
 			<step seq="1">
 				<http url="http://localhost:8282/commercial-cpm/v1/search/flights">
 					<payload>
-						<!-- <get> <param name="requestData.departureAirportCode"></param> 
-							</get> -->
+						<get> <param name="requestData.departureAirportCode"></param> 
+							</get>
+					</payload>
+				</http>
+				<delay msec="10" random="1" />
+			</step>
+		</node>
+	</route> -->
+	<route url="/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
+		<node name="MS">
+			<step seq="1">
+				<http url="http://localhost:8282/commercial-cpm/v1/search/flights">
+					<payload>
+						
 					</payload>
 				</http>
 				<delay msec="10" random="1" />

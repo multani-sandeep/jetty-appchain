@@ -1,21 +1,21 @@
 #/bin/bash
 
+
 cd /c/jetty-app/jetty-appchain/;
-mvn package;
+mvn generate-sources && mvn package && java -cp ./target/test-jar-with-dependencies.jar com.appdynamics.test.Database
 cd /c/jetty-app/jetty-appchain/src/main/resources/;
+
 
 #java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9000,suspend=n -Dappdynamics.agent.nodeName=App5 -Dappdynamics.agent.tierName=Hybris-AD -jar ../../../target/dependency/jetty-runner.jar --port 8181 ../../../target/test.war | tee -a /tmp/server.log &
 #java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9001,suspend=n -Dappdynamics.agent.nodeName=App5 -Dappdynamics.agent.tierName=Hybris-ACP -jar ../../../target/dependency/jetty-runner.jar --port 8282 ../../../target/test.war | tee -a /tmp/server.log &
 
 
-#debugAD="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20000,suspend=n"
-#debugACP="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20001,suspend=n"
-#debugESB="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20002,suspend=n"
-#debugAMQ="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20003,suspend=n"
-#debugABL="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20004,suspend=n"
-debugMSW="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=200005 suspend=n -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog -Dorg.apache.commons.logging.simplelog.showdatetime=true -Dorg.apache.commons.logging.simplelog.log.org.apache.http=DEBUG"
-
-jmxEnable="--jar /c/jetty-app/jetty-appchain/target/test/WEB-INF/lib/jetty-jmx-9.4.11.v20180605.jar --config /c/jetty-app/jetty-appchain/src/etc/jetty-jmx.xml"
+#debugAD="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9000,suspend=n"
+#debugACP="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9001,suspend=n"
+#debugESB="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9002,suspend=n"
+#debugAMQ="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9003,suspend=n"
+#debugABL="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9004,suspend=n"
+#debugMSW="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9005,suspend=n -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog -Dorg.apache.commons.logging.simplelog.showdatetime=true -Dorg.apache.commons.logging.simplelog.log.org.apache.http=DEBUG"
 
 
 appdAD="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App1  -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=Hybris-AD -Djetty.jmxrmiport=2000"
@@ -34,12 +34,11 @@ jettyAkamai=" -Djetty.jmxrmiport=2011 -Dappdynamics.agent.tierName=AKAMAI"
 jettyAPIGWY=" -Djetty.jmxrmiport=2007 -Dappdynamics.agent.tierName=APIGWY"
 
 
-sleep 2
 #Start Hybris-AD
 set +x
 java $debugAD  $appdAD -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8181 /c/jetty-app/jetty-appchain/target/test.war > /tmp/server.log &
 
-sleep 3
+sleep 2
 #Start Hybris-ACP
 java $debugACP $appdACP -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8282 /c/jetty-app/jetty-appchain/target/test.war >> /tmp/server.log &
 
