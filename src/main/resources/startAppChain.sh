@@ -2,7 +2,7 @@
 
 
 cd /c/jetty-app/jetty-appchain/;
-mvn generate-sources && mvn package && java -cp ./target/test-jar-with-dependencies.jar com.appdynamics.test.Database
+mvn -X generate-sources && mvn clean package install && java -cp /c/jetty-app/jetty-appchain/target/test-jar-with-dependencies.jar com.appdynamics.test.Database
 cd /c/jetty-app/jetty-appchain/src/main/resources/;
 
 
@@ -10,12 +10,14 @@ cd /c/jetty-app/jetty-appchain/src/main/resources/;
 #java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9001,suspend=n -Dappdynamics.agent.nodeName=App5 -Dappdynamics.agent.tierName=Hybris-ACP -jar ../../../target/dependency/jetty-runner.jar --port 8282 ../../../target/test.war | tee -a /tmp/server.log &
 
 
-#debugAD="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9000,suspend=n"
-#debugACP="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9001,suspend=n"
-#debugESB="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9002,suspend=n"
-#debugAMQ="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9003,suspend=n"
-#debugABL="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9004,suspend=n"
-#debugMSW="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=9005,suspend=n -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog -Dorg.apache.commons.logging.simplelog.showdatetime=true -Dorg.apache.commons.logging.simplelog.log.org.apache.http=DEBUG"
+#debugAD="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20000,suspend=n"
+#debugACP="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20001,suspend=n"
+#debugESB="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20002,suspend=n"
+#debugAMQ="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20003,suspend=n"
+#debugABL="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20004,suspend=n"
+debugMSW="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=200005 suspend=n -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog -Dorg.apache.commons.logging.simplelog.showdatetime=true -Dorg.apache.commons.logging.simplelog.log.org.apache.http=DEBUG"
+
+jmxEnable="--jar /c/jetty-app/jetty-appchain/target/test/WEB-INF/lib/jetty-jmx-9.4.11.v20180605.jar --config /c/jetty-app/jetty-appchain/src/etc/jetty-jmx.xml"
 
 
 appdAD="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App1  -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=Hybris-AD -Djetty.jmxrmiport=2000"
@@ -24,7 +26,7 @@ appdESB="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.
 appdAMQ="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App4 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=EI-AMQ -Djetty.jmxrmiport=2003"
 appdABL="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App5 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=EJ.AbstractionLayer -Djetty.jmxrmiport=2004"
 appdCPG="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App6 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=CustomerPayments.Gateway -Djetty.jmxrmiport=2005"
-appdMSW="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App7 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=MS -Djetty.jmxrmiport=2010"
+#appdMSW="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App7 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=MS -Djetty.jmxrmiport=2010"
 appdAPIGWY="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App8 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=APIGWY -Djetty.jmxrmiport=2007"
 appdB2B="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App9 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=B2B -Djetty.jmxrmiport=2008"
 appdERES="-javaagent:/c/AppServerAgent-4.3.7.1/javaagent.jar -Dappdynamics.agent.nodeName=G-App10 -Dappagent.install.dir=/C/AppServerAgent-4.3.7.1 -Dappdynamics.agent.tierName=ERES -Djetty.jmxrmiport=2009"
@@ -34,11 +36,29 @@ jettyAkamai=" -Djetty.jmxrmiport=2011 -Dappdynamics.agent.tierName=AKAMAI"
 jettyAPIGWY=" -Djetty.jmxrmiport=2007 -Dappdynamics.agent.tierName=APIGWY"
 
 
+# Machine Agent Config Start
+
+#appdmachineAD="-machineagent:/C/MachineAgent-4.5.0.1285/machineagent.jar -Dappdynamics.agent.nodeName=G-App1  -Dmachineagent.install.dir=/C/MachineAgent-4.5.0.1285 -Dappdynamics.agent.tierName=Hybris-AD" 
+#appdmachineACP="-machineagent:/C/MachineAgent-4.5.0.1285/machineagent.jar -Dappdynamics.agent.nodeName=G-App2 -Dmachineagent.install.dir=/C/MachineAgent-4.5.0.1285 -Dappdynamics.agent.tierName=Hybris-ACP"
+#appdmachineESB="-machineagent:/C/MachineAgent-4.5.0.1285/machineagent.jar -Dappdynamics.agent.nodeName=G-App3 -Dmachineagent.install.dir=/C/MachineAgent-4.5.0.1285 -Dappdynamics.agent.tierName=EI-ESB"
+#appdmachineAMQ="-machineagent:/C/MachineAgent-4.5.0.1285/machineagent.jar -Dappdynamics.agent.nodeName=G-App4 -Dmachineagent.install.dir=/C/MachineAgent-4.5.0.1285 -Dappdynamics.agent.tierName=EI-AMQ"
+#appdmachineABL="-machineagent:/C/MachineAgent-4.5.0.1285/machineagent.jar -Dappdynamics.agent.nodeName=G-App5 -Dmachineagent.install.dir=/C/MachineAgent-4.5.0.1285 -Dappdynamics.agent.tierName=EJ.AbstractionLayer"
+#appdmachineCPG="-machineagent:/C/MachineAgent-4.5.0.1285/machineagent.jar -Dappdynamics.agent.nodeName=G-App6 -Dmachineagent.install.dir=/C/MachineAgent-4.5.0.1285 -Dappdynamics.agent.tierName=CustomerPayments.Gateway"
+#appdmachineMSW="-machineagent:/C/MachineAgent-4.5.0.1285/machineagent.jar -Dappdynamics.agent.nodeName=G-App7 -Dmachineagent.install.dir=/C/MachineAgent-4.5.0.1285 -Dappdynamics.agent.tierName=MS"
+#appdmachineAPIGWY="-machineagent:/C/MachineAgent-4.5.0.1285/machineagent.jar -Dappdynamics.agent.nodeName=G-App8 -Dmachineagent.install.dir=/C/MachineAgent-4.5.0.1285 -Dappdynamics.agent.tierName=APIGWY"
+#appdmachineB2B="-machineagent:/C/MachineAgent-4.5.0.1285/machineagent.jar -Dappdynamics.agent.nodeName=G-App9 -Dmachineagent.install.dir=/C/MachineAgent-4.5.0.1285 -Dappdynamics.agent.tierName=B2B"
+#appdmachineERES="-machineagent:/C/MachineAgent-4.5.0.1285/machineagent.jar -Dappdynamics.agent.nodeName=G-App10 -Dmachineagent.install.dir=/C/MachineAgent-4.5.0.1285 -Dappdynamics.agent.tierName=ERES"
+#appdmachineMeSW="-machineagent:/C/MachineAgent-4.5.0.1285/machineagent.jar -Dappdynamics.agent.nodeName=G-App11 -Dmachineagent.install.dir=/C/MachineAgent-4.5.0.1285 -Dappdynamics.agent.tierName=MSW"
+
+
+# Machine Agent Config End
+
+sleep 2
 #Start Hybris-AD
 set +x
 java $debugAD  $appdAD -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8181 /c/jetty-app/jetty-appchain/target/test.war > /tmp/server.log &
 
-sleep 2
+sleep 3
 #Start Hybris-ACP
 java $debugACP $appdACP -jar /c/jetty-app/jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8282 /c/jetty-app/jetty-appchain/target/test.war >> /tmp/server.log &
 

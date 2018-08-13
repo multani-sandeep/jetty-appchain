@@ -26,7 +26,7 @@
 	<route url="/non-trans-partner/dummy/flight-search">
 		<node name="APIGWY">
 			<step seq="1">
-				<http url="http://localhost:9191/commercial-cpm/megaswitch/v1/b2brouting">
+				<http url="http://localhost:9191/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
 					<payload>
 						<!-- <get> <param name="requestData.departureAirportCode"></param> 
 							</get> -->
@@ -37,7 +37,7 @@
 		</node>
 	</route>
 	
-	<route url="/commercial-cpm/megaswitch/v1/b2brouting">
+	<route url="/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
         <node name="MSW">
             <step seq="1" weighted="true">
                 <methodwrapper name="updateMbeanStats"
@@ -122,7 +122,7 @@
 				<delay msec="10" random="1" />
 			</step>
 		</node>
-	</route> -->
+	</route> 
 	<route url="/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
 		<node name="MS">
 			<step seq="1">
@@ -134,7 +134,7 @@
 				<delay msec="10" random="1" />
 			</step>
 		</node>
-	</route>
+	</route> -->
 	<route url="/commercial-cpm/v1/search/flights">
 		<node name="Hybris-ACP">
 			<step seq="1">
