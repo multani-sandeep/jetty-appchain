@@ -439,7 +439,7 @@
           <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
         </con:settings>
         <con:encoding>UTF-8</con:encoding>
-        <con:endpoint>http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting</con:endpoint>
+        <con:endpoint>http://localhost:8787/cxf/commercial-cpm/megaswitch/v1/b2brouting</con:endpoint>
         <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:b2b="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting">
    <soapenv:Header/>
    <soapenv:Body>
