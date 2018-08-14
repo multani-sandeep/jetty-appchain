@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -52,7 +53,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.mock.web.MockHttpServletResponse;
+//import org.springframework.mock.web.MockHttpServletResponse;
 
 import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.B2BAvailabilityPortType;
 import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.RequestXml;
@@ -128,6 +129,10 @@ public class Application extends HttpServlet implements B2BAvailabilityPortType 
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
 			ROUTES = (Routes) jaxbUnMarshaller.unmarshal(this.getClass().getResourceAsStream("/routing.xml"));
+			for (Route route : ROUTES.routes) {
+				System.out.println("All Routes #############: "+route.url);
+			}
+			System.out.println();
 			// jaxbMarshaller.marshal(ROUTES, System.out);
 			DEF_ROUTE = ROUTES.routes.stream().filter(route -> {
 				return route.isDefaultRoute;
@@ -198,7 +203,7 @@ public class Application extends HttpServlet implements B2BAvailabilityPortType 
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+		System.out.println("############ IN SERVICE");
 		route(req, resp);
 		resp.setStatus(HttpServletResponse.SC_OK);
 	}
@@ -216,13 +221,36 @@ public class Application extends HttpServlet implements B2BAvailabilityPortType 
 	}
 
 	protected void route(HttpServletRequest req, HttpServletResponse resp) throws ClientProtocolException, IOException {
-
-		Routes.Route matchingRoute = ROUTES.routes.stream().filter(route -> {
-			return getRequestURI(req).endsWith(route.url) && route.nodes.stream().anyMatch(node -> {
+		System.out.println("############ IN ROUTE");
+		Routes.Route matchingRoute = ROUTES.routes.stream()
+				.filter(route -> {
+			return getRequestURI(req).
+					endsWith(route.url) 
+					&& route.nodes.stream()
+					.anyMatch(node -> {
 				return node.name.equals(APP_NAME);
 			});
 		}).findFirst().orElse(DEF_ROUTE);
 
+		if (matchingRoute != null) {
+			System.out.println("matchingRoute URL = "+matchingRoute.url);
+			System.out.println("matchingRoute NODE = "+matchingRoute.nodes.get(0).name);
+			System.out.println(matchingRoute.nodes.get(0).steps);
+			// System.out.println(matchingRoute.nodes.get(0).steps.stream().findAny().get().http.get(0).url);
+			List<Step> list = matchingRoute.nodes.get(0).steps;
+			if (list != null && list.size() > 0) {
+				for (Step step : list) {
+					for (Http http : step.http) {
+						System.out.println("HTTP URL = ########### "+http.url);
+					}
+				}
+			}else {
+				System.out.println("Step list = : "+list );
+			}
+		} else {
+			System.out.println(matchingRoute);
+		}
+		
 		if (matchingRoute.isDefaultRoute) {
 			log("Switching to default route");
 			serve(req, resp, matchingRoute.nodes.get(0).steps.get(0).serve.get(0));
