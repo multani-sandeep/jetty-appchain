@@ -768,12 +768,16 @@ public class Application extends HttpServlet implements B2BAvailabilityPortType 
 		log("Proxy", url);
 
 		URL url1 = new URL(url);
-		HttpClient client = getHttpClient(url1.getHost(), url1.getPort());
+		String host = url1.getHost();
+		HttpClient client = getHttpClient(host, url1.getPort());
 
 		HttpGet request = new HttpGet(url);
 
 		// add request header
-		request.addHeader("User-Agent", "Test");
+		if(host.contains("/commercial-cpm/megaswitch/v1/b2brouting")) {
+			request.addHeader("Authorization", "QjJCTUVHQVNXSVRDSDplYXN5amV0");
+			
+		}
 		boolean logHeaders = false;
 		for (Enumeration<String> headers = req.getHeaderNames(); headers.hasMoreElements();) {
 			String headerName = headers.nextElement();

@@ -37,30 +37,19 @@
 		</node>
 	</route>
 	
-	<route url="/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
-        <node name="MSW">
-            <step seq="1" weighted="true">
-                <methodwrapper name="updateMbeanStats"
-                    queueName="com.customerregisteredv1.queue.consume" load="95">
-					<http url="http://localhost:8989/dummy/b2b/search/flights">
-                    <serve>
-                        <payload>Empty</payload>
-                    </serve>
-					</http>
-                    <delay msec="10" random="1" />
-                </methodwrapper>
-                <methodwrapper name="updateMbeanStats"
-                    queueName="DLQ.com.customerregisteredv1.queue.consume" load="5">
-                    <http url="http://localhost:8282/commercial-cpm/v1/search/flights">
-	                    <serve>
-	                        <payload>Empty</payload>
-	                    </serve>
-                    </http>
-                    <delay msec="10" random="1" />
-                </methodwrapper>
-            </step>
-        </node>
-    </route>
+    <route url="/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
+		<node name="APIGWY">
+			<step seq="1">
+				<http url="http://localhost:8989/dummy/b2b/search/flights">
+					<payload>
+						<!-- <get> <param name="requestData.departureAirportCode"></param> 
+							</get> -->
+					</payload>
+				</http>
+				<delay msec="10" random="1" />
+			</step>
+		</node>
+	</route>
 	
 	 <route url="/dummy/b2b/search/flights">
 		<node name="B2B">
