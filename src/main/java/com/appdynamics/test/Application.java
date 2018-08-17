@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -55,9 +54,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 //import org.springframework.mock.web.MockHttpServletResponse;
 
-import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.B2BAvailabilityPortType;
-import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.RequestXml;
-import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.RequestXmlResponse;
+import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.B2BRoutingPortType;
+import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.avail.RequestXml;
+import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.avail.RequestXmlResponse;
+import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.avail.RequestXmlResponse.RequestXmlResult;
+import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.avail.RequestXmlResponse.RequestXmlResult.ResponseRoot;
+import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.avail.RequestXmlResponse.RequestXmlResult.ResponseRoot.DataListRoot;
+import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.avail.RequestXmlResponse.RequestXmlResult.ResponseRoot.DataListRoot.AvailabilityResponse;
+import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.avail.RequestXmlResponse.RequestXmlResult.ResponseRoot.DataListRoot.AvailabilityResponse.AvailabilityList;
+import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.avail.RequestXmlResponse.RequestXmlResult.ResponseRoot.DataListRoot.AvailabilityResponse.AvailabilityList.Availability;
 import com.appdynamics.test.MBeans.MBAttribute;
 import com.appdynamics.test.MBeans.MBean;
 import com.appdynamics.test.MBeans.MBeanApp;
@@ -72,7 +77,8 @@ import com.appdynamics.test.Routes.SQL;
 import com.appdynamics.test.Routes.Serve;
 import com.appdynamics.test.Routes.Step;
 
-public class Application extends HttpServlet implements B2BAvailabilityPortType {
+public class Application extends HttpServlet implements B2BRoutingPortType//, com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2bavailabilityoft.B2BAvailabilityPortType 
+{
 
 	public static Routes ROUTES;
 	public static MBeans MBEANS;
@@ -85,6 +91,40 @@ public class Application extends HttpServlet implements B2BAvailabilityPortType 
 	private static final int CONNECTION_TIMEOUT_SEC = 120;
 
 	static final Logger LOG = LogManager.getLogger(Application.class.getName());
+	
+	//@Override
+	public RequestXmlResponse oftB2BAvailabilityRequest(
+			com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.oftavail.RequestXml soapRequest) {
+		log("b2BAvailabilityRequestOFT");
+		HttpServletRequest request = (HttpServletRequest) PhaseInterceptorChain.getCurrentMessage().get("HTTP.REQUEST");
+		HttpServletResponse response = (HttpServletResponse) PhaseInterceptorChain.getCurrentMessage()
+				.get("HTTP.RESPONSE");
+		RequestXmlResponse soapResponse = new RequestXmlResponse();
+		soapResponse.setRequestXmlResult(new RequestXmlResult());
+		soapResponse.getRequestXmlResult().setResponseRoot(new ResponseRoot());
+		soapResponse.getRequestXmlResult().getResponseRoot()
+				.setAPIVersion(soapRequest.getOInputXml().getOFTB2BAvailabilityRequest().getAPIVersion());
+		soapResponse.getRequestXmlResult().getResponseRoot().setSuccess(BigInteger.ONE);
+		soapResponse.getRequestXmlResult().getResponseRoot()
+				.setDataListRoot(new DataListRoot());
+		soapResponse.getRequestXmlResult().getResponseRoot().getDataListRoot().setAvailabilityResponse(new AvailabilityResponse());
+		soapResponse.getRequestXmlResult().getResponseRoot().getDataListRoot().getAvailabilityResponse()
+				.setAvailabilityList(
+						new AvailabilityList());
+		Availability availability = new Availability();
+		soapResponse.getRequestXmlResult().getResponseRoot().getDataListRoot().getAvailabilityResponse()
+				.getAvailabilityList().getAvailability().add(availability);
+		try {
+			
+			request.setAttribute(SOAP_SERVICE, "/commercial-cpm/megaswitch/v1/b2brouting/flight-search");
+
+			route(request, response);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return soapResponse;
+	}
 
 	@Override
 	public RequestXmlResponse b2BAvailabilityRequest(RequestXml soapRequest) {
@@ -863,6 +903,6 @@ public class Application extends HttpServlet implements B2BAvailabilityPortType 
 			e.printStackTrace();
 		}
 
-	}
+	}	
 
 }

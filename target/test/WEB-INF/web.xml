@@ -21,7 +21,7 @@
 
 	<servlet-mapping>
 		<servlet-name>cxf</servlet-name>
-		<url-pattern>/cxf/*</url-pattern>
+		<url-pattern>/cxf/commercial-cpm/megaswitch/v1/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet>

@@ -6,7 +6,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
   <jaxws:endpoint id="b2broutingBean"
-    implementor="com.appdynamics.test.Application" address="/">
+    implementor="com.appdynamics.test.Application" address="/b2brouting">
   </jaxws:endpoint>
+  
+  <!-- <jaxws:endpoint id="b2broutingBean1"
+    implementor="com.appdynamics.test.Application" address="/b2bavailabilityoft">
+  </jaxws:endpoint> -->
 
 </beans>

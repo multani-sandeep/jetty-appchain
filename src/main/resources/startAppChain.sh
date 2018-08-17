@@ -13,6 +13,7 @@ cd $APPCHAIN_HOME;
  mvn clean && mvn -X generate-sources && mvn package && java -cp "$APPCHAIN_HOME"/target/test-jar-with-dependencies.jar com.appdynamics.test.Database
 cd $APPCHAIN_HOME"/src/main/resources";
 
+#mvn package && java   -jar ./target/dependency/jetty-runner.jar  --port 9191 ./target/test.war >> /tmp/server.log
 
 
 #debugAD="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20000,suspend=n"
