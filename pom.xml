@@ -162,6 +162,10 @@
 									<wsdl>${project.basedir}/src/main/resources/wsdl/b2brouting.wsdl</wsdl>
 									<wsdlLocation>classpath:wsdl/b2brouting.wsdl</wsdlLocation>
 								</wsdlOption>
+								<!-- <wsdlOption>
+									<wsdl>${project.basedir}/src/main/resources/wsdl/b2brouting_oft.wsdl</wsdl>
+									<wsdlLocation>classpath:wsdl/b2brouting.wsdl</wsdlLocation>
+								</wsdlOption> -->
 							</wsdlOptions>
 						</configuration>
 						<goals>

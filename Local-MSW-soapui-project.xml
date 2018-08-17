@@ -1,285 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <con:soapui-project id="f6981060-e985-4dd8-92a2-edb893a3a450" activeEnvironment="Default" name="Local MSW" soapui-version="5.4.0" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" xmlns:con="http://eviware.com/soapui/config">
   <con:settings/>
-  <con:interface xsi:type="con:RestService" id="070d8e20-1c7e-4e46-94b1-02579fe973e7" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://web-msw-ipt.wip.europe.easyjet.local" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <con:interface xsi:type="con:WsdlInterface" id="16d19e92-2d82-44af-9516-23fbc6b7975c" wsaVersion="NONE" name="ApplicationServiceSoapBinding" type="wsdl" bindingName="{http://test.appdynamics.com/}ApplicationServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9191/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <con:settings/>
-    <con:definitionCache type="TEXT" rootPart=""/>
-    <con:endpoints>
-      <con:endpoint>https://web-msw-ipt.wip.europe.easyjet.local</con:endpoint>
-    </con:endpoints>
-    <con:resource name="FlightSearch" path="/commercial-cpm/megaswitch/v1/b2brouting" id="00ca7376-8bc7-4c5c-8ffd-db4d9820fe27">
-      <con:settings/>
-      <con:parameters/>
-      <con:method name="FlightSearch" id="0c444104-48c2-49b8-aab9-9f7ba82f390d" method="POST">
-        <con:settings/>
-        <con:parameters/>
-        <con:representation type="REQUEST">
-          <con:mediaType>application/xml</con:mediaType>
-          <con:params/>
-          <con:element xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">soapenv:Envelope</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>200</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>200</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>200</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>200</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>200</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>0</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:representation type="RESPONSE">
-          <con:mediaType xsi:nil="true"/>
-          <con:status>200</con:status>
-          <con:params/>
-          <con:element>data</con:element>
-        </con:representation>
-        <con:request name="Request 1" id="cc574b21-3f91-40b8-9368-ce2816111218" mediaType="application/xml" postQueryString="false">
-          <con:settings>
-            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-          </con:settings>
-          <con:endpoint>localhost:8787</con:endpoint>
-          <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:b2b="http://b2b.easyjet.com/">
-  <soapenv:Header/>
-  <soapenv:Body>
-     <b2b:RequestXml>
-        <b2b:oInputXml>
-         <B2BAvailabilityRequest APIVersion="1.0" 
-            B2BAPIUserEmailAddress="easyjetb2b@amadeus.com"
-            B2BAPIUserPassword="easyjet"
-            DepAirportCode="${orig}" 
-            ArrAirportCode="${dest}" 
-            DepBeginDate="${out}"
-            AdultSeats="1"
-            ReturnBeginDate="${rtn}"/>
-     </b2b:oInputXml>
-     </b2b:RequestXml>
-  </soapenv:Body>
-</soapenv:Envelope>]]></con:request>
-          <con:credentials>
-            <con:authType>No Authorization</con:authType>
-          </con:credentials>
-          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-          <con:jmsPropertyConfig/>
-          <con:parameters/>
-        </con:request>
-      </con:method>
-    </con:resource>
-  </con:interface>
-  <con:interface xsi:type="con:WsdlInterface" id="47d9b5ff-7f5f-4675-b08e-2667399a70af" wsaVersion="NONE" name="ApplicationServiceSoapBinding" type="wsdl" bindingName="{http://test.appdynamics.com/}ApplicationServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <con:settings/>
-    <con:definitionCache type="TEXT" rootPart="http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl">
+    <con:definitionCache type="TEXT" rootPart="http://localhost:9191/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl">
       <con:part>
-        <con:url>http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl</con:url>
-        <con:content><![CDATA[<wsdl:definitions name="ApplicationService" targetNamespace="http://test.appdynamics.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://test.appdynamics.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting">
-  <wsdl:import location="http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl=B2BAvailability_PortType.wsdl" namespace="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting"></wsdl:import>
-  <wsdl:binding name="ApplicationServiceSoapBinding" type="ns1:B2BAvailability_PortType">
+        <con:url>http://localhost:9191/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl</con:url>
+        <con:content><![CDATA[<wsdl:definitions name="ApplicationService" targetNamespace="http://test.appdynamics.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://test.appdynamics.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns4="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting">
+  <wsdl:import location="http://localhost:9191/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl=B2BRouting_PortType.wsdl" namespace="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting"></wsdl:import>
+  <wsdl:binding name="ApplicationServiceSoapBinding" type="ns1:B2BRouting_PortType">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="b2bAvailabilityRequest">
       <soap:operation soapAction="" style="document"/>
@@ -290,20 +19,66 @@
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="oftB2bAvailabilityRequest">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="oftB2bAvailabilityRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="oftB2bAvailabilityRequestResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="ApplicationService">
     <wsdl:port binding="tns:ApplicationServiceSoapBinding" name="ApplicationPort">
-      <soap:address location="http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting"/>
+      <soap:address location="http://localhost:9191/cxf/commercial-cpm/megaswitch/v1/b2brouting"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>]]></con:content>
         <con:type>http://schemas.xmlsoap.org/wsdl/</con:type>
       </con:part>
       <con:part>
-        <con:url>http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl=B2BAvailability_PortType.wsdl</con:url>
-        <con:content><![CDATA[<wsdl:definitions name="B2BAvailability_PortType" targetNamespace="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting">
+        <con:url>http://localhost:9191/cxf/commercial-cpm/megaswitch/v1/b2brouting?wsdl=B2BRouting_PortType.wsdl</con:url>
+        <con:content><![CDATA[<wsdl:definitions name="B2BRouting_PortType" targetNamespace="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns3="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/oftavail" xmlns:ns2="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail" xmlns:ns1="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting">
   <wsdl:types>
-    <xs:schema elementFormDefault="qualified" targetNamespace="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/oftavail" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="RequestXml">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="oInputXml">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="OFTB2BAvailabilityRequest">
+                    <xs:complexType>
+                      <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                          <xs:attribute name="LanguageCode" type="xs:string"/>
+                          <xs:attribute name="APIVersion" type="xs:float"/>
+                          <xs:attribute name="B2BAPIUserEmailAddress" type="xs:string"/>
+                          <xs:attribute name="B2BAPIUserPassword" type="xs:string"/>
+                          <xs:attribute name="AdultSeats" type="xs:integer"/>
+                          <xs:attribute name="ChildSeats" type="xs:integer"/>
+                          <xs:attribute name="ChildrenBetween2To11Years" type="xs:integer"/>
+                          <xs:attribute name="ChildrenBetween12To15Years" type="xs:integer"/>
+                          <xs:attribute name="AdditionalSeats" type="xs:integer"/>
+                          <xs:attribute name="InfantSeats" type="xs:integer"/>
+                          <xs:attribute name="DepAirportCode" type="xs:string"/>
+                          <xs:attribute name="ArrAirportCode" type="xs:string"/>
+                          <xs:attribute name="DepBeginDate" type="xs:date"/>
+                          <xs:attribute name="RetBeginDate" type="xs:date"/>
+                          <xs:attribute name="FareClass" type="xs:string"/>
+                        </xs:extension>
+                      </xs:simpleContent>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="RequestXml">
         <xs:complexType>
           <xs:sequence>
@@ -413,16 +188,26 @@
       </xs:element>
     </xs:schema>
   </wsdl:types>
+  <wsdl:message name="oftB2bAvailabilityRequest">
+    <wsdl:part element="ns3:RequestXml" name="request"></wsdl:part>
+  </wsdl:message>
   <wsdl:message name="b2bAvailabilityRequest">
-    <wsdl:part element="ns1:RequestXml" name="request"></wsdl:part>
+    <wsdl:part element="ns2:RequestXml" name="request"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="oftB2bAvailabilityRequestResponse">
+    <wsdl:part element="ns2:RequestXmlResponse" name="response"></wsdl:part>
   </wsdl:message>
   <wsdl:message name="b2bAvailabilityRequestResponse">
-    <wsdl:part element="ns1:RequestXmlResponse" name="greeting"></wsdl:part>
+    <wsdl:part element="ns2:RequestXmlResponse" name="response"></wsdl:part>
   </wsdl:message>
-  <wsdl:portType name="B2BAvailability_PortType">
+  <wsdl:portType name="B2BRouting_PortType">
     <wsdl:operation name="b2bAvailabilityRequest">
       <wsdl:input message="ns1:b2bAvailabilityRequest" name="b2bAvailabilityRequest"></wsdl:input>
       <wsdl:output message="ns1:b2bAvailabilityRequestResponse" name="b2bAvailabilityRequestResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="oftB2bAvailabilityRequest">
+      <wsdl:input message="ns1:oftB2bAvailabilityRequest" name="oftB2bAvailabilityRequest"></wsdl:input>
+      <wsdl:output message="ns1:oftB2bAvailabilityRequestResponse" name="oftB2bAvailabilityRequestResponse"></wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
 </wsdl:definitions>]]></con:content>
@@ -430,24 +215,24 @@
       </con:part>
     </con:definitionCache>
     <con:endpoints>
-      <con:endpoint>http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting</con:endpoint>
+      <con:endpoint>http://localhost:9191/cxf/commercial-cpm/megaswitch/v1/b2brouting</con:endpoint>
     </con:endpoints>
-    <con:operation id="9d619731-893e-4c82-a841-0589c58b105b" isOneWay="false" action="" name="b2bAvailabilityRequest" bindingOperationName="b2bAvailabilityRequest" type="Request-Response" outputName="b2bAvailabilityRequestResponse" inputName="b2bAvailabilityRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
+    <con:operation id="6645b491-72f0-43eb-9ca7-cd6bb4fa6db7" isOneWay="false" action="" name="b2bAvailabilityRequest" bindingOperationName="b2bAvailabilityRequest" type="Request-Response" outputName="b2bAvailabilityRequestResponse" inputName="b2bAvailabilityRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
       <con:settings/>
-      <con:call id="88bba46c-8acb-413c-afc7-96b5401ad04f" name="Request 1">
+      <con:call id="52aebfc3-bb69-4f1e-99a7-d12a0da37592" name="Request 1">
         <con:settings>
           <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
         </con:settings>
         <con:encoding>UTF-8</con:encoding>
-        <con:endpoint>http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting</con:endpoint>
-        <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:b2b="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting">
+        <con:endpoint>http://localhost:9191/cxf/commercial-cpm/megaswitch/v1/b2brouting</con:endpoint>
+        <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ava="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail">
    <soapenv:Header/>
    <soapenv:Body>
-      <b2b:RequestXml>
-         <b2b:oInputXml>
-            <b2b:B2BAvailabilityRequest APIVersion="1.5E2" B2BAPIUserEmailAddress="gero et" B2BAPIUserPassword="sonoras imperio" DepAirportCode="quae divum incedo" ArrAirportCode="verrantque per auras" DepBeginDate="per auras" AdultSeats="100" ReturnBeginDate="circum claustra">nimborum in</b2b:B2BAvailabilityRequest>
-         </b2b:oInputXml>
-      </b2b:RequestXml>
+      <ava:RequestXml>
+         <ava:oInputXml>
+            <ava:B2BAvailabilityRequest APIVersion="1.5E2" B2BAPIUserEmailAddress="gero et" B2BAPIUserPassword="sonoras imperio" DepAirportCode="quae divum incedo" ArrAirportCode="verrantque per auras" DepBeginDate="per auras" AdultSeats="100" ReturnBeginDate="circum claustra">nimborum in</ava:B2BAvailabilityRequest>
+         </ava:oInputXml>
+      </ava:RequestXml>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
         <con:credentials>
@@ -455,147 +240,38 @@
         </con:credentials>
         <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
         <con:jmsPropertyConfig/>
-        <con:wsaConfig mustUnderstand="NONE" version="200508" action="http://test.appdynamics.com/B2BAvailability_PortType/b2bAvailabilityRequest"/>
+        <con:wsaConfig mustUnderstand="NONE" version="200508" action="http://test.appdynamics.com/B2BRouting_PortType/b2bAvailabilityRequest"/>
+        <con:wsrmConfig version="1.2"/>
+      </con:call>
+    </con:operation>
+    <con:operation id="ac9b7026-1b9f-4eee-92a5-48f553c137c1" isOneWay="false" action="" name="oftB2bAvailabilityRequest" bindingOperationName="oftB2bAvailabilityRequest" type="Request-Response" outputName="oftB2bAvailabilityRequestResponse" inputName="oftB2bAvailabilityRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
+      <con:settings/>
+      <con:call id="f3fbb3e7-6f19-4dbd-98fd-8703ce8207c5" name="Request 1">
+        <con:settings>
+          <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+        </con:settings>
+        <con:encoding>UTF-8</con:encoding>
+        <con:endpoint>http://localhost:9191/cxf/commercial-cpm/megaswitch/v1/b2brouting</con:endpoint>
+        <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:oft="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/oftavail">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <oft:RequestXml>
+         <oft:oInputXml>
+            <oft:OFTB2BAvailabilityRequest LanguageCode="gero et" APIVersion="1.5E2" B2BAPIUserEmailAddress="sonoras imperio" B2BAPIUserPassword="quae divum incedo" AdultSeats="100" ChildSeats="100" ChildrenBetween2To11Years="100" ChildrenBetween12To15Years="100" AdditionalSeats="100" InfantSeats="100" DepAirportCode="verrantque per auras" ArrAirportCode="per auras" DepBeginDate="2013-05-22+01:00" RetBeginDate="2002-11-05+00:00" FareClass="profundum quippe ferant">et carcere</oft:OFTB2BAvailabilityRequest>
+         </oft:oInputXml>
+      </oft:RequestXml>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+        <con:credentials>
+          <con:authType>No Authorization</con:authType>
+        </con:credentials>
+        <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+        <con:jmsPropertyConfig/>
+        <con:wsaConfig mustUnderstand="NONE" version="200508" action="http://test.appdynamics.com/B2BRouting_PortType/oftB2bAvailabilityRequest"/>
         <con:wsrmConfig version="1.2"/>
       </con:call>
     </con:operation>
   </con:interface>
-  <con:testSuite id="cefd15c0-46cf-4cae-b1c8-444f32e177f4" name="MSW">
-    <con:settings/>
-    <con:runType>SEQUENTIAL</con:runType>
-    <con:testCase id="1945178d-bae8-4b7a-ae20-e3559f22a261" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="FlightSearch" searchProperties="true">
-      <con:settings/>
-      <con:testStep type="restrequest" name="MSW-FlightSearch" id="3e0a6519-560d-495e-a2bd-924ce3241a02">
-        <con:settings/>
-        <con:config service="https://web-msw-ipt.wip.europe.easyjet.local" resourcePath="/commercial-cpm/megaswitch/v1/b2brouting" methodName="FlightSearch" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:restRequest name="MSW-FlightSearch" id="cc574b21-3f91-40b8-9368-ce2816111218" mediaType="application/xml" postQueryString="false">
-            <con:settings>
-              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
-            </con:settings>
-            <con:endpoint>http://localhost:8787</con:endpoint>
-            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:b2b="http://b2b.easyjet.com/">
-  <soapenv:Header/>
-  <soapenv:Body>
-     <b2b:RequestXml>
-        <b2b:oInputXml>
-         <B2BAvailabilityRequest APIVersion="1.0" 
-            B2BAPIUserEmailAddress="easyjetb2b@amadeus.com"
-            B2BAPIUserPassword="easyjet"
-            DepAirportCode="${orig}" 
-            ArrAirportCode="${dest}" 
-            DepBeginDate="${out}"
-            AdultSeats="1"
-            ReturnBeginDate="${rtn}"/>
-     </b2b:oInputXml>
-     </b2b:RequestXml>
-  </soapenv:Body>
-</soapenv:Envelope>]]></con:request>
-            <con:originalUri>https://localhost/commercial-cpm/megaswitch/v1/b2brouting</con:originalUri>
-            <con:credentials>
-              <con:authType>No Authorization</con:authType>
-            </con:credentials>
-            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
-            <con:jmsPropertyConfig/>
-            <con:parameters/>
-          </con:restRequest>
-        </con:config>
-      </con:testStep>
-      <con:loadTest id="906b8bf7-21ab-45d3-b957-5d662f7b4705" name="MSW">
-        <con:settings/>
-        <con:threadCount>10</con:threadCount>
-        <con:startDelay>0</con:startDelay>
-        <con:sampleInterval>250</con:sampleInterval>
-        <con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed>
-        <con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange>
-        <con:historyLimit>-1</con:historyLimit>
-        <con:testLimit>1000</con:testLimit>
-        <con:limitType>COUNT</con:limitType>
-        <con:loadStrategy>
-          <con:type>Simple</con:type>
-          <con:config>
-            <testDelay>5000</testDelay>
-            <randomFactor>0.5</randomFactor>
-          </con:config>
-        </con:loadStrategy>
-        <con:assertion type="Step Status" name="Step Status"/>
-        <con:maxAssertionErrors>100</con:maxAssertionErrors>
-        <con:cancelExcessiveThreads>true</con:cancelExcessiveThreads>
-        <con:strategyInterval>500</con:strategyInterval>
-      </con:loadTest>
-      <con:properties/>
-    </con:testCase>
-    <con:testCase id="ac3afa65-1722-49d0-94b8-79ebd61b78a5" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="b2bAvailabilityRequest TestCase" searchProperties="true">
-      <con:settings/>
-      <con:loadTest id="b7098ddd-9c56-4890-a5ee-dbdb1722521c" name="LoadTest 1">
-        <con:settings/>
-        <con:threadCount>5</con:threadCount>
-        <con:startDelay>0</con:startDelay>
-        <con:sampleInterval>250</con:sampleInterval>
-        <con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed>
-        <con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange>
-        <con:historyLimit>-1</con:historyLimit>
-        <con:testLimit>60</con:testLimit>
-        <con:limitType>TIME</con:limitType>
-        <con:loadStrategy>
-          <con:type>Simple</con:type>
-        </con:loadStrategy>
-        <con:assertion type="Step Status" name="Step Status"/>
-        <con:maxAssertionErrors>100</con:maxAssertionErrors>
-        <con:cancelExcessiveThreads>true</con:cancelExcessiveThreads>
-        <con:strategyInterval>500</con:strategyInterval>
-      </con:loadTest>
-      <con:properties/>
-    </con:testCase>
-    <con:testCase id="34f91050-baf6-4e70-9c20-ee174af07551" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="ApplicationServiceSoapBinding TestSuite" searchProperties="true">
-      <con:settings/>
-      <con:testStep type="request" id="91d9e2f7-a5d9-425b-b641-9fca27acac26" name="b2bAvailabilityRequest">
-        <con:settings/>
-        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          <con:interface>ApplicationServiceSoapBinding</con:interface>
-          <con:operation>b2bAvailabilityRequest</con:operation>
-          <con:request name="b2bAvailabilityRequest" id="e6479edb-db93-4031-9f80-ba1c5b25de28">
-            <con:settings/>
-            <con:encoding>UTF-8</con:encoding>
-            <con:endpoint>http://localhost:8181/cxf/commercial-cpm/megaswitch/v1/b2brouting</con:endpoint>
-            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:b2b="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <b2b:RequestXml>
-         <b2b:oInputXml>
-            <b2b:B2BAvailabilityRequest APIVersion="1.5E2" B2BAPIUserEmailAddress="gero et" B2BAPIUserPassword="sonoras imperio" DepAirportCode="quae divum incedo" ArrAirportCode="verrantque per auras" DepBeginDate="per auras" AdultSeats="100" ReturnBeginDate="circum claustra">nimborum in</b2b:B2BAvailabilityRequest>
-         </b2b:oInputXml>
-      </b2b:RequestXml>
-   </soapenv:Body>
-</soapenv:Envelope>]]></con:request>
-            <con:credentials>
-              <con:authType>No Authorization</con:authType>
-            </con:credentials>
-            <con:wsaConfig action="http://test.appdynamics.com/B2BAvailability_PortType/b2bAvailabilityRequest"/>
-          </con:request>
-        </con:config>
-      </con:testStep>
-      <con:loadTest id="aafd56b7-4afe-4946-badd-7cb7b4e987b5" name="LoadTest 1">
-        <con:settings/>
-        <con:threadCount>5</con:threadCount>
-        <con:startDelay>0</con:startDelay>
-        <con:sampleInterval>250</con:sampleInterval>
-        <con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed>
-        <con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange>
-        <con:historyLimit>-1</con:historyLimit>
-        <con:testLimit>60</con:testLimit>
-        <con:limitType>TIME</con:limitType>
-        <con:loadStrategy>
-          <con:type>Simple</con:type>
-        </con:loadStrategy>
-        <con:assertion type="Step Status" name="Step Status"/>
-        <con:maxAssertionErrors>100</con:maxAssertionErrors>
-        <con:cancelExcessiveThreads>true</con:cancelExcessiveThreads>
-        <con:strategyInterval>500</con:strategyInterval>
-      </con:loadTest>
-      <con:properties/>
-    </con:testCase>
-    <con:properties/>
-  </con:testSuite>
   <con:properties/>
   <con:wssContainer/>
   <con:oAuth2ProfileContainer/>
