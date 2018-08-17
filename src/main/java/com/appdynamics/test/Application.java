@@ -605,8 +605,13 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 			ResultSet rs = statement.executeQuery(select);
 			log("Select sql:", select, " executed successfully against", sql.db);
+			System.out.println("Select SQL  ############= "+select);
 			while (rs.next()) {
 				log(sql.name, rs.getInt(1));
+				System.out.println("Result from DB ############= "+rs.getInt(1));
+				Serve serve = new Serve();
+				serve.payload = rs.getString(1);
+				serve(req, resp, serve);
 			}
 
 		} catch (Exception e) {
