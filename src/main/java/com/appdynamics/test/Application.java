@@ -52,7 +52,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.B2BAvailabilityPortType;
 import com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.RequestXml;
