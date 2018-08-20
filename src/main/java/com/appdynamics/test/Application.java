@@ -599,9 +599,10 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 
 	private void executeSelectSql(HttpServletRequest req, HttpServletResponse resp, SQL sql, String select) {
 		Connection connection = null;
+		Statement statement = null;
 		try {
 			connection = DriverManager.getConnection("jdbc:sqlite:" + Database.getDBPath(DATABASES) + "/" + sql.db);
-			Statement statement = connection.createStatement();
+			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 			ResultSet rs = statement.executeQuery(select);
 			log("Select sql:", select, " executed successfully against", sql.db);
@@ -635,6 +636,7 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 		} finally {
 			try {
 				if (!connection.isClosed()) {
+					statement.close();
 					connection.close();
 				}
 			} catch (Exception e) {
