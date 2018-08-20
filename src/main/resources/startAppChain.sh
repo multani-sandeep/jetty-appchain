@@ -25,12 +25,12 @@ cd $APPCHAIN_HOME"/src/main/resources";
 jmxEnable="--jar ../../../../jetty-appchain/target/test/WEB-INF/lib/jetty-jmx-9.4.11.v20180605.jar --config "$APPCHAIN_HOME"/src/etc/jetty-jmx.xml"
 
 
-appdAD="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App1  -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=Hybris-AD -Djetty.jmxrmiport=2000"
+#appdAD="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App1  -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=Hybris-AD -Djetty.jmxrmiport=2000"
 appdACP="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App2 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=Hybris-ACP -Djetty.jmxrmiport=2001"
 appdESB="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App3 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=EI-ESB -Djetty.jmxrmiport=2002"
-appdAMQ="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App4 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=EI-AMQ -Djetty.jmxrmiport=2003"
+#appdAMQ="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App4 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=EI-AMQ -Djetty.jmxrmiport=2003"
 appdABL="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App5 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=EJ.AbstractionLayer -Djetty.jmxrmiport=2004"
-appdCPG="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App6 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=CustomerPayments.Gateway -Djetty.jmxrmiport=2005"
+#appdCPG="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App6 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=CustomerPayments.Gateway -Djetty.jmxrmiport=2005"
 appdAPIGWY="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App8 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=APIGWY -Djetty.jmxrmiport=2007"
 appdB2B="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App9 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=B2B -Djetty.jmxrmiport=2008"
 appdMeSW="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App11 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=MSW -Djetty.jmxrmiport=2010"
@@ -62,7 +62,7 @@ jettyAPIGWY=" -Djetty.jmxrmiport=2007 -Dappdynamics.agent.tierName=APIGWY"
 sleep $APP_START_DELAY
 #Start Hybris-AD
 set +x
-java $debugAD  $appdAD -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8181 ../../../../jetty-appchain/target/test.war > /C/jetty-app/jetty-appchain/tmp/server.log &
+#java $debugAD  $appdAD -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8181 ../../../../jetty-appchain/target/test.war > /C/jetty-app/jetty-appchain/tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start Hybris-ACP
@@ -74,7 +74,7 @@ java $debugESB $appdESB -jar ../../../../jetty-appchain/target/dependency/jetty-
 
 sleep $APP_START_DELAY
 #Start EI-AMQ
-java $debugAMQ $appdAMQ -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8484 ../../../../jetty-appchain/target/test.war >> /C/jetty-app/jetty-appchain/tmp/server.log &
+#java $debugAMQ $appdAMQ -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8484 ../../../../jetty-appchain/target/test.war >> /C/jetty-app/jetty-appchain/tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start AbstractionLayer
@@ -83,7 +83,7 @@ java $debugABL $appdABL -jar ../../../../jetty-appchain/target/dependency/jetty-
 
 sleep $APP_START_DELAY
 #Start CustomerPayments.Gateway
-java $debug $appdCPG -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8686 ../../../../jetty-appchain/target/test.war >> /C/jetty-app/jetty-appchain/tmp/server.log &
+#java $debug $appdCPG -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8686 ../../../../jetty-appchain/target/test.war >> /C/jetty-app/jetty-appchain/tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start MS

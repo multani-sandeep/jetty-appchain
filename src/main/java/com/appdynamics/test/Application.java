@@ -606,13 +606,28 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 			ResultSet rs = statement.executeQuery(select);
 			log("Select sql:", select, " executed successfully against", sql.db);
 			System.out.println("Select SQL  ############= "+select);
+			
+			StringBuilder table = new StringBuilder();
+			table.append("<html>" +
+			           "<body>" +
+			           "<table border=\"1\">" +
+			           "<tr>" +
+			           "<th>FLIGHTS</th>" +
+			           "</tr>");
 			while (rs.next()) {
-				log(sql.name, rs.getInt(1));
-				System.out.println("Result from DB ############= "+rs.getInt(1));
-				Serve serve = new Serve();
-				serve.payload = rs.getString(1);
-				serve(req, resp, serve);
+				log(sql.name, rs.getInt(2));
+				System.out.println("Result from DB ############= "+rs.getInt(2));
+				table.append("<tr><td>")
+			       .append(rs.getString(2))
+			       .append("</td><td>");
 			}
+			table.append("</table>" +
+			           "</body>" +
+			           "</html>");
+			String html = table.toString();
+			Serve serve = new Serve();
+			serve.payload = html;
+			serve(req, resp, serve);
 
 		} catch (Exception e) {
 			e.printStackTrace();
