@@ -10,7 +10,7 @@
 	</context-param>
 	<context-param>
 		<param-name>enableCXFForCSV</param-name>
-		<param-value>MSW,EI-ESB</param-value>
+		<param-value>MSW,MS</param-value>
 	</context-param>
 
 	<listener>

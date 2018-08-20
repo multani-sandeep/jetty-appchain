@@ -27,8 +27,12 @@ public class CustomContextLoaderListener extends ContextLoaderListener {
 			if(!Arrays.asList(csvToEnable.split(",")).stream().anyMatch(toEnable ->{ return toEnable.equals(appName);})){
 				LOG.warn("Not starting CXF context for App: "+appName+". To enable add app-name enableCXFForCSV in web.xml");
 				return;
+			}else{
+				LOG.debug("Starting CXF context for App: "+appName);
 			}
 			
+		}else{
+			LOG.debug("enableCXFForCSV not available in web.xml");
 		}
 		
 		
