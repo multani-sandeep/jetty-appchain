@@ -1,18 +1,13 @@
 #/bin/bash
 
 
-APPCHAIN_HOME=/C/jetty-app/jetty-appchain/
-APPD_AGENT_HOME=/C/AppServerAgent-4.3.7.1/
-APPD_AGENT_JAR="$APPD_AGENT_HOME"/javaagent.jar
-APPD_AGENT_NODE_NAME_PREFIX=S-
-APPD_MACH_AGENT_HOME="/C/MachineAgent-4.5.0.1285/"
-APPD_MACH_AGENT_JAR="$APPD_MACH_AGENT_HOME"/machineagent.jar
-APP_START_DELAY=2
+. ./local.sh
 
 cd $APPCHAIN_HOME;
- mvn -X generate-sources && mvn package && java -cp "$APPCHAIN_HOME"/target/test-jar-with-dependencies.jar com.appdynamics.test.Database
+ mvn clean && mvn generate-sources && mvn package && java -cp "$APPCHAIN_HOME"/target/test-jar-with-dependencies.jar com.appdynamics.test.Database
 cd $APPCHAIN_HOME"/src/main/resources";
 
+#mvn package && java   -jar ./target/dependency/jetty-runner.jar  --port 9191 ./target/test.war >> /tmp/server.log
 
 
 #debugAD="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20000,suspend=n"
@@ -22,7 +17,7 @@ cd $APPCHAIN_HOME"/src/main/resources";
 #debugABL="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20004,suspend=n"
 #debugMSW="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=200005 suspend=n -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog -Dorg.apache.commons.logging.simplelog.showdatetime=true -Dorg.apache.commons.logging.simplelog.log.org.apache.http=DEBUG"
 
-jmxEnable="--jar ../../../../jetty-appchain/target/test/WEB-INF/lib/jetty-jmx-9.4.11.v20180605.jar --config "$APPCHAIN_HOME"/src/etc/jetty-jmx.xml"
+jmxEnable="--jar $APPCHAIN_HOME/target/test/WEB-INF/lib/jetty-jmx-9.4.11.v20180605.jar --config "$APPCHAIN_HOME"/src/etc/jetty-jmx.xml"
 
 
 #appdAD="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App1  -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=Hybris-AD -Djetty.jmxrmiport=2000"
@@ -62,54 +57,53 @@ jettyAPIGWY=" -Djetty.jmxrmiport=2007 -Dappdynamics.agent.tierName=APIGWY"
 sleep $APP_START_DELAY
 #Start Hybris-AD
 set +x
-#java $debugAD  $appdAD -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8181 ../../../../jetty-appchain/target/test.war > /C/jetty-app/jetty-appchain/tmp/server.log &
+#java $debugAD  $appdAD -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8181 $APPCHAIN_HOME/target/test.war > /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start Hybris-ACP
-java $debugACP $appdACP -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8282 ../../../../jetty-appchain/target/test.war >> /C/jetty-app/jetty-appchain/tmp/server.log &
+java $debugACP $appdACP -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8282 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start EI-ESB
-java $debugESB $appdESB -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8383 ../../../../jetty-appchain/target/test.war >> /C/jetty-app/jetty-appchain/tmp/server.log &
+java $debugESB $appdESB -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8383 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start EI-AMQ
-#java $debugAMQ $appdAMQ -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8484 ../../../../jetty-appchain/target/test.war >> /C/jetty-app/jetty-appchain/tmp/server.log &
+#java $debugAMQ $appdAMQ -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8484 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start AbstractionLayer
-
-java $debugABL $appdABL -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8585 ../../../../jetty-appchain/target/test.war >> /C/jetty-app/jetty-appchain/tmp/server.log &
+java $debugABL $appdABL -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8585 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start CustomerPayments.Gateway
-#java $debug $appdCPG -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8686 ../../../../jetty-appchain/target/test.war >> /C/jetty-app/jetty-appchain/tmp/server.log &
+#java $debug $appdCPG -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8686 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start MS
-#java $debugMSW $appdMSW -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 9191 ../../../../jetty-appchain/target/test.war >> /tmp/server.log &
+#java $debugMSW $appdMSW -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9191 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start API.Gateway
-java  $jettyAPIGWY -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8888 ../../../../jetty-appchain/target/test.war >> /C/jetty-app/jetty-appchain/tmp/server.log &
+java  $jettyAPIGWY -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8888 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start B2B
-java $debugB2B $appdB2B -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 8989 ../../../../jetty-appchain/target/test.war >> /C/jetty-app/jetty-appchain/tmp/server.log &
+java $debugB2B $appdB2B -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8989 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start ERES -- Now modelled as Database
-#java $debugERES $appdERES -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 9090 ../../../../jetty-appchain/target/test.war >> /tmp/server.log &
+#java $debugERES $appdERES -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9090 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 
 sleep $APP_START_DELAY
 #Start MSW
-java $debugMeSW $appdMeSW -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 9191 ../../../../jetty-appchain/target/test.war >> /C/jetty-app/jetty-appchain/tmp/server.log &
+java $debugMeSW $appdMeSW -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9191 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 
 sleep $APP_START_DELAY
 #Start AKAMAI
-java $debugAkamai $jettyAkamai -jar ../../../../jetty-appchain/target/dependency/jetty-runner.jar $jmxEnable --port 9292 ../../../../jetty-appchain/target/test.war >> /C/jetty-app/jetty-appchain/tmp/server.log &
+java $debugAkamai $jettyAkamai -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9292 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 
 set +x

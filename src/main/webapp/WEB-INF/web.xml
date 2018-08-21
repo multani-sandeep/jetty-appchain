@@ -8,15 +8,19 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:spring/context-provider.xml</param-value>
 	</context-param>
+	<context-param>
+		<param-name>enableCXFForCSV</param-name>
+		<param-value>MSW,MS</param-value>
+	</context-param>
 
 	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+		<listener-class>com.appdynamics.test.CustomContextLoaderListener</listener-class>
 	</listener>
 
 	<servlet>
 		<servlet-name>cxf</servlet-name>
 		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
+		<load-on-startup>0</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
