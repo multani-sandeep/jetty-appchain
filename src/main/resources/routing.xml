@@ -6,63 +6,123 @@
 ]>
 
 <routes>
-
-
-	<route url="/trans-partner/dummy/flight-search">
+	<route url="/b2b/dummy/flight-search">
 		<node name="AKAMAI">
 			<step seq="1">
 				<http url="http://localhost:8989/dummy/b2b/search/flights">
-					<payload>
-						<!-- <get> <param name="requestData.departureAirportCode"></param> 
-							</get> -->
-					</payload>
-				</http>
-				<delay msec="10" random="1" />
-			</step>
-		</node>
-	</route>	
-	
-	
-	<route url="/non-trans-partner/dummy/flight-search">
-		<node name="APIGWY">
-			<step seq="1">
-				<http url="http://localhost:9191/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
-					<payload>
-						<!-- <get> <param name="requestData.departureAirportCode"></param> 
-							</get> -->
-					</payload>
+					<payload></payload>
 				</http>
 				<delay msec="10" random="1" />
 			</step>
 		</node>
 	</route>
-	
-	<route url="/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
-        <node name="MSW">
-            <step seq="1" weighted="true">
-                <methodwrapper name="updateMbeanStats"
-                    queueName="com.customerregisteredv1.queue.consume" load="95">
+
+	<route url="/r1step1_1/dummy/flight-search">
+		<node name="AKAMAI">
+			<step seq="1" weighted="true">
+				<methodwrapper name="updateMbeanStats" queueName="doNothing"
+					load="95">
 					<http url="http://localhost:8989/dummy/b2b/search/flights">
-                    <serve>
-                        <payload>Empty</payload>
-                    </serve>
+						<payload>Empty</payload>
 					</http>
-                    <delay msec="10" random="1" />
-                </methodwrapper>
-                <methodwrapper name="updateMbeanStats"
-                    queueName="DLQ.com.customerregisteredv1.queue.consume" load="5">
-                    <http url="http://localhost:8282/commercial-cpm/v1/search/flights">
-	                    <serve>
-	                        <payload>Empty</payload>
-	                    </serve>
-                    </http>
-                    <delay msec="10" random="1" />
-                </methodwrapper>
-            </step>
-        </node>
-    </route>
+					<delay msec="10" random="1" />
+				</methodwrapper>
+				<methodwrapper name="updateMbeanStats" queueName="doNothing"
+					load="5">
+					<http
+						url="http://localhost:9191/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
+						<payload>Empty</payload>
+					</http>
+					<delay msec="10" random="1" />
+				</methodwrapper>
+			</step>
+		</node>
+	</route>
+
+	<route url="/r1step1_x/dummy/flight-search">
+		<node name="AKAMAI">
+			<step seq="1" weighted="true">
+				<methodwrapper name="updateMbeanStats" queueName="doNothing"
+					load="25">
+					<http url="http://localhost:8989/dummy/b2b/search/flights">
+						<payload>Empty</payload>
+					</http>
+					<delay msec="10" random="1" />
+				</methodwrapper>
+				<methodwrapper name="updateMbeanStats" queueName="doNothing"
+					load="75">
+					<http
+						url="http://localhost:9191/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
+						<payload>Empty</payload>
+					</http>
+					<delay msec="10" random="1" />
+				</methodwrapper>
+			</step>
+		</node>
+	</route>
 	
-	 <route url="/dummy/b2b/search/flights">
+	<route url="/r1step2_0/b2b/dummy/flight-search">
+		<node name="AKAMAI">
+			<step seq="1">
+				<methodwrapper name="updateMbeanStats" queueName="doNothing">
+					<http
+						url="http://localhost:9191/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
+						<payload>Empty</payload>
+					</http>
+					<delay msec="10" random="1" />
+				</methodwrapper>
+			</step>
+		</node>
+	</route>
+
+	<route url="/r1step2_0/acp/dummy/flight-search">
+		<node name="AKAMAI">
+			<step seq="1">
+				<methodwrapper name="updateMbeanStats" queueName="doNothing">
+					<http
+						url="http://localhost:9191/commercial-cpm/megaswitch/v1/b2brouting/flight-search-r1_step2">
+						<payload>Empty</payload>
+					</http>
+					<delay msec="10" random="1" />
+				</methodwrapper>
+			</step>
+		</node>
+	</route>
+
+	<route url="/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
+		<node name="MSW">
+			<step seq="1">
+				<methodwrapper name="updateMbeanStats"
+					queueName="doNothing" >
+					<http url="http://localhost:8989/dummy/b2b/search/flights">
+						<serve>
+							<payload>Empty</payload>
+						</serve>
+					</http>
+					<delay msec="10" random="1" />
+				</methodwrapper>
+			</step>
+		</node>
+	</route>
+	
+	<route url="/commercial-cpm/megaswitch/v1/b2brouting/flight-search-r1_step2">
+		<node name="MSW">
+			<step seq="1">
+				<methodwrapper name="updateMbeanStats"
+					queueName="doNothing" >
+					<http url="http://localhost:8282/commercial-cpm/v1/search/flights">
+						<serve>
+							<payload>Empty</payload>
+						</serve>
+					</http>
+					<delay msec="10" random="1" />
+				</methodwrapper>
+			</step>
+		</node>
+	</route>
+	
+
+	<route url="/dummy/b2b/search/flights">
 		<node name="B2B">
 			<step seq="1">
 				<serve>
@@ -72,8 +132,8 @@
 				<error errsperhundred="10" />
 			</step>
 		</node>
-	</route> 
-	
+	</route>
+
 	<!-- Non-Trans Partners' Flight Search Rel-1 Initial END -->
 	<!-- Login -->
 	<route url="/agentdesktop/login">
@@ -110,31 +170,14 @@
 			</step>
 		</node>
 	</route>
-	<!-- <route url="/commercial-cpm/megaswitch/v1/b2brouting">
-		<node name="MS">
-			<step seq="1">
-				<http url="http://localhost:8282/commercial-cpm/v1/search/flights">
-					<payload>
-						<get> <param name="requestData.departureAirportCode"></param> 
-							</get>
-					</payload>
-				</http>
-				<delay msec="10" random="1" />
-			</step>
-		</node>
-	</route> 
-	<route url="/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
-		<node name="MS">
-			<step seq="1">
-				<http url="http://localhost:8282/commercial-cpm/v1/search/flights">
-					<payload>
-						
-					</payload>
-				</http>
-				<delay msec="10" random="1" />
-			</step>
-		</node>
-	</route> -->
+	<!-- <route url="/commercial-cpm/megaswitch/v1/b2brouting"> <node name="MS"> 
+		<step seq="1"> <http url="http://localhost:8282/commercial-cpm/v1/search/flights"> 
+		<payload> <get> <param name="requestData.departureAirportCode"></param> </get> 
+		</payload> </http> <delay msec="10" random="1" /> </step> </node> </route> 
+		<route url="/commercial-cpm/megaswitch/v1/b2brouting/flight-search"> <node 
+		name="MS"> <step seq="1"> <http url="http://localhost:8282/commercial-cpm/v1/search/flights"> 
+		<payload> </payload> </http> <delay msec="10" random="1" /> </step> </node> 
+		</route> -->
 	<route url="/commercial-cpm/v1/search/flights">
 		<node name="Hybris-ACP">
 			<step seq="1">
