@@ -620,7 +620,7 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 				System.out.println("Result from DB ############= "+rs.getInt(2));
 				table.append("<tr><td>")
 			       .append(rs.getString(2))
-			       .append("</td><td>");
+			       .append("</td></tr>");
 			}
 			table.append("</table>" +
 			           "</body>" +
