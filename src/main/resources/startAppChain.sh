@@ -109,12 +109,12 @@ java $debugMeSW $appdMeSW -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar
 
 sleep $APP_START_DELAY
 #Start AKAMAI
-java $debugAkamai $jettyAkamai -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9292 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+#java $debugAkamai $jettyAkamai -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9292 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 
 set +x
 
-$( sleep 30 && ps -ef | grep jetty | sed 's/.*tierName=\([^ ]*\) .*/\1/' ) &
+(sleep 30 && ps -ef | grep jetty | sed 's/.*tierName=\([^ ]*\) .*/\1/')  &
 
 
 tail -f /tmp/server.log

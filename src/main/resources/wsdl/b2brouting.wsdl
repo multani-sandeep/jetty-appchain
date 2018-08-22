@@ -32,6 +32,7 @@
 													<attribute type="string" name="DepBeginDate" />
 													<attribute type="integer" name="AdultSeats" />
 													<attribute type="string" name="ReturnBeginDate" />
+													<attribute type="string" name="routePath" />
 												</extension>
 											</simpleContent>
 										</complexType>
@@ -169,6 +170,7 @@
 													<attribute type="date" name="DepBeginDate" />
 													<attribute type="date" name="RetBeginDate" />
 													<attribute type="string" name="FareClass" />
+													<attribute type="string" name="routePath" />
 												</extension>
 											</simpleContent>
 										</complexType>

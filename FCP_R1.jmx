@@ -12,6 +12,11 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
+      <ConfigTestElement guiclass="SimpleConfigGui" testclass="ConfigTestElement" testname="Simple Config Element" enabled="true">
+        <stringProp name="StepDuration">5</stringProp>
+        <stringProp name="StepDurationSecs">5</stringProp>
+      </ConfigTestElement>
+      <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="R1-Step0" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -61,22 +66,15 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:b2b=&quot;http://b2b.easyjet.com/&quot;&gt;&#xd;
+                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ava=&quot;http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail&quot;&gt;&#xd;
    &lt;soapenv:Header/&gt;&#xd;
    &lt;soapenv:Body&gt;&#xd;
-      &lt;b2b:RequestXml&gt;&#xd;
-         &lt;b2b:oInputXml&gt;&#xd;
-          &lt;B2BAvailabilityRequest APIVersion=&quot;1.0&quot; &#xd;
-             B2BAPIUserEmailAddress=&quot;${email}&quot;&#xd;
-             B2BAPIUserPassword=&quot;easyjet&quot;&#xd;
-             DepAirportCode=&quot;${orig}&quot; &#xd;
-             ArrAirportCode=&quot;${dest}&quot; &#xd;
-             DepBeginDate=&quot;${out}&quot;&#xd;
-             AdultSeats=&quot;1&quot;&#xd;
-             ReturnBeginDate=&quot;${rtn}&quot;/&gt;&#xd;
-      &lt;/b2b:oInputXml&gt;&#xd;
-      &lt;/b2b:RequestXml&gt;&#xd;
-   &lt;/soapenv:Body&gt;&#xd;
+      &lt;ava:RequestXml&gt;&#xd;
+         &lt;ava:oInputXml&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+         &lt;/ava:oInputXml&gt;&#xd;
+      &lt;/ava:RequestXml&gt;&#xd;
+   &lt;/soapenv:Body&gt;a&#xd;
 &lt;/soapenv:Envelope&gt;&#xd;
 </stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -84,10 +82,10 @@
             </collectionProp>
           </elementProp>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">9292</stringProp>
+          <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/r1step1_0/dummy/flight-search</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -100,7 +98,7 @@
         <hashTree>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="65042">B2B</stringProp>
+              <stringProp name="-1277872420">AvailabilityResponse</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -114,27 +112,33 @@
           </ConstantTimer>
           <hashTree/>
         </hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Authorization</stringProp>
+              <stringProp name="Header.value">Basic ZGE6ZWFzeWpldA==</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/xml</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DA-FlightSearch" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:b2b=&quot;http://b2b.easyjet.com/&quot;&gt;&#xd;
+                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ava=&quot;http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail&quot;&gt;&#xd;
    &lt;soapenv:Header/&gt;&#xd;
    &lt;soapenv:Body&gt;&#xd;
-      &lt;b2b:RequestXml&gt;&#xd;
-         &lt;b2b:oInputXml&gt;&#xd;
-          &lt;B2BAvailabilityRequest APIVersion=&quot;1.0&quot; &#xd;
-             B2BAPIUserEmailAddress=&quot;${email}&quot;&#xd;
-             B2BAPIUserPassword=&quot;easyjet&quot;&#xd;
-             DepAirportCode=&quot;${orig}&quot; &#xd;
-             ArrAirportCode=&quot;${dest}&quot; &#xd;
-             DepBeginDate=&quot;${out}&quot;&#xd;
-             AdultSeats=&quot;1&quot;&#xd;
-             ReturnBeginDate=&quot;${rtn}&quot;/&gt;&#xd;
-      &lt;/b2b:oInputXml&gt;&#xd;
-      &lt;/b2b:RequestXml&gt;&#xd;
+      &lt;ava:RequestXml&gt;&#xd;
+         &lt;ava:oInputXml&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+         &lt;/ava:oInputXml&gt;&#xd;
+      &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
 &lt;/soapenv:Envelope&gt;&#xd;
 </stringProp>
@@ -143,10 +147,10 @@
             </collectionProp>
           </elementProp>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">9292</stringProp>
+          <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/da/flight-search</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -159,7 +163,7 @@
         <hashTree>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="65042">B2B</stringProp>
+              <stringProp name="-1277872420">AvailabilityResponse</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -217,28 +221,79 @@
           <stringProp name="variableNames">orig,dest,out,rtn,email</stringProp>
         </CSVDataSet>
         <hashTree/>
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">true</boolProp>
+          <stringProp name="LoopController.loops">20</stringProp>
+        </LoopController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="FlightSearch" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ava=&quot;http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail&quot;&gt;&#xd;
+   &lt;soapenv:Header/&gt;&#xd;
+   &lt;soapenv:Body&gt;&#xd;
+      &lt;ava:RequestXml&gt;&#xd;
+         &lt;ava:oInputXml&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+         &lt;/ava:oInputXml&gt;&#xd;
+      &lt;/ava:RequestXml&gt;&#xd;
+   &lt;/soapenv:Body&gt;a&#xd;
+&lt;/soapenv:Envelope&gt;&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">localhost</stringProp>
+            <stringProp name="HTTPSampler.port">8989</stringProp>
+            <stringProp name="HTTPSampler.protocol">http</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1277872420">AvailabilityResponse</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">true</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+              <stringProp name="Assertion.scope">all</stringProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">1000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="FlightSearch" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:b2b=&quot;http://b2b.easyjet.com/&quot;&gt;&#xd;
+                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ava=&quot;http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail&quot;&gt;&#xd;
    &lt;soapenv:Header/&gt;&#xd;
    &lt;soapenv:Body&gt;&#xd;
-      &lt;b2b:RequestXml&gt;&#xd;
-         &lt;b2b:oInputXml&gt;&#xd;
-          &lt;B2BAvailabilityRequest APIVersion=&quot;1.0&quot; &#xd;
-             B2BAPIUserEmailAddress=&quot;${email}&quot;&#xd;
-             B2BAPIUserPassword=&quot;easyjet&quot;&#xd;
-             DepAirportCode=&quot;${orig}&quot; &#xd;
-             ArrAirportCode=&quot;${dest}&quot; &#xd;
-             DepBeginDate=&quot;${out}&quot;&#xd;
-             AdultSeats=&quot;1&quot;&#xd;
-             ReturnBeginDate=&quot;${rtn}&quot;/&gt;&#xd;
-      &lt;/b2b:oInputXml&gt;&#xd;
-      &lt;/b2b:RequestXml&gt;&#xd;
-   &lt;/soapenv:Body&gt;&#xd;
+      &lt;ava:RequestXml&gt;&#xd;
+         &lt;ava:oInputXml&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/msw/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+         &lt;/ava:oInputXml&gt;&#xd;
+      &lt;/ava:RequestXml&gt;&#xd;
+   &lt;/soapenv:Body&gt;a&#xd;
 &lt;/soapenv:Envelope&gt;&#xd;
 </stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -246,10 +301,10 @@
             </collectionProp>
           </elementProp>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">9292</stringProp>
+          <stringProp name="HTTPSampler.port">9191</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/r1step1_1/dummy/flight-search</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -262,7 +317,7 @@
         <hashTree>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="65042">B2B</stringProp>
+              <stringProp name="-1277872420">AvailabilityResponse</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -276,28 +331,34 @@
           </ConstantTimer>
           <hashTree/>
         </hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Authorization</stringProp>
+              <stringProp name="Header.value">Basic ZGE6ZWFzeWpldA==</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/xml</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DA-FlightSearch" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:b2b=&quot;http://b2b.easyjet.com/&quot;&gt;&#xd;
+                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ava=&quot;http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail&quot;&gt;&#xd;
    &lt;soapenv:Header/&gt;&#xd;
    &lt;soapenv:Body&gt;&#xd;
-      &lt;b2b:RequestXml&gt;&#xd;
-         &lt;b2b:oInputXml&gt;&#xd;
-          &lt;B2BAvailabilityRequest APIVersion=&quot;1.0&quot; &#xd;
-             B2BAPIUserEmailAddress=&quot;${email}&quot;&#xd;
-             B2BAPIUserPassword=&quot;easyjet&quot;&#xd;
-             DepAirportCode=&quot;${orig}&quot; &#xd;
-             ArrAirportCode=&quot;${dest}&quot; &#xd;
-             DepBeginDate=&quot;${out}&quot;&#xd;
-             AdultSeats=&quot;1&quot;&#xd;
-             ReturnBeginDate=&quot;${rtn}&quot;/&gt;&#xd;
-      &lt;/b2b:oInputXml&gt;&#xd;
-      &lt;/b2b:RequestXml&gt;&#xd;
-   &lt;/soapenv:Body&gt;&#xd;
+      &lt;ava:RequestXml&gt;&#xd;
+         &lt;ava:oInputXml&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+         &lt;/ava:oInputXml&gt;&#xd;
+      &lt;/ava:RequestXml&gt;&#xd;
+   &lt;/soapenv:Body&gt;a&#xd;
 &lt;/soapenv:Envelope&gt;&#xd;
 </stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -305,10 +366,10 @@
             </collectionProp>
           </elementProp>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">9292</stringProp>
+          <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/da/flight-search</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -321,7 +382,7 @@
         <hashTree>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="65042">B2B</stringProp>
+              <stringProp name="-1277872420">AvailabilityResponse</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -379,28 +440,79 @@
           <stringProp name="variableNames">orig,dest,out,rtn,email</stringProp>
         </CSVDataSet>
         <hashTree/>
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">true</boolProp>
+          <stringProp name="LoopController.loops">3</stringProp>
+        </LoopController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="FlightSearch" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ava=&quot;http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail&quot;&gt;&#xd;
+   &lt;soapenv:Header/&gt;&#xd;
+   &lt;soapenv:Body&gt;&#xd;
+      &lt;ava:RequestXml&gt;&#xd;
+         &lt;ava:oInputXml&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+         &lt;/ava:oInputXml&gt;&#xd;
+      &lt;/ava:RequestXml&gt;&#xd;
+   &lt;/soapenv:Body&gt;a&#xd;
+&lt;/soapenv:Envelope&gt;&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">localhost</stringProp>
+            <stringProp name="HTTPSampler.port">8989</stringProp>
+            <stringProp name="HTTPSampler.protocol">http</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="65042">B2B</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">true</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+              <stringProp name="Assertion.scope">all</stringProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">1000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="FlightSearch" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:b2b=&quot;http://b2b.easyjet.com/&quot;&gt;&#xd;
+                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ava=&quot;http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail&quot;&gt;&#xd;
    &lt;soapenv:Header/&gt;&#xd;
    &lt;soapenv:Body&gt;&#xd;
-      &lt;b2b:RequestXml&gt;&#xd;
-         &lt;b2b:oInputXml&gt;&#xd;
-          &lt;B2BAvailabilityRequest APIVersion=&quot;1.0&quot; &#xd;
-             B2BAPIUserEmailAddress=&quot;${email}&quot;&#xd;
-             B2BAPIUserPassword=&quot;easyjet&quot;&#xd;
-             DepAirportCode=&quot;${orig}&quot; &#xd;
-             ArrAirportCode=&quot;${dest}&quot; &#xd;
-             DepBeginDate=&quot;${out}&quot;&#xd;
-             AdultSeats=&quot;1&quot;&#xd;
-             ReturnBeginDate=&quot;${rtn}&quot;/&gt;&#xd;
-      &lt;/b2b:oInputXml&gt;&#xd;
-      &lt;/b2b:RequestXml&gt;&#xd;
-   &lt;/soapenv:Body&gt;&#xd;
+      &lt;ava:RequestXml&gt;&#xd;
+         &lt;ava:oInputXml&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/msw/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+         &lt;/ava:oInputXml&gt;&#xd;
+      &lt;/ava:RequestXml&gt;&#xd;
+   &lt;/soapenv:Body&gt;a&#xd;
 &lt;/soapenv:Envelope&gt;&#xd;
 </stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -408,10 +520,10 @@
             </collectionProp>
           </elementProp>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">9292</stringProp>
+          <stringProp name="HTTPSampler.port">9191</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/r1step1_x/dummy/flight-search</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -438,28 +550,34 @@
           </ConstantTimer>
           <hashTree/>
         </hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Authorization</stringProp>
+              <stringProp name="Header.value">Basic ZGE6ZWFzeWpldA==</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/xml</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DA-FlightSearch" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:b2b=&quot;http://b2b.easyjet.com/&quot;&gt;&#xd;
+                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ava=&quot;http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail&quot;&gt;&#xd;
    &lt;soapenv:Header/&gt;&#xd;
    &lt;soapenv:Body&gt;&#xd;
-      &lt;b2b:RequestXml&gt;&#xd;
-         &lt;b2b:oInputXml&gt;&#xd;
-          &lt;B2BAvailabilityRequest APIVersion=&quot;1.0&quot; &#xd;
-             B2BAPIUserEmailAddress=&quot;${email}&quot;&#xd;
-             B2BAPIUserPassword=&quot;easyjet&quot;&#xd;
-             DepAirportCode=&quot;${orig}&quot; &#xd;
-             ArrAirportCode=&quot;${dest}&quot; &#xd;
-             DepBeginDate=&quot;${out}&quot;&#xd;
-             AdultSeats=&quot;1&quot;&#xd;
-             ReturnBeginDate=&quot;${rtn}&quot;/&gt;&#xd;
-      &lt;/b2b:oInputXml&gt;&#xd;
-      &lt;/b2b:RequestXml&gt;&#xd;
-   &lt;/soapenv:Body&gt;&#xd;
+      &lt;ava:RequestXml&gt;&#xd;
+         &lt;ava:oInputXml&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+         &lt;/ava:oInputXml&gt;&#xd;
+      &lt;/ava:RequestXml&gt;&#xd;
+   &lt;/soapenv:Body&gt;a&#xd;
 &lt;/soapenv:Envelope&gt;&#xd;
 </stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -467,10 +585,10 @@
             </collectionProp>
           </elementProp>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">9292</stringProp>
+          <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/da/flight-search</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -541,7 +659,7 @@
           <stringProp name="variableNames">orig,dest,out,rtn,email</stringProp>
         </CSVDataSet>
         <hashTree/>
-        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Non ACP services" enabled="false">
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Non ACP services" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
           <stringProp name="LoopController.loops">5</stringProp>
         </LoopController>
@@ -552,22 +670,15 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:b2b=&quot;http://b2b.easyjet.com/&quot;&gt;&#xd;
+                  <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ava=&quot;http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail&quot;&gt;&#xd;
    &lt;soapenv:Header/&gt;&#xd;
    &lt;soapenv:Body&gt;&#xd;
-      &lt;b2b:RequestXml&gt;&#xd;
-         &lt;b2b:oInputXml&gt;&#xd;
-          &lt;B2BAvailabilityRequest APIVersion=&quot;1.0&quot; &#xd;
-             B2BAPIUserEmailAddress=&quot;${email}&quot;&#xd;
-             B2BAPIUserPassword=&quot;easyjet&quot;&#xd;
-             DepAirportCode=&quot;${orig}&quot; &#xd;
-             ArrAirportCode=&quot;${dest}&quot; &#xd;
-             DepBeginDate=&quot;${out}&quot;&#xd;
-             AdultSeats=&quot;1&quot;&#xd;
-             ReturnBeginDate=&quot;${rtn}&quot;/&gt;&#xd;
-      &lt;/b2b:oInputXml&gt;&#xd;
-      &lt;/b2b:RequestXml&gt;&#xd;
-   &lt;/soapenv:Body&gt;&#xd;
+      &lt;ava:RequestXml&gt;&#xd;
+         &lt;ava:oInputXml&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/msw/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+         &lt;/ava:oInputXml&gt;&#xd;
+      &lt;/ava:RequestXml&gt;&#xd;
+   &lt;/soapenv:Body&gt;a&#xd;
 &lt;/soapenv:Envelope&gt;&#xd;
 </stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
@@ -575,10 +686,10 @@
               </collectionProp>
             </elementProp>
             <stringProp name="HTTPSampler.domain">localhost</stringProp>
-            <stringProp name="HTTPSampler.port">9292</stringProp>
+            <stringProp name="HTTPSampler.port">9191</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/r1step2_0/b2b/dummy/flight-search</stringProp>
+            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -591,7 +702,7 @@
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="65042">B2B</stringProp>
+                <stringProp name="-1277872420">AvailabilityResponse</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -605,28 +716,34 @@
             </ConstantTimer>
             <hashTree/>
           </hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Basic ZGE6ZWFzeWpldA==</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/xml</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DA-FlightSearch" enabled="true">
             <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:b2b=&quot;http://b2b.easyjet.com/&quot;&gt;&#xd;
+                  <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ava=&quot;http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail&quot;&gt;&#xd;
    &lt;soapenv:Header/&gt;&#xd;
    &lt;soapenv:Body&gt;&#xd;
-      &lt;b2b:RequestXml&gt;&#xd;
-         &lt;b2b:oInputXml&gt;&#xd;
-          &lt;B2BAvailabilityRequest APIVersion=&quot;1.0&quot; &#xd;
-             B2BAPIUserEmailAddress=&quot;${email}&quot;&#xd;
-             B2BAPIUserPassword=&quot;easyjet&quot;&#xd;
-             DepAirportCode=&quot;${orig}&quot; &#xd;
-             ArrAirportCode=&quot;${dest}&quot; &#xd;
-             DepBeginDate=&quot;${out}&quot;&#xd;
-             AdultSeats=&quot;1&quot;&#xd;
-             ReturnBeginDate=&quot;${rtn}&quot;/&gt;&#xd;
-      &lt;/b2b:oInputXml&gt;&#xd;
-      &lt;/b2b:RequestXml&gt;&#xd;
-   &lt;/soapenv:Body&gt;&#xd;
+      &lt;ava:RequestXml&gt;&#xd;
+         &lt;ava:oInputXml&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+         &lt;/ava:oInputXml&gt;&#xd;
+      &lt;/ava:RequestXml&gt;&#xd;
+   &lt;/soapenv:Body&gt;a&#xd;
 &lt;/soapenv:Envelope&gt;&#xd;
 </stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
@@ -634,10 +751,10 @@
               </collectionProp>
             </elementProp>
             <stringProp name="HTTPSampler.domain">localhost</stringProp>
-            <stringProp name="HTTPSampler.port">9292</stringProp>
+            <stringProp name="HTTPSampler.port">8989</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/da/flight-search</stringProp>
+            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -650,7 +767,7 @@
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="65042">B2B</stringProp>
+                <stringProp name="-1277872420">AvailabilityResponse</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -671,22 +788,15 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:b2b=&quot;http://b2b.easyjet.com/&quot;&gt;&#xd;
+                <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ava=&quot;http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail&quot;&gt;&#xd;
    &lt;soapenv:Header/&gt;&#xd;
    &lt;soapenv:Body&gt;&#xd;
-      &lt;b2b:RequestXml&gt;&#xd;
-         &lt;b2b:oInputXml&gt;&#xd;
-          &lt;B2BAvailabilityRequest APIVersion=&quot;1.0&quot; &#xd;
-             B2BAPIUserEmailAddress=&quot;${email}&quot;&#xd;
-             B2BAPIUserPassword=&quot;easyjet&quot;&#xd;
-             DepAirportCode=&quot;${orig}&quot; &#xd;
-             ArrAirportCode=&quot;${dest}&quot; &#xd;
-             DepBeginDate=&quot;${out}&quot;&#xd;
-             AdultSeats=&quot;1&quot;&#xd;
-             ReturnBeginDate=&quot;${rtn}&quot;/&gt;&#xd;
-      &lt;/b2b:oInputXml&gt;&#xd;
-      &lt;/b2b:RequestXml&gt;&#xd;
-   &lt;/soapenv:Body&gt;&#xd;
+      &lt;ava:RequestXml&gt;&#xd;
+         &lt;ava:oInputXml&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/r1step2_0/acp/dummy/flight-search&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+         &lt;/ava:oInputXml&gt;&#xd;
+      &lt;/ava:RequestXml&gt;&#xd;
+   &lt;/soapenv:Body&gt;a&#xd;
 &lt;/soapenv:Envelope&gt;&#xd;
 </stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -694,10 +804,10 @@
             </collectionProp>
           </elementProp>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">9292</stringProp>
+          <stringProp name="HTTPSampler.port">9191</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/r1step2_0/acp/dummy/flight-search</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -710,8 +820,7 @@
         <hashTree>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-53832221">FLIGHTS</stringProp>
-              <stringProp name="2035878609">via MSW B2B</stringProp>
+              <stringProp name="-1277872420">AvailabilityResponse</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -727,8 +836,8 @@
         </hashTree>
       </hashTree>
       <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="false">
-        <stringProp name="FileSaver.filename">d:\Jmeter\msw-fs-</stringProp>
-        <boolProp name="FileSaver.errorsonly">false</boolProp>
+        <stringProp name="FileSaver.filename">/tmp/msw-fs-</stringProp>
+        <boolProp name="FileSaver.errorsonly">true</boolProp>
         <boolProp name="FileSaver.skipautonumber">false</boolProp>
         <boolProp name="FileSaver.skipsuffix">false</boolProp>
         <boolProp name="FileSaver.successonly">false</boolProp>

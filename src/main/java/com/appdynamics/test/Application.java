@@ -77,7 +77,8 @@ import com.appdynamics.test.Routes.SQL;
 import com.appdynamics.test.Routes.Serve;
 import com.appdynamics.test.Routes.Step;
 
-public class Application extends HttpServlet implements B2BRoutingPortType//, com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2bavailabilityoft.B2BAvailabilityPortType 
+public class Application extends HttpServlet implements B2BRoutingPortType// ,
+																			// com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2bavailabilityoft.B2BAvailabilityPortType
 {
 
 	public static Routes ROUTES;
@@ -91,8 +92,8 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 	private static final int CONNECTION_TIMEOUT_SEC = 120;
 
 	static final Logger LOG = LogManager.getLogger(Application.class.getName());
-	
-	//@Override
+
+	// @Override
 	public RequestXmlResponse oftB2BAvailabilityRequest(
 			com.appdynamics.cxf.commercial_cpm.megaswitch.v1.b2brouting.oftavail.RequestXml soapRequest) {
 		log("b2BAvailabilityRequestOFT");
@@ -105,19 +106,24 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 		soapResponse.getRequestXmlResult().getResponseRoot()
 				.setAPIVersion(soapRequest.getOInputXml().getOFTB2BAvailabilityRequest().getAPIVersion());
 		soapResponse.getRequestXmlResult().getResponseRoot().setSuccess(BigInteger.ONE);
-		soapResponse.getRequestXmlResult().getResponseRoot()
-				.setDataListRoot(new DataListRoot());
-		soapResponse.getRequestXmlResult().getResponseRoot().getDataListRoot().setAvailabilityResponse(new AvailabilityResponse());
+		soapResponse.getRequestXmlResult().getResponseRoot().setDataListRoot(new DataListRoot());
+		soapResponse.getRequestXmlResult().getResponseRoot().getDataListRoot()
+				.setAvailabilityResponse(new AvailabilityResponse());
 		soapResponse.getRequestXmlResult().getResponseRoot().getDataListRoot().getAvailabilityResponse()
-				.setAvailabilityList(
-						new AvailabilityList());
+				.setAvailabilityList(new AvailabilityList());
 		Availability availability = new Availability();
 		soapResponse.getRequestXmlResult().getResponseRoot().getDataListRoot().getAvailabilityResponse()
 				.getAvailabilityList().getAvailability().add(availability);
 		try {
-			
-			request.setAttribute(SOAP_SERVICE, "/commercial-cpm/megaswitch/v1/b2brouting/flight-search");
 
+//			if (APP_NAME.equals("MSW")) {
+//				request.setAttribute(SOAP_SERVICE, "/r1step1_0/dummy/flight-search");
+//			} else if (APP_NAME.equals("B2B")) {
+//				request.setAttribute(SOAP_SERVICE, "/akamai/b2b/search/flights");
+//			} else {
+//				log("oftB2BAvailabilityRequest : Cannot find cxf downstream route");
+//			}
+			request.setAttribute(SOAP_SERVICE, soapRequest.getOInputXml().getOFTB2BAvailabilityRequest().getRoutePath());
 			route(request, response);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -149,8 +155,14 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 		soapResponse.getRequestXmlResult().getResponseRoot().getDataListRoot().getAvailabilityResponse()
 				.getAvailabilityList().getAvailability().add(availability);
 		try {
-			
-			request.setAttribute(SOAP_SERVICE, "/commercial-cpm/megaswitch/v1/b2brouting/flight-search");
+//			if (APP_NAME.equals("MSW")) {
+//				request.setAttribute(SOAP_SERVICE, "/commercial-cpm/megaswitch/v1/b2brouting/flight-search");
+//			} else if (APP_NAME.equals("B2B")) {
+//				request.setAttribute(SOAP_SERVICE, "/msw/b2b/search/flights");
+//			} else {
+//				log("b2BAvailabilityRequest : Cannot find cxf downstream route");
+//			}
+			request.setAttribute(SOAP_SERVICE, soapRequest.getOInputXml().getB2BAvailabilityRequest().getRoutePath());
 
 			route(request, response);
 		} catch (IOException e) {
@@ -170,7 +182,7 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 
 			ROUTES = (Routes) jaxbUnMarshaller.unmarshal(this.getClass().getResourceAsStream("/routing.xml"));
 			for (Route route : ROUTES.routes) {
-				System.out.println("All Routes #############: "+route.url);
+				System.out.println("All Routes #############: " + route.url);
 			}
 			System.out.println();
 			// jaxbMarshaller.marshal(ROUTES, System.out);
@@ -209,7 +221,7 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 	}
 
 	private static String getRequestURI(HttpServletRequest request) {
-		return isSoap(request) ? request.getAttribute(SOAP_SERVICE).toString() : request.getRequestURI() ;
+		return isSoap(request) ? request.getAttribute(SOAP_SERVICE).toString() : request.getRequestURI();
 	}
 
 	private static void registerMbeans() {
@@ -262,35 +274,31 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 
 	protected void route(HttpServletRequest req, HttpServletResponse resp) throws ClientProtocolException, IOException {
 		System.out.println("############ IN ROUTE");
-		Routes.Route matchingRoute = ROUTES.routes.stream()
-				.filter(route -> {
-			return getRequestURI(req).
-					endsWith(route.url) 
-					&& route.nodes.stream()
-					.anyMatch(node -> {
+		Routes.Route matchingRoute = ROUTES.routes.stream().filter(route -> {
+			return getRequestURI(req).endsWith(route.url) && route.nodes.stream().anyMatch(node -> {
 				return node.name.equals(APP_NAME);
 			});
 		}).findFirst().orElse(DEF_ROUTE);
 
 		if (matchingRoute != null) {
-			System.out.println("matchingRoute URL = "+matchingRoute.url);
-			System.out.println("matchingRoute NODE = "+matchingRoute.nodes.get(0).name);
+			System.out.println("matchingRoute URL = " + matchingRoute.url);
+			System.out.println("matchingRoute NODE = " + matchingRoute.nodes.get(0).name);
 			System.out.println(matchingRoute.nodes.get(0).steps);
 			// System.out.println(matchingRoute.nodes.get(0).steps.stream().findAny().get().http.get(0).url);
 			List<Step> list = matchingRoute.nodes.get(0).steps;
 			if (list != null && list.size() > 0) {
 				for (Step step : list) {
 					for (Http http : step.http) {
-						System.out.println("HTTP URL = ########### "+http.url);
+						System.out.println("HTTP URL = ########### " + http.url);
 					}
 				}
-			}else {
-				System.out.println("Step list = : "+list );
+			} else {
+				System.out.println("Step list = : " + list);
 			}
 		} else {
 			System.out.println(matchingRoute);
 		}
-		
+
 		if (matchingRoute.isDefaultRoute) {
 			log("Switching to default route");
 			serve(req, resp, matchingRoute.nodes.get(0).steps.get(0).serve.get(0));
@@ -606,25 +614,16 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 			ResultSet rs = statement.executeQuery(select);
 			log("Select sql:", select, " executed successfully against", sql.db);
-			System.out.println("Select SQL  ############= "+select);
-			
+			System.out.println("Select SQL  ############= " + select);
+
 			StringBuilder table = new StringBuilder();
-			table.append("<html>" +
-			           "<body>" +
-			           "<table border=\"1\">" +
-			           "<tr>" +
-			           "<th>FLIGHTS</th>" +
-			           "</tr>");
+			table.append("<html>" + "<body>" + "<table border=\"1\">" + "<tr>" + "<th>FLIGHTS</th>" + "</tr>");
 			while (rs.next()) {
 				log(sql.name, rs.getInt(2));
-				System.out.println("Result from DB ############= "+rs.getInt(2));
-				table.append("<tr><td>")
-			       .append(rs.getString(2))
-			       .append("</td></tr>");
+				System.out.println("Result from DB ############= " + rs.getInt(2));
+				table.append("<tr><td>").append(rs.getString(2)).append("</td></tr>");
 			}
-			table.append("</table>" +
-			           "</body>" +
-			           "</html>");
+			table.append("</table>" + "</body>" + "</html>");
 			String html = table.toString();
 			Serve serve = new Serve();
 			serve.payload = html;
@@ -855,7 +854,7 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 			if (response.getStatusLine().getStatusCode() != 200) {
 				LOG.error("HTTP error " + response.getStatusLine().getStatusCode() + " received from " + url);
 			}
-			if (!isSoap(req)){
+			if (!isSoap(req)) {
 				resp.setStatus(HttpServletResponse.SC_OK);
 			}
 
@@ -908,19 +907,21 @@ public class Application extends HttpServlet implements B2BRoutingPortType//, co
 	private void serve(HttpServletRequest req, HttpServletResponse resp, Serve serve) {
 		log("Serve");
 		try {
-			for (Enumeration<String> headers = req.getHeaderNames(); headers.hasMoreElements();) {
-				String headerName = headers.nextElement();
-				// log("<", headerName, req.getHeader(headerName));
+			if (!isSoap(req)) {
+				for (Enumeration<String> headers = req.getHeaderNames(); headers.hasMoreElements();) {
+					String headerName = headers.nextElement();
+					// log("<", headerName, req.getHeader(headerName));
+				}
+				PrintWriter wrtr = resp.getWriter();
+				wrtr.print(serve.payload);
+				wrtr.flush();
 			}
-			PrintWriter wrtr = resp.getWriter();
-			wrtr.print(serve.payload);
-			wrtr.flush();
 			// resp.flushBuffer();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-	}	
+	}
 
 }
