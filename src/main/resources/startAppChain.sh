@@ -2,6 +2,9 @@
 
 
 . ./local.sh
+echo > /tmp/server.log
+
+#./jmeter.sh -n -t ~/git/jetty-appchain/FCP_R1.jmx -l /tmp/FCP_R1.txt
 
 cd $APPCHAIN_HOME;
  mvn clean && mvn generate-sources && mvn package && java -cp "$APPCHAIN_HOME"/target/test-jar-with-dependencies.jar com.appdynamics.test.Database
@@ -110,6 +113,8 @@ java $debugAkamai $jettyAkamai -jar $APPCHAIN_HOME/target/dependency/jetty-runne
 
 
 set +x
+
+$( sleep 30 && ps -ef | grep jetty | sed 's/.*tierName=\([^ ]*\) .*/\1/' ) &
 
 
 tail -f /tmp/server.log
