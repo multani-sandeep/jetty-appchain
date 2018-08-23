@@ -74,19 +74,10 @@
 	</route>
 
 	<route url="/r1step1_x/dummy/flight-search">
-		<node name="AKAMAI">
-			<step seq="1" weighted="true">
-				<methodwrapper name="updateMbeanStats" queueName="doNothing"
-					load="25">
+		<node name="MSW">
+			<step seq="1" >
+				<methodwrapper name="updateMbeanStats" queueName="doNothing">
 					<http url="http://localhost:8989/msw/b2b/search/flights">
-						<payload>Empty</payload>
-					</http>
-					<delay msec="10" random="1" />
-				</methodwrapper>
-				<methodwrapper name="updateMbeanStats" queueName="doNothing"
-					load="75">
-					<http
-						url="http://localhost:9191/commercial-cpm/megaswitch/v1/b2brouting/flight-search">
 						<payload>Empty</payload>
 					</http>
 					<delay msec="10" random="1" />
