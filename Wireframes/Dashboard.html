@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="jquery.min.js"></script>
+		<script src="jquery-ui.min.js"></script>
+		<script src="common.js"></script>
+		<style>
+
+		body{
+		font-family: monospace;
+		}
+		table{
+		border-width: thick;
+		empty-cells: show;
+		border: 1px solid black;
+		}
+		table.lhs td {
+		background-color: orange;
+		text-align: center;
+		}
+
+		table.lhs th:nth-child(1) {
+		text-align: left;
+		}
+
+		table.lhs td.rowheader{
+		background-color: white;
+		text-align: left;
+		}
+
+		table.lhs td.generic-perfdata{
+		width: 500px;
+		height: 80px;
+		background: url(generic-perfdata.png);
+		background-repeat: no-repeat;
+		background-size: contain;
+		}
+
+		table.lhs td.error{
+		background-color: red;
+		}
+		div#annotation{
+		display : none;
+		background-color: yellow;
+		box-shadow: 3px 3px;
+		width: 200px;
+		}
+		</style>
+		<title></title>
+	</head>
+	<body>
+		<table class="lhs">
+			<tr>
+				<th custom-annotation="All Traffic including Flight availability">
+					All Traffic
+				</th>
+				<th custom-annotation="Transactions per sec">
+					TPS
+				</th>
+				<th custom-annotation="Average response time in ms">
+					ART(ms)
+				</th>
+				<th custom-annotation="Error percentage">
+					ERR%
+				</th>
+				<th custom-annotation="Graphical view of TPS,ART and ERR over previous 3 hours">
+					Last 3 hours
+				</th>
+			</tr>
+			<tr>
+				<td class="rowheader">
+					B2B
+				</td>
+				<td>
+					30
+				</td>
+				<td>
+					150
+				</td>
+				<td>
+					1
+				</td>
+				<td class="generic-perfdata" custom-annotation="Is this view possible using widgets ?"></td>
+			</tr>
+			<tr>
+				<td class="rowheader">
+					Megaswitch
+				</td>
+				<td>
+					35
+				</td>
+				<td>
+					145
+				</td>
+				<td>
+					1
+				</td>
+				<td class="generic-perfdata"></td>
+			</tr>
+			<tr>
+				<td class="rowheader">
+					ACP
+				</td>
+				<td>
+					35
+				</td>
+				<td>
+					140
+				</td>
+				<td>
+					1
+				</td>
+				<td class="generic-perfdata"></td>
+			</tr>
+			<tr>
+				<th>
+					Flight Availability - Step 1/2
+				</th>
+				<th>
+					TPS
+				</th>
+				<th>
+					ART(ms)
+				</th>
+				<th>
+					ERR%
+				</th>
+				<th>
+					Last 3 hours
+				</th>
+			</tr>
+			<tr>
+				<td class="rowheader">
+					B2B
+				</td>
+				<td>
+					30
+				</td>
+				<td>
+					150
+				</td>
+				<td>
+					1
+				</td>
+				<td class="generic-perfdata"></td>
+			</tr>
+			<tr>
+				<td class="rowheader">
+					Megaswitch
+				</td>
+				<td>
+					35
+				</td>
+				<td class="error" custom-annotation="Threshold breach changes colour of background">
+					300
+				</td>
+				<td>
+					1
+				</td>
+				<td class="generic-perfdata"></td>
+			</tr>
+			<tr>
+				<td class="rowheader" custom-annotation="ACP, EI and AL will show 0 values for Step1">
+					ACP
+				</td>
+				<td>
+					35
+				</td>
+				<td>
+					140
+				</td>
+				<td>
+					1
+				</td>
+				<td class="generic-perfdata"></td>
+			</tr>
+			<tr>
+				<td class="rowheader">
+					EI
+				</td>
+				<td>
+					35
+				</td>
+				<td>
+					140
+				</td>
+				<td>
+					1
+				</td>
+				<td class="generic-perfdata"></td>
+			</tr>
+			<tr>
+				<td class="rowheader">
+					AL
+				</td>
+				<td>
+					35
+				</td>
+				<td>
+					140
+				</td>
+				<td class="error">
+					10
+				</td>
+				<td class="generic-perfdata"></td>
+			</tr>
+		</table>
+	</body>
+</html>
