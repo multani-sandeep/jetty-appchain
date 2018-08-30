@@ -72,7 +72,7 @@
           <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B&amp;testStep=initial</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -124,7 +124,7 @@
           <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B&amp;testStep=initial</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -303,7 +303,7 @@
           <stringProp name="HTTPSampler.port">9191</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=MSW</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -375,7 +375,7 @@
           <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -550,7 +550,7 @@
           <stringProp name="HTTPSampler.port">9191</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -618,7 +618,7 @@
           <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -723,7 +723,7 @@
             <stringProp name="HTTPSampler.port">9191</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
+            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=MSW</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -861,7 +861,7 @@
           <stringProp name="HTTPSampler.port">9191</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=ACP</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
