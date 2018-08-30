@@ -91,7 +91,7 @@ sleep $APP_START_DELAY
 
 sleep $APP_START_DELAY
 #Start API.Gateway
-java  $jettyAPIGWY -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8888 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+#java  $jettyAPIGWY -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8888 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start B2B
@@ -114,7 +114,7 @@ sleep $APP_START_DELAY
 
 set +x
 
-(sleep 30 && ps -ef | grep jetty | sed 's/.*tierName=\([^ ]*\) .*/\1/')  &
+(sleep 30 && ps -ef | grep jetty | grep -v "grep" | sed 's/.*tierName=\([^ ]*\) .*/\1/' >> /tmp/server.log)  &
 
 
 tail -f /tmp/server.log

@@ -123,6 +123,7 @@ public class Application extends HttpServlet implements B2BRoutingPortType// ,
 //			} else {
 //				log("oftB2BAvailabilityRequest : Cannot find cxf downstream route");
 //			}
+			log("oftB2BAvailabilityRequest",soapRequest.getOInputXml().getOFTB2BAvailabilityRequest().getRoutePath());
 			request.setAttribute(SOAP_SERVICE, soapRequest.getOInputXml().getOFTB2BAvailabilityRequest().getRoutePath());
 			route(request, response);
 		} catch (IOException e) {
@@ -162,6 +163,7 @@ public class Application extends HttpServlet implements B2BRoutingPortType// ,
 //			} else {
 //				log("b2BAvailabilityRequest : Cannot find cxf downstream route");
 //			}
+			log("b2BAvailabilityRequest",soapRequest.getOInputXml().getB2BAvailabilityRequest().getRoutePath());
 			request.setAttribute(SOAP_SERVICE, soapRequest.getOInputXml().getB2BAvailabilityRequest().getRoutePath());
 
 			route(request, response);
