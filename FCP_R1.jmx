@@ -30,19 +30,6 @@
         <stringProp name="ThreadGroup.delay">1</stringProp>
       </ThreadGroup>
       <hashTree>
-        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
-          <collectionProp name="HeaderManager.headers">
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Authorization</stringProp>
-              <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
-            </elementProp>
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Content-Type</stringProp>
-              <stringProp name="Header.value">application/xml</stringProp>
-            </elementProp>
-          </collectionProp>
-        </HeaderManager>
-        <hashTree/>
         <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
           <collectionProp name="CookieManager.cookies"/>
           <boolProp name="CookieManager.clearEachIteration">true</boolProp>
@@ -51,13 +38,13 @@
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
-          <stringProp name="filename">./FlightDataB2B.csv</stringProp>
+          <stringProp name="filename">.\FlightDataB2B.csv</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
           <boolProp name="stopThread">true</boolProp>
-          <stringProp name="variableNames">orig,dest,out,rtn,email</stringProp>
+          <stringProp name="variableNames">orig,dest,out,rtn,email,header,x-client-trans-id</stringProp>
         </CSVDataSet>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="FlightSearch" enabled="true">
@@ -112,19 +99,6 @@
           </ConstantTimer>
           <hashTree/>
         </hashTree>
-        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
-          <collectionProp name="HeaderManager.headers">
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Authorization</stringProp>
-              <stringProp name="Header.value">Basic ZGE6ZWFzeWpldA==</stringProp>
-            </elementProp>
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Content-Type</stringProp>
-              <stringProp name="Header.value">application/xml</stringProp>
-            </elementProp>
-          </collectionProp>
-        </HeaderManager>
-        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DA-FlightSearch" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -136,7 +110,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;da@easyjet.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
@@ -177,6 +151,28 @@
           </ConstantTimer>
           <hashTree/>
         </hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Authorization</stringProp>
+              <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/xml</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">X-Client-Transaction-Id</stringProp>
+              <stringProp name="Header.value">${x-client-trans-id}</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">true</boolProp>
+          <intProp name="LoopController.loops">-1</intProp>
+        </LoopController>
+        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="R1-Step1.1" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -191,19 +187,6 @@
         <stringProp name="ThreadGroup.delay">1</stringProp>
       </ThreadGroup>
       <hashTree>
-        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
-          <collectionProp name="HeaderManager.headers">
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Authorization</stringProp>
-              <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
-            </elementProp>
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Content-Type</stringProp>
-              <stringProp name="Header.value">application/xml</stringProp>
-            </elementProp>
-          </collectionProp>
-        </HeaderManager>
-        <hashTree/>
         <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
           <collectionProp name="CookieManager.cookies"/>
           <boolProp name="CookieManager.clearEachIteration">true</boolProp>
@@ -212,13 +195,13 @@
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
-          <stringProp name="filename">./FlightDataB2B.csv</stringProp>
+          <stringProp name="filename">.\FlightDataB2B.csv</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
           <boolProp name="stopThread">true</boolProp>
-          <stringProp name="variableNames">orig,dest,out,rtn,email</stringProp>
+          <stringProp name="variableNames">orig,dest,out,rtn,email,header,x-client-trans-id</stringProp>
         </CSVDataSet>
         <hashTree/>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -237,7 +220,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${email}&quot; B2BAPIUserPassword=&quot;easyjet&quot; DepAirportCode=&quot;${orig}&quot; ArrAirportCode=&quot;${dest}&quot; DepBeginDate=&quot;${out}&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;${rtn}&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
@@ -277,6 +260,23 @@
               <stringProp name="ConstantTimer.delay">1000</stringProp>
             </ConstantTimer>
             <hashTree/>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/xml</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">X-Client-Transaction-Id</stringProp>
+                  <stringProp name="Header.value">${x-client-trans-id}</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
           </hashTree>
         </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="FlightSearch" enabled="true">
@@ -290,12 +290,11 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/msw/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${email}&quot; B2BAPIUserPassword=&quot;easyjet&quot; DepAirportCode=&quot;${orig}&quot; ArrAirportCode=&quot;${dest}&quot; DepBeginDate=&quot;${out}&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;${rtn}&quot; routePath=&quot;/msw/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
-&lt;/soapenv:Envelope&gt;&#xd;
-</stringProp>
+&lt;/soapenv:Envelope&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -330,20 +329,28 @@
             <stringProp name="ConstantTimer.delay">1000</stringProp>
           </ConstantTimer>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/xml</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">X-Client-Transaction-Id</stringProp>
+                <stringProp name="Header.value">${x-client-trans-id}</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">X-Pos-Id</stringProp>
+                <stringProp name="Header.value">PublicApiB2B</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
         </hashTree>
-        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
-          <collectionProp name="HeaderManager.headers">
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Authorization</stringProp>
-              <stringProp name="Header.value">Basic ZGE6ZWFzeWpldA==</stringProp>
-            </elementProp>
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Content-Type</stringProp>
-              <stringProp name="Header.value">application/xml</stringProp>
-            </elementProp>
-          </collectionProp>
-        </HeaderManager>
-        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DA-FlightSearch" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -355,12 +362,11 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;da@easyjet.com&quot; B2BAPIUserPassword=&quot;easyjet&quot; DepAirportCode=&quot;${orig}&quot; ArrAirportCode=&quot;${dest}&quot; DepBeginDate=&quot;${out}&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;${rtn}&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
-&lt;/soapenv:Envelope&gt;&#xd;
-</stringProp>
+&lt;/soapenv:Envelope&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -395,6 +401,23 @@
             <stringProp name="ConstantTimer.delay">1000</stringProp>
           </ConstantTimer>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/xml</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">X-Client-Transaction-Id</stringProp>
+                <stringProp name="Header.value">${x-client-trans-id}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
         </hashTree>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="R1-Step1.x" enabled="true">
@@ -410,19 +433,6 @@
         <stringProp name="ThreadGroup.delay">1</stringProp>
       </ThreadGroup>
       <hashTree>
-        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
-          <collectionProp name="HeaderManager.headers">
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Authorization</stringProp>
-              <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
-            </elementProp>
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Content-Type</stringProp>
-              <stringProp name="Header.value">application/xml</stringProp>
-            </elementProp>
-          </collectionProp>
-        </HeaderManager>
-        <hashTree/>
         <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
           <collectionProp name="CookieManager.cookies"/>
           <boolProp name="CookieManager.clearEachIteration">true</boolProp>
@@ -431,13 +441,13 @@
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
-          <stringProp name="filename">./FlightDataB2B.csv</stringProp>
+          <stringProp name="filename">.\FlightDataB2B.csv</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
           <boolProp name="stopThread">true</boolProp>
-          <stringProp name="variableNames">orig,dest,out,rtn,email</stringProp>
+          <stringProp name="variableNames">orig,dest,out,rtn,email,header,x-client-trans-id</stringProp>
         </CSVDataSet>
         <hashTree/>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -456,7 +466,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${email}&quot; B2BAPIUserPassword=&quot;easyjet&quot; DepAirportCode=&quot;${orig}&quot; ArrAirportCode=&quot;${dest}&quot; DepBeginDate=&quot;${out}&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;${rtn}&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
@@ -483,7 +493,7 @@
           <hashTree>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="65042">B2B</stringProp>
+                <stringProp name="-1277872420">AvailabilityResponse</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -495,6 +505,23 @@
             <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
               <stringProp name="ConstantTimer.delay">1000</stringProp>
             </ConstantTimer>
+            <hashTree/>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/xml</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">X-Client-Transaction-Id</stringProp>
+                  <stringProp name="Header.value">${x-client-trans-id}</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
             <hashTree/>
           </hashTree>
         </hashTree>
@@ -509,7 +536,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/msw/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/r1step1_x/dummy/flight-search&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
@@ -536,7 +563,7 @@
         <hashTree>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="65042">B2B</stringProp>
+              <stringProp name="-1277872420">AvailabilityResponse</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -549,20 +576,24 @@
             <stringProp name="ConstantTimer.delay">1000</stringProp>
           </ConstantTimer>
           <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/xml</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">X-Client-Transaction-Id</stringProp>
+                <stringProp name="Header.value">${x-client-trans-id}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
         </hashTree>
-        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
-          <collectionProp name="HeaderManager.headers">
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Authorization</stringProp>
-              <stringProp name="Header.value">Basic ZGE6ZWFzeWpldA==</stringProp>
-            </elementProp>
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Content-Type</stringProp>
-              <stringProp name="Header.value">application/xml</stringProp>
-            </elementProp>
-          </collectionProp>
-        </HeaderManager>
-        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DA-FlightSearch" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -574,12 +605,11 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;da@easyjet.com&quot; B2BAPIUserPassword=&quot;easyjet&quot; DepAirportCode=&quot;${orig}&quot; ArrAirportCode=&quot;${dest}&quot; DepBeginDate=&quot;${out}&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;${rtn}&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
-&lt;/soapenv:Envelope&gt;&#xd;
-</stringProp>
+&lt;/soapenv:Envelope&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -601,7 +631,7 @@
         <hashTree>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="65042">B2B</stringProp>
+              <stringProp name="-1277872420">AvailabilityResponse</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -613,6 +643,23 @@
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
             <stringProp name="ConstantTimer.delay">1000</stringProp>
           </ConstantTimer>
+          <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/xml</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">X-Client-Transaction-Id</stringProp>
+                <stringProp name="Header.value">${x-client-trans-id}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
           <hashTree/>
         </hashTree>
       </hashTree>
@@ -629,19 +676,6 @@
         <stringProp name="ThreadGroup.delay">1</stringProp>
       </ThreadGroup>
       <hashTree>
-        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
-          <collectionProp name="HeaderManager.headers">
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Authorization</stringProp>
-              <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
-            </elementProp>
-            <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Content-Type</stringProp>
-              <stringProp name="Header.value">application/xml</stringProp>
-            </elementProp>
-          </collectionProp>
-        </HeaderManager>
-        <hashTree/>
         <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
           <collectionProp name="CookieManager.cookies"/>
           <boolProp name="CookieManager.clearEachIteration">true</boolProp>
@@ -650,13 +684,13 @@
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
-          <stringProp name="filename">./FlightDataB2B.csv</stringProp>
+          <stringProp name="filename">.\FlightDataB2B.csv</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
           <boolProp name="stopThread">true</boolProp>
-          <stringProp name="variableNames">orig,dest,out,rtn,email</stringProp>
+          <stringProp name="variableNames">orig,dest,out,rtn,email,header,x-client-trans-id</stringProp>
         </CSVDataSet>
         <hashTree/>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Non ACP services" enabled="true">
@@ -675,7 +709,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/msw/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/r1step1_x/dummy/flight-search&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
@@ -715,20 +749,24 @@
               <stringProp name="ConstantTimer.delay">1000</stringProp>
             </ConstantTimer>
             <hashTree/>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/xml</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">X-Client-Transaction-Id</stringProp>
+                  <stringProp name="Header.value">${x-client-trans-id}</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
           </hashTree>
-          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
-            <collectionProp name="HeaderManager.headers">
-              <elementProp name="" elementType="Header">
-                <stringProp name="Header.name">Authorization</stringProp>
-                <stringProp name="Header.value">Basic ZGE6ZWFzeWpldA==</stringProp>
-              </elementProp>
-              <elementProp name="" elementType="Header">
-                <stringProp name="Header.name">Content-Type</stringProp>
-                <stringProp name="Header.value">application/xml</stringProp>
-              </elementProp>
-            </collectionProp>
-          </HeaderManager>
-          <hashTree/>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DA-FlightSearch" enabled="true">
             <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -740,12 +778,11 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;da@easyjet.com&quot; B2BAPIUserPassword=&quot;easyjet&quot; DepAirportCode=&quot;${orig}&quot; ArrAirportCode=&quot;${dest}&quot; DepBeginDate=&quot;${out}&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;${rtn}&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
-&lt;/soapenv:Envelope&gt;&#xd;
-</stringProp>
+&lt;/soapenv:Envelope&gt;</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
@@ -780,6 +817,23 @@
               <stringProp name="ConstantTimer.delay">1000</stringProp>
             </ConstantTimer>
             <hashTree/>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Authorization</stringProp>
+                  <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/xml</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">X-Client-Transaction-Id</stringProp>
+                  <stringProp name="Header.value">${x-client-trans-id}</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
           </hashTree>
         </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="ChosenPartner-FlightSearch" enabled="true">
@@ -793,7 +847,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/r1step2_0/acp/dummy/flight-search&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;easyjetb2b@skyscrapper.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/commercial-cpm/megaswitch/v1/b2brouting/flight-search-r1_step2&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
@@ -832,6 +886,27 @@
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
             <stringProp name="ConstantTimer.delay">1000</stringProp>
           </ConstantTimer>
+          <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Header" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Basic YjJiZWFzeWpldDplYXN5amV0</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/xml</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">X-Client-Transaction-Id</stringProp>
+                <stringProp name="Header.value">${x-client-trans-id}</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">X-Pos-Id</stringProp>
+                <stringProp name="Header.value">PublicApiB2B</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
           <hashTree/>
         </hashTree>
       </hashTree>
