@@ -36,6 +36,16 @@
             <stringProp name="Argument.value">240</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="UserCount" elementType="Argument">
+            <stringProp name="Argument.name">UserCount</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="RampUpInSecs" elementType="Argument">
+            <stringProp name="Argument.name">RampUpInSecs</stringProp>
+            <stringProp name="Argument.value">.5</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -45,8 +55,8 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <intProp name="LoopController.loops">-1</intProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">10</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${UserCount}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${RampUpInSecs}</stringProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.duration">${StepDurationInSecs}</stringProp>
         <stringProp name="ThreadGroup.delay">1</stringProp>
@@ -353,8 +363,8 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <intProp name="LoopController.loops">-1</intProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">10</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${UserCount}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${RampUpInSecs}</stringProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.duration">${StepDurationInSecs}</stringProp>
         <stringProp name="ThreadGroup.delay">1</stringProp>
@@ -755,8 +765,8 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <intProp name="LoopController.loops">-1</intProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">10</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${UserCount}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${RampUpInSecs}</stringProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.duration">${StepDurationInSecs}</stringProp>
         <stringProp name="ThreadGroup.delay">1</stringProp>
@@ -1000,7 +1010,7 @@
           <stringProp name="HTTPSampler.port">9191</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/commercial-cpm/all-other</stringProp>
+          <stringProp name="HTTPSampler.path">/commercial-cpm/msw/all-other</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -1051,7 +1061,7 @@
           <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -1206,8 +1216,8 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <intProp name="LoopController.loops">-1</intProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">10</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${UserCount}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${RampUpInSecs}</stringProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.duration">${Step2DurationInSecs}</stringProp>
         <stringProp name="ThreadGroup.delay">1</stringProp>
@@ -1631,21 +1641,6 @@
         </objProp>
         <stringProp name="filename"></stringProp>
       </ResultCollector>
-      <hashTree/>
-      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="false">
-        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-          <collectionProp name="Arguments.arguments"/>
-        </elementProp>
-        <stringProp name="HTTPSampler.domain">www.pte02.europe.easyjet.local</stringProp>
-        <stringProp name="HTTPSampler.port"></stringProp>
-        <stringProp name="HTTPSampler.protocol">http</stringProp>
-        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-        <stringProp name="HTTPSampler.path"></stringProp>
-        <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
-        <stringProp name="HTTPSampler.implementation">Java</stringProp>
-        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-        <stringProp name="HTTPSampler.response_timeout"></stringProp>
-      </ConfigTestElement>
       <hashTree/>
     </hashTree>
   </hashTree>

@@ -230,7 +230,7 @@
    <soapenv:Body>
       <ava:RequestXml>
          <ava:oInputXml>
-            <ava:B2BAvailabilityRequest APIVersion="1.5E2" B2BAPIUserEmailAddress="gero et" B2BAPIUserPassword="sonoras imperio" DepAirportCode="quae divum incedo" ArrAirportCode="verrantque per auras" DepBeginDate="per auras" AdultSeats="100" ReturnBeginDate="circum claustra">nimborum in</ava:B2BAvailabilityRequest>
+            <ava:B2BAvailabilityRequest APIVersion="1.5E2" B2BAPIUserEmailAddress="gero et" B2BAPIUserPassword="sonoras imperio" DepAirportCode="quae divum incedo" ArrAirportCode="verrantque per auras" DepBeginDate="per auras" AdultSeats="100" ReturnBeginDate="circum claustra" routePath="/akamai/b2b/search/flights">nimborum in</ava:B2BAvailabilityRequest>
          </ava:oInputXml>
       </ava:RequestXml>
    </soapenv:Body>

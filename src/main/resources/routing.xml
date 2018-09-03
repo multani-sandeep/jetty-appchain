@@ -18,6 +18,19 @@
 		</node>
 	</route>
 	
+	<route url="/commercial-cpm/msw/all-other">
+		<node name="MSW">
+			<step seq="1" >
+				<methodwrapper name="updateMbeanStats" queueName="doNothing">
+					<http url="http://localhost:8989/commercial-cpm/msw/all-other">
+						<payload>All other traffic</payload>
+					</http>
+					<delay msec="10" random="1" />
+				</methodwrapper>
+			</step>
+		</node>
+	</route>
+	
 	<route url="/da/b2b/search/flights">
 		<node name="B2B">
 			<step seq="1">
@@ -25,7 +38,7 @@
 					<payload>B2B flight search from DA success</payload>
 				</serve>
 				<delay msec="10" random="3" />
-				<error errsperhundred="10" />
+				<error errsperhundred="5" />
 			</step>
 		</node>
 	</route>
@@ -154,7 +167,7 @@
 					<payload>Found flights from direct B2B</payload>
 				</serve>
 				<delay msec="10" random="5" />
-				<error errsperhundred="10" />
+				<error errsperhundred="1" />
 			</step>
 		</node>
 	</route>
@@ -166,7 +179,7 @@
 					<payload>Found flights via MSW B2B</payload>
 				</serve>
 				<delay msec="10" random="5" />
-				<error errsperhundred="10" />
+				<error errsperhundred="1" />
 			</step>
 		</node>
 	</route>
@@ -214,7 +227,7 @@
 					<payload>Empty</payload>
 				</http>
 				<delay msec="100" random="5" />
-				<error errsperhundred="10" />
+				<error errsperhundred="1" />
 			</step>
 		</node>
 	</route>
@@ -242,7 +255,7 @@
 						</select>
 					</sql>
 					<delay msec="20" random="5" />
-					<error errsperhundred="2" />
+					<error errsperhundred="1" />
 				</methodwrapper>
 			</step>
 		</node>
