@@ -88,7 +88,7 @@ public class Application extends HttpServlet implements B2BRoutingPortType// ,
 	public static Route DEF_ROUTE;
 	public static String APP_NAME = System.getProperty("appdynamics.agent.tierName");
 	public static Boolean ERR_DISABLED = System.getProperty("disable-errors")==null||System.getProperty("disable-errors").equalsIgnoreCase("false")?Boolean.FALSE:Boolean.TRUE;
-	public static Boolean DELAY_DISABLED = System.getProperty("disable-errors")==null||System.getProperty("disable-delay").equalsIgnoreCase("false")?Boolean.FALSE:Boolean.TRUE;
+	public static Boolean DELAY_DISABLED = System.getProperty("disable-delay")==null||System.getProperty("disable-delay").equalsIgnoreCase("false")?Boolean.FALSE:Boolean.TRUE;
 	public static final String SOAP_SERVICE = "SOAP_SERVICE";
 
 	private static final int CONNECTION_TIMEOUT_SEC = 120;
