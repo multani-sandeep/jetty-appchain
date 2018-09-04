@@ -28,12 +28,12 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="StepDurationInSecs" elementType="Argument">
             <stringProp name="Argument.name">StepDurationInSecs</stringProp>
-            <stringProp name="Argument.value">120</stringProp>
+            <stringProp name="Argument.value">240</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="Step2DurationInSecs" elementType="Argument">
             <stringProp name="Argument.name">Step2DurationInSecs</stringProp>
-            <stringProp name="Argument.value">240</stringProp>
+            <stringProp name="Argument.value">480</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="UserCount" elementType="Argument">

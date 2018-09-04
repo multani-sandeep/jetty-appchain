@@ -57,6 +57,9 @@ jettyAPIGWY=" -Djetty.jmxrmiport=2007 -Dappdynamics.agent.tierName=APIGWY"
 
 #./jmeter.sh -n -t ~/git/jetty-appchain/FCP_R1.jmx -l /tmp/FCP_R1.txt
 
+errDisable="-Ddisable-errors=true"
+delayDisable=""
+
 # Machine Agent Config End
 
 sleep $APP_START_DELAY
@@ -67,11 +70,11 @@ set +x
 
 sleep $APP_START_DELAY
 #Start Hybris-ACP
-java $debugACP $appdACP -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8282 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+java $errDisable $debugACP $appdACP -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8282 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start EI-ESB
-java $debugESB $appdESB -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8383 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+java $errDisable $debugESB $appdESB -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8383 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start EI-AMQ
@@ -79,7 +82,7 @@ sleep $APP_START_DELAY
 
 sleep $APP_START_DELAY
 #Start AbstractionLayer
-java $debugABL $appdABL -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8585 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+java $errDisable $debugABL $appdABL -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8585 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start CustomerPayments.Gateway
@@ -104,7 +107,7 @@ sleep $APP_START_DELAY
 
 sleep $APP_START_DELAY
 #Start MSW
-java $debugMeSW $appdMeSW -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9191 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+java $errDisable $debugMeSW $appdMeSW -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9191 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 
 sleep $APP_START_DELAY

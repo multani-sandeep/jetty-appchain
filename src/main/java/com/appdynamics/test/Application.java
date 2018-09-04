@@ -87,6 +87,8 @@ public class Application extends HttpServlet implements B2BRoutingPortType// ,
 	public static MBeanApp MBEAN_APP;
 	public static Route DEF_ROUTE;
 	public static String APP_NAME = System.getProperty("appdynamics.agent.tierName");
+	public static Boolean ERR_DISABLED = System.getProperty("disable-errors")==null||System.getProperty("disable-errors").equalsIgnoreCase("false")?Boolean.FALSE:Boolean.TRUE;
+	public static Boolean DELAY_DISABLED = System.getProperty("disable-errors")==null||System.getProperty("disable-delay").equalsIgnoreCase("false")?Boolean.FALSE:Boolean.TRUE;
 	public static final String SOAP_SERVICE = "SOAP_SERVICE";
 
 	private static final int CONNECTION_TIMEOUT_SEC = 120;
@@ -766,6 +768,7 @@ public class Application extends HttpServlet implements B2BRoutingPortType// ,
 
 	private void error(HttpServletRequest req, HttpServletResponse resp, Step step, Error error)
 			throws ForcedException {
+		if(ERR_DISABLED)return;
 		if (new Random().nextInt(100) <= error.errsPerHundred) {
 			String message = "Generic Error";
 			log("Send 500 error");
@@ -790,6 +793,7 @@ public class Application extends HttpServlet implements B2BRoutingPortType// ,
 
 	private void delay(HttpServletRequest req, HttpServletResponse resp, Delay delay) {
 		try {
+			if(DELAY_DISABLED)return;
 			long injectDelay = 0;
 			if (delay.random != null) {
 				injectDelay = (delay.msec * new java.util.Random().nextInt(delay.random));
