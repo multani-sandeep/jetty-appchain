@@ -58,7 +58,7 @@ jettyAPIGWY=" -Djetty.jmxrmiport=2007 -Dappdynamics.agent.tierName=APIGWY"
 #./jmeter.sh -n -t ~/git/jetty-appchain/FCP_R1.jmx -l /tmp/FCP_R1.txt
 
 errDisable="-Ddisable-errors=true"
-delayDisable=""
+delayDisable="-Ddisable-delay=true"
 
 # Machine Agent Config End
 
@@ -66,53 +66,53 @@ sleep $APP_START_DELAY
 sleep $APP_START_DELAY
 #Start Hybris-AD
 set +x
-#java $debugAD  $appdAD -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8181 $APPCHAIN_HOME/target/test.war > /tmp/server.log &
+#java $errDisable $delayDisable $debugAD  $appdAD -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8181 $APPCHAIN_HOME/target/test.war > /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start Hybris-ACP
-java $errDisable $debugACP $appdACP -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8282 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+java $errDisable $delayDisable $debugACP $appdACP -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8282 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start EI-ESB
-java $errDisable $debugESB $appdESB -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8383 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+java $errDisable $delayDisable $debugESB $appdESB -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8383 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start EI-AMQ
-#java $debugAMQ $appdAMQ -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8484 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+#java $errDisable $delayDisable $debugAMQ $appdAMQ -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8484 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start AbstractionLayer
-java $errDisable $debugABL $appdABL -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8585 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+java $errDisable $delayDisable $debugABL $appdABL -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8585 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start CustomerPayments.Gateway
-#java $debug $appdCPG -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8686 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+#java $errDisable $delayDisable $debug $appdCPG -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8686 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start MS
-#java $debugMSW $appdMSW -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9191 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+#java $errDisable $delayDisable $debugMSW $appdMSW -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9191 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start API.Gateway
-#java  $jettyAPIGWY -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8888 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+#java $errDisable $delayDisable $jettyAPIGWY -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8888 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start B2B
-java $debugB2B $appdB2B -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8989 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+java $errDisable $delayDisable $debugB2B $appdB2B -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 8989 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 sleep $APP_START_DELAY
 #Start ERES -- Now modelled as Database
-#java $debugERES $appdERES -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9090 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+#java $errDisable $delayDisable $debugERES $appdERES -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9090 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 
 sleep $APP_START_DELAY
 #Start MSW
-java $errDisable $debugMeSW $appdMeSW -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9191 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+java $errDisable $delayDisable $debugMeSW $appdMeSW -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9191 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 
 sleep $APP_START_DELAY
 #Start AKAMAI
-#java $debugAkamai $jettyAkamai -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9292 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
+#java $errDisable $delayDisable $debugAkamai $jettyAkamai -jar $APPCHAIN_HOME/target/dependency/jetty-runner.jar $jmxEnable --port 9292 $APPCHAIN_HOME/target/test.war >> /tmp/server.log &
 
 
 set +x
