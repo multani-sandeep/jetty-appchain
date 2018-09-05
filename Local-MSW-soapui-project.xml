@@ -224,7 +224,7 @@
           <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
         </con:settings>
         <con:encoding>UTF-8</con:encoding>
-        <con:endpoint>http://localhost:9191/cxf/commercial-cpm/megaswitch/v1/b2brouting</con:endpoint>
+        <con:endpoint>http://localhost:9191/cxf/commercial-cpm/megaswitch/v1/b2brouting?test=test</con:endpoint>
         <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ava="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail">
    <soapenv:Header/>
    <soapenv:Body>
@@ -272,6 +272,73 @@
       </con:call>
     </con:operation>
   </con:interface>
+  <con:testSuite id="60c9d5a6-ab84-4c61-bf28-b6111e083fb8" name="TestSuite 2">
+    <con:settings/>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="407eb4a2-6096-404b-8d2b-5eae3919235d" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 1" searchProperties="true">
+      <con:settings/>
+      <con:testStep type="request" id="2cf490c5-82ff-4373-b802-21da4b528fdd" name="b2bAvailabilityRequest - Request 1">
+        <con:settings/>
+        <con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:interface>ApplicationServiceSoapBinding</con:interface>
+          <con:operation>b2bAvailabilityRequest</con:operation>
+          <con:request name="b2bAvailabilityRequest - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="e9b24fa8-260c-46a3-ae19-c1a7a736a4fb">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+            </con:settings>
+            <con:encoding>UTF-8</con:encoding>
+            <con:endpoint>http://localhost:9191/cxf/commercial-cpm/megaswitch/v1/b2brouting?test=test</con:endpoint>
+            <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ava="http://appdynamics.com/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail">
+   <soapenv:Header />
+   <soapenv:Body>
+      <ava:RequestXml>
+         <ava:oInputXml>
+            <ava:B2BAvailabilityRequest APIVersion="1.5E2" B2BAPIUserEmailAddress="gero et" 
+            B2BAPIUserPassword="sonoras imperio" DepAirportCode="quae divum incedo" 
+            ArrAirportCode="verrantque per auras" DepBeginDate="per auras" AdultSeats="100" 
+            ReturnBeginDate="circum claustra" routePath="/akamai/b2b/search/flights">
+            nimborum in</ava:B2BAvailabilityRequest>
+         </ava:oInputXml>
+      </ava:RequestXml>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+            <con:assertion type="SOAP Response" id="7c2fab8b-3740-47d1-856e-e0e3f304c7b8" name="SOAP Response"/>
+            <con:credentials>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:jmsPropertyConfig/>
+            <con:wsaConfig mustUnderstand="NONE" version="200508" action="http://test.appdynamics.com/B2BRouting_PortType/b2bAvailabilityRequest"/>
+            <con:wsrmConfig version="1.2"/>
+          </con:request>
+        </con:config>
+      </con:testStep>
+      <con:loadTest id="cae098fe-c12f-4127-b0b8-94978f48e25d" name="LoadTest 1">
+        <con:settings/>
+        <con:threadCount>5</con:threadCount>
+        <con:startDelay>0</con:startDelay>
+        <con:sampleInterval>250</con:sampleInterval>
+        <con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed>
+        <con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange>
+        <con:historyLimit>-1</con:historyLimit>
+        <con:testLimit>100000</con:testLimit>
+        <con:limitType>TIME</con:limitType>
+        <con:loadStrategy>
+          <con:type>Simple</con:type>
+          <con:config>
+            <testDelay>2000</testDelay>
+            <randomFactor>0.5</randomFactor>
+          </con:config>
+        </con:loadStrategy>
+        <con:assertion type="Step Status" name="Step Status"/>
+        <con:maxAssertionErrors>100</con:maxAssertionErrors>
+        <con:cancelExcessiveThreads>true</con:cancelExcessiveThreads>
+        <con:strategyInterval>500</con:strategyInterval>
+      </con:loadTest>
+      <con:properties/>
+    </con:testCase>
+    <con:properties/>
+  </con:testSuite>
   <con:properties/>
   <con:wssContainer/>
   <con:oAuth2ProfileContainer/>

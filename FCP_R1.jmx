@@ -28,12 +28,12 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="StepDurationInSecs" elementType="Argument">
             <stringProp name="Argument.name">StepDurationInSecs</stringProp>
-            <stringProp name="Argument.value">120</stringProp>
+            <stringProp name="Argument.value">240</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="Step2DurationInSecs" elementType="Argument">
             <stringProp name="Argument.name">Step2DurationInSecs</stringProp>
-            <stringProp name="Argument.value">240</stringProp>
+            <stringProp name="Argument.value">480</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="UserCount" elementType="Argument">
@@ -44,6 +44,21 @@
           <elementProp name="RampUpInSecs" elementType="Argument">
             <stringProp name="Argument.name">RampUpInSecs</stringProp>
             <stringProp name="Argument.value">.5</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="DAEmail" elementType="Argument">
+            <stringProp name="Argument.name">DAEmail</stringProp>
+            <stringProp name="Argument.value">da@easyjet.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="ChosenPartnerSuffixMax" elementType="Argument">
+            <stringProp name="Argument.name">ChosenPartnerSuffixMax</stringProp>
+            <stringProp name="Argument.value">3</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="ChosenPartnerSuffixMin" elementType="Argument">
+            <stringProp name="Argument.name">ChosenPartnerSuffixMin</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -90,7 +105,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${email}&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
@@ -104,7 +119,7 @@
           <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B&amp;testStep=initial</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B&amp;partner=${email}</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -142,7 +157,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;request@da.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${email}&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
@@ -156,7 +171,7 @@
           <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/commercial-cpm/all-other</stringProp>
+          <stringProp name="HTTPSampler.path">/commercial-cpm/all-other?partner=${email}</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -194,7 +209,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;da@easyjet.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${DAEmail}&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
@@ -208,7 +223,7 @@
           <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B&amp;testStep=initial</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B&amp;partner=${DAEmail}</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -263,7 +278,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;request@da.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${DAEmail}&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
@@ -277,7 +292,7 @@
           <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/commercial-cpm/all-other</stringProp>
+          <stringProp name="HTTPSampler.path">/commercial-cpm/all-other?partner=${DAEmail}</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -403,7 +418,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;request@da.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${email}&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
@@ -417,7 +432,7 @@
             <stringProp name="HTTPSampler.port">8989</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/commercial-cpm/all-other</stringProp>
+            <stringProp name="HTTPSampler.path">/commercial-cpm/all-other?partner=${email}</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -469,7 +484,7 @@
             <stringProp name="HTTPSampler.port">8989</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
+            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?partner=${email}</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -538,7 +553,7 @@
           <stringProp name="HTTPSampler.port">9191</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=MSW</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=MSW&amp;partner=${email}</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -597,7 +612,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;da@easyjet.com&quot; B2BAPIUserPassword=&quot;easyjet&quot; DepAirportCode=&quot;${orig}&quot; ArrAirportCode=&quot;${dest}&quot; DepBeginDate=&quot;${out}&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;${rtn}&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${DAEmail}&quot; B2BAPIUserPassword=&quot;easyjet&quot; DepAirportCode=&quot;${orig}&quot; ArrAirportCode=&quot;${dest}&quot; DepBeginDate=&quot;${out}&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;${rtn}&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
@@ -610,7 +625,7 @@
           <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B&amp;partner=${DAEmail}</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -665,7 +680,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;request@da.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${DAEmail}&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
@@ -679,7 +694,7 @@
           <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/commercial-cpm/all-other</stringProp>
+          <stringProp name="HTTPSampler.path">/commercial-cpm/all-other?partner=${DAEmail}</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -819,7 +834,7 @@
             <stringProp name="HTTPSampler.port">8989</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
+            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?partner=${email}</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -874,7 +889,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;request@da.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${email}&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
@@ -888,7 +903,7 @@
             <stringProp name="HTTPSampler.port">8989</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/commercial-cpm/all-other</stringProp>
+            <stringProp name="HTTPSampler.path">/commercial-cpm/all-other?partner=${email}</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -927,7 +942,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/r1step1_x/dummy/flight-search&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${email}&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/r1step1_x/dummy/flight-search&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
@@ -941,7 +956,7 @@
           <stringProp name="HTTPSampler.port">9191</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B&amp;partner=${email}</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -996,7 +1011,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;request@da.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${email}&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
@@ -1010,7 +1025,7 @@
           <stringProp name="HTTPSampler.port">9191</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/commercial-cpm/msw/all-other</stringProp>
+          <stringProp name="HTTPSampler.path">/commercial-cpm/msw/all-other?partner=${email}</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -1048,7 +1063,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;da@easyjet.com&quot; B2BAPIUserPassword=&quot;easyjet&quot; DepAirportCode=&quot;${orig}&quot; ArrAirportCode=&quot;${dest}&quot; DepBeginDate=&quot;${out}&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;${rtn}&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${DAEmail}&quot; B2BAPIUserPassword=&quot;easyjet&quot; DepAirportCode=&quot;${orig}&quot; ArrAirportCode=&quot;${dest}&quot; DepBeginDate=&quot;${out}&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;${rtn}&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
@@ -1061,7 +1076,7 @@
           <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=B2B&amp;partner=${DAEmail}</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -1116,7 +1131,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;request@da.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${DAEmail}&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
@@ -1130,7 +1145,7 @@
           <stringProp name="HTTPSampler.port">8989</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/commercial-cpm/all-other</stringProp>
+          <stringProp name="HTTPSampler.path">/commercial-cpm/all-other?partner=${DAEmail}</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -1240,7 +1255,16 @@
           <stringProp name="variableNames">orig,dest,out,rtn,email,header,x-client-trans-id</stringProp>
         </CSVDataSet>
         <hashTree/>
-        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Non ACP services" enabled="true">
+        <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="Random Variable" enabled="true">
+          <stringProp name="maximumValue">${ChosenPartnerSuffixMax}</stringProp>
+          <stringProp name="minimumValue">${ChosenPartnerSuffixMin}</stringProp>
+          <stringProp name="outputFormat">partner_00</stringProp>
+          <boolProp name="perThread">true</boolProp>
+          <stringProp name="randomSeed">1234</stringProp>
+          <stringProp name="variableName">chosenpartners</stringProp>
+        </RandomVariableConfig>
+        <hashTree/>
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Non ACP services" enabled="false">
           <boolProp name="LoopController.continue_forever">true</boolProp>
           <stringProp name="LoopController.loops">5</stringProp>
         </LoopController>
@@ -1256,7 +1280,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;gero et&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/r1step1_x/dummy/flight-search&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${email}&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/r1step1_x/dummy/flight-search&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
@@ -1270,7 +1294,7 @@
             <stringProp name="HTTPSampler.port">9191</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=MSW</stringProp>
+            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=MSW&amp;partner=${email}</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -1325,7 +1349,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;request@da.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${email}&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
@@ -1339,7 +1363,7 @@
             <stringProp name="HTTPSampler.port">9191</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/commercial-cpm/msw/all-other</stringProp>
+            <stringProp name="HTTPSampler.path">/commercial-cpm/msw/all-other?partner=${email}</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -1377,7 +1401,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;da@easyjet.com&quot; B2BAPIUserPassword=&quot;easyjet&quot; DepAirportCode=&quot;${orig}&quot; ArrAirportCode=&quot;${dest}&quot; DepBeginDate=&quot;${out}&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;${rtn}&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${DAEmail}&quot; B2BAPIUserPassword=&quot;easyjet&quot; DepAirportCode=&quot;${orig}&quot; ArrAirportCode=&quot;${dest}&quot; DepBeginDate=&quot;${out}&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;${rtn}&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
@@ -1390,7 +1414,7 @@
             <stringProp name="HTTPSampler.port">8989</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail</stringProp>
+            <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?partner=${DAEmail}</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -1445,7 +1469,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;request@da.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${DAEmail}&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/akamai/b2b/search/flights&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;&#xd;
@@ -1459,7 +1483,7 @@
             <stringProp name="HTTPSampler.port">8989</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/commercial-cpm/all-other</stringProp>
+            <stringProp name="HTTPSampler.path">/commercial-cpm/all-other?partner=${DAEmail}</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
@@ -1498,7 +1522,7 @@
    &lt;soapenv:Body&gt;&#xd;
       &lt;ava:RequestXml&gt;&#xd;
          &lt;ava:oInputXml&gt;&#xd;
-            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;easyjetb2b@skyscrapper.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/commercial-cpm/megaswitch/v1/b2brouting/flight-search-r1_step2&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
+            &lt;ava:B2BAvailabilityRequest APIVersion=&quot;1.5E2&quot; B2BAPIUserEmailAddress=&quot;${chosenpartners}@email.com&quot; B2BAPIUserPassword=&quot;sonoras imperio&quot; DepAirportCode=&quot;quae divum incedo&quot; ArrAirportCode=&quot;verrantque per auras&quot; DepBeginDate=&quot;per auras&quot; AdultSeats=&quot;100&quot; ReturnBeginDate=&quot;circum claustra&quot; routePath=&quot;/commercial-cpm/megaswitch/v1/b2brouting/flight-search-r1_step2&quot;&gt;nimborum in&lt;/ava:B2BAvailabilityRequest&gt;&#xd;
          &lt;/ava:oInputXml&gt;&#xd;
       &lt;/ava:RequestXml&gt;&#xd;
    &lt;/soapenv:Body&gt;a&#xd;
@@ -1512,7 +1536,7 @@
           <stringProp name="HTTPSampler.port">9191</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=ACP</stringProp>
+          <stringProp name="HTTPSampler.path">/cxf/commercial-cpm/megaswitch/v1/b2brouting/avail?requestTier=ACP&amp;partner=${__urlencode(${chosenpartners}@email.com)}</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
