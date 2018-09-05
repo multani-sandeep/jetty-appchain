@@ -1,3 +1,4 @@
 /target/
+/target/*
 /jmeter.log
 /FCP_R1_sandeep.jmx
