@@ -32,7 +32,7 @@
 	</route>
 	
 	<route url="/da/b2b/search/flights">
-		<node name="B2B">
+		<node name="B2B-Test">
 			<step seq="1">
 				<serve>
 					<payload>B2B flight search from DA success</payload>
@@ -161,7 +161,7 @@
 	
 
 	<route url="/akamai/b2b/search/flights">
-		<node name="B2B">
+		<node name="B2B-Test">
 			<step seq="1">
 				<serve>
 					<payload>Found flights from direct B2B</payload>
@@ -173,7 +173,7 @@
 	</route>
 	
 	<route url="/msw/b2b/search/flights">
-		<node name="B2B">
+		<node name="B2B-Test">
 			<step seq="1">
 				<serve>
 					<payload>Found flights via MSW B2B</payload>
