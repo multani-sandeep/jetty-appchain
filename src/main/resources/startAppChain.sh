@@ -23,18 +23,18 @@ cd $APPCHAIN_HOME"/src/main/resources";
 jmxEnable="--jar $APPCHAIN_HOME/target/test/WEB-INF/lib/jetty-jmx-9.4.11.v20180605.jar --config "$APPCHAIN_HOME"/src/etc/jetty-jmx.xml"
 
 
-appdACP="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App2 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=Hybris-ACP -Djetty.jmxrmiport=2001"
-appdESB="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App3 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=EI-ESB -Djetty.jmxrmiport=2002"
-appdABL="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App5 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=EJ.AbstractionLayer -Djetty.jmxrmiport=2004"
-appdAPIGWY="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App8 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=APIGWY -Djetty.jmxrmiport=2007"
-appdB2B="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App9 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=B2B -Djetty.jmxrmiport=2008"
-appdMeSW="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App11 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=MSW -Djetty.jmxrmiport=2010"
+appdACP="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.applicationName=$APPD_AGENT_APP_NAME -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App2 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=Hybris-ACP -Djetty.jmxrmiport=2001"
+appdESB="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.applicationName=$APPD_AGENT_APP_NAME -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App3 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=EI-ESB -Djetty.jmxrmiport=2002"
+appdABL="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.applicationName=$APPD_AGENT_APP_NAME -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App5 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=EJ.AbstractionLayer -Djetty.jmxrmiport=2004"
+appdAPIGWY="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.applicationName=$APPD_AGENT_APP_NAME -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App8 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=APIGWY -Djetty.jmxrmiport=2007"
+appdB2B="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.applicationName=$APPD_AGENT_APP_NAME -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App9 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=B2B-Test -Djetty.jmxrmiport=2008"
+appdMeSW="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.applicationName=$APPD_AGENT_APP_NAME -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App11 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=MSW -Djetty.jmxrmiport=2010"
 
-#appdAD="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App1  -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=Hybris-AD -Djetty.jmxrmiport=2000"
-#appdCPG="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App6 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=CustomerPayments.Gateway -Djetty.jmxrmiport=2005"
-#appdAMQ="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App4 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=EI-AMQ -Djetty.jmxrmiport=2003"
-#appdERES="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App10 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=ERES -Djetty.jmxrmiport=2009"
-#appdMSW="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App7 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=MS -Djetty.jmxrmiport=2010"
+#appdAD="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.applicationName=$APPD_AGENT_APP_NAME -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App1  -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=Hybris-AD -Djetty.jmxrmiport=2000"
+#appdCPG="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.applicationName=$APPD_AGENT_APP_NAME -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App6 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=CustomerPayments.Gateway -Djetty.jmxrmiport=2005"
+#appdAMQ="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.applicationName=$APPD_AGENT_APP_NAME -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App4 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=EI-AMQ -Djetty.jmxrmiport=2003"
+#appdERES="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.applicationName=$APPD_AGENT_APP_NAME -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App10 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=ERES -Djetty.jmxrmiport=2009"
+#appdMSW="-javaagent:$APPD_AGENT_JAR -Dappdynamics.agent.applicationName=$APPD_AGENT_APP_NAME -Dappdynamics.agent.nodeName="$APPD_AGENT_NODE_NAME_PREFIX"App7 -Dappagent.install.dir=$APPD_AGENT_HOME -Dappdynamics.agent.tierName=MS -Djetty.jmxrmiport=2010"
 
  
 jettyAkamai=" -Djetty.jmxrmiport=2011 -Dappdynamics.agent.tierName=AKAMAI"
