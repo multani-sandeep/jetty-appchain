@@ -15,8 +15,9 @@
 	<Loggers>
 		<Logger name="com.memorynotfound" level="debug" />
 
-		<Root level="info">
+		<Root level="debug">
 			<AppenderRef ref="FILE" />
+			<AppenderRef ref="STDOUT" />
 		</Root>
 	</Loggers>
 
