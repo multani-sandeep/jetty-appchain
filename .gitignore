@@ -2,3 +2,4 @@
 /target/*
 /jmeter.log
 /FCP_R1_sandeep.jmx
+/activemq-data/

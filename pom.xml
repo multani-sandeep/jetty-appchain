@@ -27,41 +27,49 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>1.9.5</version>
+
 		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-all -->
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-all</artifactId>
-			<version>5.15.6</version>
+			<version>5.15.5</version>
 		</dependency>
+
+
+
+
+
+		<!-- https://mvnrepository.com/artifact/org.apache.xbean/xbean-spring -->
+		<dependency>
+			<groupId>org.apache.xbean</groupId>
+			<artifactId>xbean-spring</artifactId>
+			<version>4.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-spring</artifactId>
+			<version>5.15.5</version>
+		</dependency>
+
+
+
+
+
+		<!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+		<!-- <dependency> <groupId>io.netty</groupId> <artifactId>netty-all</artifactId> 
+			<version>4.1.11.Final</version> </dependency> -->
+
 
 		<!-- https://mvnrepository.com/artifact/org.apache.qpid/qpid-jms-client -->
 		<!-- <dependency> <groupId>org.apache.qpid</groupId> <artifactId>qpid-jms-client</artifactId> 
-			<version>0.36.0</version> </dependency> -->
-
-		<dependency>
-			<groupId>org.apache.qpid</groupId>
-			<artifactId>qpid-client</artifactId>
-			<version>6.3.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jms_1.1_spec</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.qpid/qpid-amqp-1-0-client-jms -->
-		<dependency>
-			<groupId>org.apache.qpid</groupId>
-			<artifactId>qpid-amqp-1-0-client-jms</artifactId>
-			<version>0.32</version>
-		</dependency>
+			<version>0.22.0</version> </dependency> -->
 
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jms</artifactId>
-			<version>4.3.3.RELEASE</version>
-		</dependency>
+		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-jms</artifactId> 
+			<version>4.3.3.RELEASE</version> </dependency> -->
 		<!-- cxf -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
