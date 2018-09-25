@@ -10,7 +10,7 @@ cd $APPCHAIN_HOME;
  mvn clean && mvn generate-sources && mvn package && java -cp "$APPCHAIN_HOME"/target/test-jar-with-dependencies.jar com.appdynamics.test.Database
 cd $APPCHAIN_HOME"/src/main/resources";
 
-#mvn package && java -javaagent:/Users/sandeepsingh/Downloads/appagent/javaagent.jar -Dappdynamics.agent.nodeName=T-App11  -Dappdynamics.agent.tierName=MSW -Djetty.jmxrmiport=2010   -jar ./target/dependency/jetty-runner.jar  --port 9191 ./target/test.war >> /tmp/server.log
+#mvn package && java -javaagent:/Users/sandeepsingh/Downloads/appagent/javaagent.jar -Dappdynamics.agent.nodeName=T-App11  -Dappdynamics.agent.tierName=MSW -Dappdynamics.agent.applicationName=Test -Djetty.jmxrmiport=2010   -jar ./target/dependency/jetty-runner.jar  --port 9191 ./target/test.war >> /tmp/server.log
 
 
 #debugAD="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=20000,suspend=n"
