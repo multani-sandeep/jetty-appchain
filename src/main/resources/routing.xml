@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE routes [
+<!ENTITY eres_db 	"eres.db">
+<!ENTITY seating_db 	"seating.db">
+
 <!ENTITY bookings_table_name 	"bookings">
 <!ENTITY flights_table_name 	"flights">
+<!ENTITY seats_table_name 	"seats">
+<!ENTITY seatmap_table_name "seatmap">
+<!ENTITY pay_table_name 	"pay">
+
 <!ENTITY MB_PORT 	"8081">
 <!ENTITY B2B_PORT 	"8082">
 <!ENTITY SEAT_PORT 	"8083">
@@ -10,7 +17,7 @@
 ]>
 
 <routes>
-	<!-- ROUTE1 WEB - B2B - SEATING - SeatingDB -->
+	<!-- SEATMAP WEB - B2B - SEATING - SeatingDB -->
 	<route url="/b2b/seat/seatmap">
 		<node name="B2B-Test">
 			<step seq="1">
@@ -23,6 +30,14 @@
 	<route url="/b2b/seat/seatmap">
 		<node name="Seating">
 			<step seq="1">
+				<methodwrapper name="updateMbeanStats" queueName="DoNothing">
+					<sql name="getseatmap" db="&seating_db;">
+						<select>
+							select * from &seatmap_table_name;
+							where ref like 'seat%'
+						</select>
+					</sql>
+				</methodwrapper>
 				<serve>
 					<payload>
 						Seat map success
@@ -31,7 +46,70 @@
 			</step>
 		</node>
 	</route>
-	<!-- ROUTE1 END -->
+	<!-- SEATMAP END -->
+	
+	<!-- ALLOCATESEAT WEB - B2B - SEATING - SeatingDB -->
+	<route url="/b2b/seat/seatmap">
+		<node name="B2B-Test">
+			<step seq="1">
+				<http url="http://localhost:&SEAT_PORT;/b2b/seat/allocate-seat">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/b2b/seat/allocate-seat">
+		<node name="Seating">
+			<step seq="1">
+				<methodwrapper name="updateMbeanStats" queueName="DoNothing">
+					<sql name="allocateseat" db="&seating_db;">
+						<select>
+							select * from &seats_table_name;
+							where ref like 'seat%'
+						</select>
+					</sql>
+				</methodwrapper>
+				<serve>
+					<payload>
+						Seat map success
+					</payload>
+				</serve>
+			</step>
+		</node>
+	</route>
+	<!-- ALLOCATESEAT -->
+	
+	<!-- DE-ALLOCATESEAT WEB - B2B - SEATING - SeatingDB -->
+	<route url="/b2b/seat/seatmap">
+		<node name="B2B-Test">
+			<step seq="1">
+				<http url="http://localhost:&SEAT_PORT;/b2b/seat/deallocate-seat">
+					<payload>Empty</payload>
+				</http>
+			</step>
+		</node>
+	</route>
+	<route url="/b2b/seat/deallocate-seat">
+		<node name="Seating">
+			<step seq="1">
+				<methodwrapper name="updateMbeanStats" queueName="DoNothing">
+					<sql name="allocateseat" db="&seating_db;">
+						<select>
+							select * from &seats_table_name;
+							where ref like 'seat%'
+						</select>
+					</sql>
+				</methodwrapper>
+				<serve>
+					<payload>
+						Seat map success
+					</payload>
+				</serve>
+			</step>
+		</node>
+	</route>
+	<!-- DE-ALLOCATESEAT -->
+	
 	<route url="/" default="true">
 	</route>
 </routes>

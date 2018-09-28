@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dbs [
+<!ENTITY eres_db 	"eres.db">
+<!ENTITY seating_db "seating.db">
+
+<!ENTITY seatmap_table_name "seatmap">
 <!ENTITY bookings_table_name 	"bookings">
 <!ENTITY flights_table_name 	"flights">
 <!ENTITY seats_table_name 	"seats">
@@ -9,7 +13,7 @@
 	<properties >
 		<property name="path" value="/tmp"/>
 	</properties>
-	<db name="eres.db">
+	<db name="&eres_db;">
 		<schema>
 			<table name="&bookings_table_name;">
 				<create>drop
@@ -55,9 +59,30 @@
 			</table>
 		</schema>
 	</db>
-	<db name="seating.db">
+	<db name="&seating_db;">
 		<schema>
 			<table name="&seats_table_name;">
+				<create>drop
+					table if exists &seats_table_name;;create
+					table &seats_table_name;
+					(id integer, ref string)
+				</create>
+				<populate>
+					<insert>insert
+						into &seats_table_name;
+						values(1, 'seat-001')
+					</insert>
+					<insert>insert
+						into &seats_table_name;
+						values(2, 'seat-001')
+					</insert>
+					<insert>insert
+						into &seats_table_name;
+						values(3, 'seat-001')
+					</insert>
+				</populate>
+			</table>
+			<table name="&seatmap_table_name;">
 				<create>drop
 					table if exists &seats_table_name;;create
 					table &seats_table_name;
