@@ -4,6 +4,8 @@
 . ./local.sh
 echo > /tmp/server.log
 
+#export MAVEN_OPTS="-javaagent:/Users/sandeepsingh/Downloads/appagent/javaagent.jar -Dappdynamics.agent.nodeName=T-App12  -Dappdynamics.agent.tierName=MSW -Dappdynamics.agent.applicationName=Test"
+
 #./jmeter.sh -n -t ~/git/jetty-appchain/FCP_R1.jmx -l /tmp/FCP_R1.txt
 
 cd $APPCHAIN_HOME;
