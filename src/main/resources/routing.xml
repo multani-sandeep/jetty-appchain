@@ -49,7 +49,7 @@
 	<!-- SEATMAP END -->
 	
 	<!-- ALLOCATESEAT WEB - B2B - SEATING - SeatingDB -->
-	<route url="/b2b/seat/seatmap">
+	<route url="/b2b/seat/allocate-seat">
 		<node name="B2B-Test">
 			<step seq="1">
 				<http url="http://localhost:&SEAT_PORT;/b2b/seat/allocate-seat">
@@ -80,7 +80,7 @@
 	<!-- ALLOCATESEAT -->
 	
 	<!-- DE-ALLOCATESEAT WEB - B2B - SEATING - SeatingDB -->
-	<route url="/b2b/seat/seatmap">
+	<route url="/b2b/seat/deallocate-seat">
 		<node name="B2B-Test">
 			<step seq="1">
 				<http url="http://localhost:&SEAT_PORT;/b2b/seat/deallocate-seat">
@@ -93,7 +93,7 @@
 		<node name="Seating">
 			<step seq="1">
 				<methodwrapper name="updateMbeanStats" queueName="DoNothing">
-					<sql name="allocateseat" db="&seating_db;">
+					<sql name="deallocateseat" db="&seating_db;">
 						<select>
 							select * from &seats_table_name;
 							where ref like 'seat%'
@@ -111,5 +111,13 @@
 	<!-- DE-ALLOCATESEAT -->
 	
 	<route url="/" default="true">
+		<node name="">
+			<step seq="1">
+				<serve>
+					<payload>Default Response</payload>
+				</serve>
+				<delay msec="10" random="1" />
+			</step>
+		</node>
 	</route>
 </routes>
