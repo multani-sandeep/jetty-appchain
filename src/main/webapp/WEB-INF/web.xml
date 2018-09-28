@@ -10,7 +10,7 @@
 	</context-param>
 	<context-param>
 		<param-name>enableCXFForCSV</param-name>
-		<param-value>MSW,MS,B2B</param-value>
+		<param-value>NONE</param-value>
 	</context-param>
 
 	<listener>

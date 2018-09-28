@@ -2,6 +2,8 @@
 <!DOCTYPE dbs [
 <!ENTITY bookings_table_name 	"bookings">
 <!ENTITY flights_table_name 	"flights">
+<!ENTITY seats_table_name 	"seats">
+<!ENTITY pay_table_name 	"pay">
 ]>
 <dbs>
 	<properties >
@@ -48,6 +50,56 @@
 					<insert>insert
 						into &flights_table_name;
 						values(3, 'LGW-EDI-3')
+					</insert>
+				</populate>
+			</table>
+		</schema>
+	</db>
+	<db name="seating.db">
+		<schema>
+			<table name="&seats_table_name;">
+				<create>drop
+					table if exists &seats_table_name;;create
+					table &seats_table_name;
+					(id integer, ref string)
+				</create>
+				<populate>
+					<insert>insert
+						into &seats_table_name;
+						values(1, 'seat-001')
+					</insert>
+					<insert>insert
+						into &seats_table_name;
+						values(2, 'seat-001')
+					</insert>
+					<insert>insert
+						into &seats_table_name;
+						values(3, 'seat-001')
+					</insert>
+				</populate>
+			</table>
+		</schema>
+	</db>
+	<db name="payments.db">
+		<schema>
+			<table name="&pay_table_name;">
+				<create>drop
+					table if exists &pay_table_name;;create
+					table &pay_table_name;
+					(id integer, ref string)
+				</create>
+				<populate>
+					<insert>insert
+						into &pay_table_name;
+						values(1, 'payment-001')
+					</insert>
+					<insert>insert
+						into &pay_table_name;
+						values(2, 'payment-001')
+					</insert>
+					<insert>insert
+						into &pay_table_name;
+						values(3, 'payment-001')
 					</insert>
 				</populate>
 			</table>
