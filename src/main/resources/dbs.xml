@@ -84,21 +84,21 @@
 			</table>
 			<table name="&seatmap_table_name;">
 				<create>drop
-					table if exists &seats_table_name;;create
-					table &seats_table_name;
+					table if exists &seatmap_table_name;;create
+					table &seatmap_table_name;
 					(id integer, ref string)
 				</create>
 				<populate>
 					<insert>insert
-						into &seats_table_name;
+						into &seatmap_table_name;
 						values(1, 'seat-001')
 					</insert>
 					<insert>insert
-						into &seats_table_name;
+						into &seatmap_table_name;
 						values(2, 'seat-001')
 					</insert>
 					<insert>insert
-						into &seats_table_name;
+						into &seatmap_table_name;
 						values(3, 'seat-001')
 					</insert>
 				</populate>
